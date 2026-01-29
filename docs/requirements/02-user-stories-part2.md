@@ -85,6 +85,230 @@
 
 ---
 
+### US-6.5: Edit Words in Transcript (Overdub) ⭐ **CORE FEATURE**
+
+**As a** user  
+**I want to** edit/replace words in the transcript  
+**So that** the video automatically updates with AI-generated speech
+
+**Acceptance Criteria:**
+- [ ] Double-click word in transcript to edit
+- [ ] Type replacement text inline
+- [ ] AI automatically generates speech using original speaker's voice (cloned from context)
+- [ ] Generated audio seamlessly replaces original in timeline
+- [ ] If video has face, lip-sync automatically applied
+- [ ] Visual indicator shows which words are "overdubbed" (e.g., ✏️ badge)
+- [ ] Undo reverts to original audio
+- [ ] Cost: 2 credits per edited word/phrase
+
+**Technical Tasks:**
+- [ ] Implement inline editing in transcript (contentEditable or Tiptap)
+- [ ] Detect changed text ranges (word-level diffing algorithm)
+- [ ] Extract speaker voice characteristics from surrounding audio (10-sec context window)
+- [ ] Create automatic voice cloning job (no manual upload needed)
+- [ ] Generate TTS with cloned voice (F5-TTS on Modal L4)
+- [ ] Replace audio segment in timeline EDL
+- [ ] If video: trigger lip-sync job (MuseTalk on Modal A10G)
+- [ ] Mark edited segments in transcript with visual badge
+- [ ] Store edit metadata in MongoDB EDL
+
+**Example Workflow:**
+```
+Original: "This product is really bad"
+User edits: "bad" → "good"
+→ AI clones speaker voice from surrounding audio
+→ Generates "good" in that voice
+→ Replaces "bad" in audio track
+→ If video: syncs lips to new word
+→ Timeline updates automatically
+```
+
+---
+
+### US-6.6: Insert New Text into Transcript ⭐ **CORE FEATURE**
+
+**As a** user  
+**I want to** type new text anywhere in the transcript  
+**So that** I can add new dialogue/narration to my video
+
+**Acceptance Criteria:**
+- [ ] Click between words to place cursor
+- [ ] Type new text (phrase or sentence)
+- [ ] Select voice to use (from voice library or detected speaker)
+- [ ] AI generates speech in selected voice
+- [ ] Audio inserted at cursor position in timeline
+- [ ] Natural pause handling before/after insertion
+- [ ] Visual indicator shows inserted text (e.g., blue highlight)
+- [ ] Ripple edit: subsequent clips shift to accommodate
+- [ ] Cost: 3 credits per inserted sentence
+
+**Technical Tasks:**
+- [ ] Implement cursor positioning in transcript
+- [ ] Detect inserted text (not just edits)
+- [ ] Show voice selection dialog on insert
+- [ ] Generate TTS for inserted text (F5-TTS)
+- [ ] Calculate insertion point in timeline (between words with timestamps)
+- [ ] Implement ripple editing: shift subsequent clips
+- [ ] Add fade in/out for natural audio blending
+- [ ] Update EDL with new audio clip reference
+- [ ] Store insertion metadata in MongoDB
+
+**Example Workflow:**
+```
+Original: "Hello. How are you?"
+User inserts after "Hello": "My name is John."
+→ Cursor placed after "Hello"
+→ User types "My name is John"
+→ Selects voice (speaker or library)
+→ AI generates speech
+→ Inserted with 0.5s pauses before/after
+→ Timeline shifts remaining clips right
+```
+
+---
+
+### US-6.7: Remove Filler Words (One-Click Cleanup)
+
+**As a** user  
+**I want to** remove all "um", "uh", "like", "you know" with one click  
+**So that** my content sounds more professional
+
+**Acceptance Criteria:**
+- [ ] "Remove Filler Words" button in transcript toolbar
+- [ ] Detects common filler words/phrases automatically
+- [ ] Shows preview with fillers highlighted in yellow
+- [ ] User can toggle individual detections on/off
+- [ ] One-click "Apply" removes all selected fillers
+- [ ] Timeline gaps auto-closed (ripple delete)
+- [ ] Undo available to restore all fillers
+- [ ] Free feature (no credit cost)
+
+**Technical Tasks:**
+- [ ] Create filler word detection algorithm
+  - Common patterns: "um", "uh", "ah", "er", "like", "you know", "kind of", "sort of", etc.
+- [ ] Use transcript word-level timestamps
+- [ ] Highlight detected fillers in transcript
+- [ ] Create confirmation dialog with list and toggles
+- [ ] Batch delete from timeline EDL
+- [ ] Implement ripple delete (close gaps automatically)
+- [ ] Update MongoDB EDL with deletions
+
+**Filler Words Detected:**
+- Hesitations: um, uh, ah, er, hmm
+- Verbal crutches: like (non-meaningful), you know, I mean
+- Hedge words: kind of, sort of, basically, actually, literally (overuse)
+- Sentence starters: so (repeated), well
+
+---
+
+### US-6.8: Rearrange Sentences by Drag-and-Drop
+
+**As a** user  
+**I want to** drag sentences in the transcript to reorder them  
+**So that** I can restructure my narrative without manual timeline editing
+
+**Acceptance Criteria:**
+- [ ] Sentence-level drag handles on hover
+- [ ] Drag sentence to new position in transcript
+- [ ] Visual drop zone indicator
+- [ ] Drop to reorder
+- [ ] Corresponding video/audio clips automatically rearrange in timeline
+- [ ] Handles cross-speaker rearrangement
+- [ ] Crossfades applied for smooth audio transitions
+- [ ] Undo available
+- [ ] Free feature (no credit cost)
+
+**Technical Tasks:**
+- [ ] Implement sentence-level drag-and-drop (dnd-kit)
+- [ ] Parse transcript into sentence blocks with boundaries
+- [ ] Map sentences to timeline clip ranges (start/end times)
+- [ ] Rearrange clips in EDL when sentence dropped
+- [ ] Handle audio crossfades between rearranged segments (0.1s)
+- [ ] Update timeline view to reflect new clip order
+- [ ] Store rearrangement metadata for undo
+
+---
+
+### US-6.9: Find and Replace in Transcript
+
+**As a** user  
+**I want to** find and replace text across the entire transcript  
+**So that** I can fix repeated mistakes or update terminology
+
+**Acceptance Criteria:**
+- [ ] Find/Replace toolbar (Cmd/Ctrl+F opens)
+- [ ] Find all instances of word/phrase
+- [ ] Navigate between matches (next/previous)
+- [ ] Replace individual instance or all at once
+- [ ] Each replacement triggers AI voice generation
+- [ ] Batch processing with progress indicator
+- [ ] Preview changes before applying
+- [ ] Cost: 2 credits per replaced instance
+
+**Technical Tasks:**
+- [ ] Create find/replace UI component with search input
+- [ ] Implement text search in transcript (case-sensitive/insensitive toggle)
+- [ ] Highlight all matches in transcript
+- [ ] For "Replace All": batch TTS generation queue
+- [ ] Queue Kafka jobs to avoid overwhelming system
+- [ ] Show progress: "Generating 3/5 replacements..."
+- [ ] Update timeline as each replacement completes
+- [ ] Store find/replace history
+
+**Example:**
+```
+Find: "version 1.0"
+Replace: "version 2.0"
+→ Finds 5 instances across 3 speakers
+→ User clicks "Replace All"
+→ AI generates "version 2.0" in each speaker's voice (5 jobs)
+→ Timeline updates for all 5 instances
+→ Cost: 10 credits (2 per instance)
+```
+
+---
+
+### US-6.10: Transcript Edit Markers and History
+
+**As a** user  
+**I want to** see which parts of the transcript were AI-edited  
+**So that** I maintain transparency and can review/revert changes
+
+**Acceptance Criteria:**
+- [ ] Transcript shows visual markers for:
+  - ✏️ Edited words (overdubbed)
+  - ➕ Inserted text (green highlight)
+  - 🗑️ Deleted text (strikethrough, faded)
+  - 🔄 Rearranged sentences (subtle border)
+- [ ] Hover over edit shows tooltip: "Edited: 'bad' → 'good' (2 min ago)"
+- [ ] "Show/Hide Edits" toggle in toolbar
+- [ ] Right-click edited word → "Revert to Original"
+- [ ] Export transcript with edit log (JSON or annotated text)
+- [ ] Free feature
+
+**Technical Tasks:**
+- [ ] Store edit type, timestamp, original value in MongoDB
+- [ ] Render visual indicators in transcript component
+- [ ] Create tooltip component for edit history
+- [ ] Implement toggle to show/hide markers
+- [ ] Create "revert edit" action per word/phrase
+- [ ] Export as JSON with edit metadata:
+  ```json
+  {
+    "edits": [
+      {
+        "type": "replace",
+        "timestamp": "2026-01-29T12:34:56Z",
+        "word_id": "w42",
+        "old": "bad",
+        "new": "good"
+      }
+    ]
+  }
+  ```
+
+---
+
 ## Epic 7: AI Feature - Synthetic Voice (TTS)
 
 ### US-7.1: Clone Voice from Sample

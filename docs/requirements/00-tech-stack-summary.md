@@ -49,8 +49,10 @@ This document summarizes the complete, approved technology stack for the Auteur 
 | **dnd-kit** | Timeline clip drag-and-drop | Performance-first, works with virtualization |
 | **@tanstack/react-virtual** | Virtualized timeline rendering | Handle 1000s of clips without lag |
 | **react-resizable-panels** | VS Code-style panel resizing | Professional UX for window management |
-| **Tiptap** | Rich text editor | Link transcript words to video timestamps |
+| **Tiptap** | Rich text editor for transcript | **Core feature**: Edit text → edit video (Descript-killer) |
 | **lucide-react** | Icon library | Clean, sharp, consistent icons |
+
+> **Note**: Tiptap is used for the core text-based editing feature - users edit the transcript and AI automatically regenerates speech and updates the video. This is the primary differentiator from traditional video editors.
 
 ---
 

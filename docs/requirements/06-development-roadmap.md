@@ -88,10 +88,10 @@
 ---
 
 ## Phase 4: First AI Features (Weeks 10-12)
-**Goal:** Transcription and TTS via Kafka + Modal
+**Goal**: Text-Based Editing (Descript-Killer Features) + Transcription
 
 ### Milestone 4.1: Modal + Kafka Integration
-- [ ] Setup Modal GPU environment (A10G for transcription)
+- [ ] Setup Modal GPU environment (A10G for transcription, L4 for TTS)
 - [ ] Create Modal Kafka consumers (confluent-kafka Python)
 - [ ] Download Whisper + Pyannote models to Modal volume
 - [ ] Download F5-TTS models to Modal volume
@@ -105,14 +105,48 @@
 - [ ] Modal worker: Publish JobCompletedEvent
 - [ ] Spring Boot consumer: Update job status in Postgres
 - [ ] US-6.1: Generate transcript
-- [ ] US-6.2: View transcript
-- [ ] US-6.3: Edit transcript with Tiptap editor (link words to timeline)
+- [ ] US-6.2: View transcript with word-level timestamps
+
+### Milestone 4.3: Core Text-Based Editing ⭐ **PRIORITY**
+
+**Week 10-11: The Descript-Killer Features**
+
+- [ ] US-6.5: **Edit words in transcript (Overdub)**
+  - [ ] Inline editing with Tiptap
+  - [ ] Word-level diff detection
+  - [ ] Automatic voice cloning from context
+  - [ ] TTS generation with cloned voice
+  - [ ] Auto lip-sync if video has face
+  - [ ] Visual edit markers
+- [ ] US-6.6: **Insert new text into transcript**
+  - [ ] Cursor positioning
+  - [ ] Voice selection dialog
+  - [ ] TTS generation for inserted text
+  - [ ] Ripple editing in timeline
+  - [ ] Natural pause handling
+- [ ] US-6.3: Delete text → delete video (already exists, ensure integration)
+
+**Week 12: Polish & Productivity Features**
+
+- [ ] US-6.7: Remove filler words (one-click)
+  - [ ] Filler word detection algorithm
+  - [ ] Batch deletion with preview
+- [ ] US-6.8: Rearrange sentences by drag-and-drop
+  - [ ] Sentence-level DnD
+  - [ ] Timeline auto-reorder
+- [ ] US-6.9: Find and replace
+  - [ ] Batch TTS generation
+  - [ ] Progress indicator
+- [ ] US-6.10: Transcript edit markers
+  - [ ] Visual indicators for edits
+  - [ ] Export edit log
 - [ ] US-6.4: Export transcript
 
-### Milestone 4.3: TTS (via Kafka)
-- [ ] Similar Kafka flow for TTS jobs
-- [ ] US-7.1: Clone voice (upload sample)
-- [ ] US-7.2: Generate speech from text
+### Milestone 4.4: TTS Voice Library (Foundation)
+- [ ] Create voice library UI
+- [ ] US-7.1: Clone voice from sample (manual upload)
+- [ ] Store voice profiles in Postgres
+- [ ] Use in US-6.6 (insert text)
 
 ---
 
@@ -182,9 +216,12 @@ For learning purposes, start with:
 4. **Week 4**: INFRA-1 (Spring Boot) + INFRA-2 (GCP VM deployment)
 5. **Week 5**: INFRA-3 (Kafka) + INFRA-4 (Supabase) + INFRA-5 (R2) + Authentication
 6. **Week 6**: INFRA-6 (MongoDB) + Project management
-7. **Week 7-8**: Timeline with dnd-kit + react-virtual + tiptap
+7. **Week 7-8**: Timeline with dnd-kit + react-virtual + Tiptap
 8. **Week 9**: Billing (Stripe)
-9. **Week 10-12**: Modal + Kafka integration + Transcription + TTS
+9. **Week 10-12**: ⭐ **TEXT-BASED EDITING** (Overdub, Insert, Fillers, Rearrange)
+   - This is your **killer feature** - prioritize getting this working perfectly
+   - From transcript → edit word → AI regenerates → timeline updates
+   - This is what makes Auteur a Descript competitor
 
 This gives you exposure to:
 - **Monorepo architecture** with Turborepo
@@ -195,6 +232,7 @@ This gives you exposure to:
 - **Modern React** with shadcn/ui, dnd-kit, react-virtual, Tiptap
 - **Full-stack integration** (TypeScript frontend ↔ Java backend ↔ Python GPU workers)
 - **Cloud infrastructure** (GCP VM, Supabase, MongoDB, R2)
+- **Text-based video editing** - the core innovation that differentiates Auteur
 
 This gives you exposure to:
 - **Monorepo architecture** and code sharing
