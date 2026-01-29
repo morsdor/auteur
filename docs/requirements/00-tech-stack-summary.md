@@ -9,21 +9,24 @@ This document summarizes the complete, approved technology stack for the Auteur 
 ## Frontend Stack
 
 ### Monorepo Management
+
 - **Tool**: Turborepo
 - **Package Manager**: pnpm workspaces
 - **Why**: Industry-standard monorepo with excellent caching, 80% code reuse between desktop and web
 
-### Shared Packages (@auteur/*)
-| Package | Purpose |
-|---------|---------|
-| `@auteur/ui` | shadcn/ui components + custom video editing components |
-| `@auteur/api-client` | Type-safe REST API client for Spring Boot backend |
-| `@auteur/types` | Shared TypeScript definitions |
-| `@auteur/utils` | Business logic (EDL parsing, credit calculations, validation) |
-| `@auteur/auth` | Auth abstraction (Electron vs Web storage) |
-| `@auteur/storage` | Storage adapter (electron-store vs IndexedDB) |
+### Shared Packages (@auteur/\*)
+
+| Package              | Purpose                                                       |
+| -------------------- | ------------------------------------------------------------- |
+| `@auteur/ui`         | shadcn/ui components + custom video editing components        |
+| `@auteur/api-client` | Type-safe REST API client for Spring Boot backend             |
+| `@auteur/types`      | Shared TypeScript definitions                                 |
+| `@auteur/utils`      | Business logic (EDL parsing, credit calculations, validation) |
+| `@auteur/auth`       | Auth abstraction (Electron vs Web storage)                    |
+| `@auteur/storage`    | Storage adapter (electron-store vs IndexedDB)                 |
 
 ### Desktop App (Electron)
+
 - **Framework**: Electron 28+
 - **UI**: React 18 + TypeScript
 - **Component Library**: **shadcn/ui** (Radix UI + Tailwind primitives)
@@ -34,6 +37,7 @@ This document summarizes the complete, approved technology stack for the Auteur 
 - **Auth**: Supabase JS + electron-store
 
 ### Web App (Next.js)
+
 - **Framework**: Next.js 14 (App Router)
 - **UI**: React 18 + TypeScript
 - **Component Library**: **shadcn/ui** (same components as desktop)
@@ -44,13 +48,14 @@ This document summarizes the complete, approved technology stack for the Auteur 
 - **Auth**: Supabase JS
 
 ### Specialized UI Libraries
-| Library | Purpose | Why |
-|---------|---------|-----|
-| **dnd-kit** | Timeline clip drag-and-drop | Performance-first, works with virtualization |
-| **@tanstack/react-virtual** | Virtualized timeline rendering | Handle 1000s of clips without lag |
-| **react-resizable-panels** | VS Code-style panel resizing | Professional UX for window management |
-| **Tiptap** | Rich text editor for transcript | **Core feature**: Edit text → edit video (Descript-killer) |
-| **lucide-react** | Icon library | Clean, sharp, consistent icons |
+
+| Library                     | Purpose                         | Why                                                        |
+| --------------------------- | ------------------------------- | ---------------------------------------------------------- |
+| **dnd-kit**                 | Timeline clip drag-and-drop     | Performance-first, works with virtualization               |
+| **@tanstack/react-virtual** | Virtualized timeline rendering  | Handle 1000s of clips without lag                          |
+| **react-resizable-panels**  | VS Code-style panel resizing    | Professional UX for window management                      |
+| **Tiptap**                  | Rich text editor for transcript | **Core feature**: Edit text → edit video (Descript-killer) |
+| **lucide-react**            | Icon library                    | Clean, sharp, consistent icons                             |
 
 > **Note**: Tiptap is used for the core text-based editing feature - users edit the transcript and AI automatically regenerates speech and updates the video. This is the primary differentiator from traditional video editors.
 
@@ -59,6 +64,7 @@ This document summarizes the complete, approved technology stack for the Auteur 
 ## Backend Stack
 
 ### API Layer
+
 - **Language**: **Java 21 LTS**
 - **Framework**: **Spring Boot 3.2**
 - **API**: Spring Web (REST with @RestController)
@@ -70,15 +76,17 @@ This document summarizes the complete, approved technology stack for the Auteur 
 - **Hosting**: **GCP Compute Engine** (e2-medium, free tier)
 
 ### Message Queue
+
 - **Platform**: **Apache Kafka** via **Confluent Cloud**
 - **Cluster**: Basic tier (us-west-2)
 - **Producer**: Spring Kafka (Java)
 - **Consumers**: Spring Kafka (Java) + confluent-kafka (Python for Modal)
 - **Serialization**: **Avro** with Schema Registry
-- **Topics**: 14 topics (jobs.*, analytics.*)
+- **Topics**: 14 topics (jobs._, analytics._)
 - **Why**: Industry-standard event streaming, perfect for async job processing
 
 ### GPU Compute
+
 - **Platform**: **Modal** (Serverless Python GPUs)
 - **GPUs**: A100-80GB, A10G, L4/T4
 - **Runtime**: Python 3.10+ with PyTorch + CUDA
@@ -90,6 +98,7 @@ This document summarizes the complete, approved technology stack for the Auteur 
 ## Data Layer
 
 ### Authentication + SQL
+
 - **Provider**: **Supabase**
 - **Auth**: Email + Google + GitHub OAuth
 - **Database**: PostgreSQL 15
@@ -97,12 +106,14 @@ This document summarizes the complete, approved technology stack for the Auteur 
 - **Why**: Built-in auth, generous free tier, great DX
 
 ### Document Store (EDL)
+
 - **Database**: **MongoDB Atlas**
 - **Cluster**: M10 (production), M0 (free for dev)
 - **Use Case**: Edit Decision Lists (dynamic, nested structure)
 - **Why**: Schema flexibility for timeline data structure
 
 ### File Storage
+
 - **Service**: **Cloudflare R2**
 - **Protocol**: S3-compatible
 - **Why**: **Zero egress/ingress costs** (huge savings vs S3)
@@ -113,6 +124,7 @@ This document summarizes the complete, approved technology stack for the Auteur 
 ## DevOps
 
 ### CI/CD
+
 - **Primary**: **GitHub Actions**
   - Frontend: Lint, typecheck, test monorepo
   - Backend: Maven test, build JAR
@@ -120,15 +132,17 @@ This document summarizes the complete, approved technology stack for the Auteur 
 - **Future**: Jenkins (for learning enterprise CI/CD in Phase 7)
 
 ### Testing
-| Layer | Tools |
-|-------|-------|
-| Frontend Unit | Vitest |
-| Backend Unit | JUnit 5 + Mockito |
-| Integration | TestContainers (Postgres, Kafka, MongoDB) |
-| E2E | Playwright (desktop + web) |
-| API | Postman/Bruno |
+
+| Layer         | Tools                                     |
+| ------------- | ----------------------------------------- |
+| Frontend Unit | Vitest                                    |
+| Backend Unit  | JUnit 5 + Mockito                         |
+| Integration   | TestContainers (Postgres, Kafka, MongoDB) |
+| E2E           | Playwright (desktop + web)                |
+| API           | Postman/Bruno                             |
 
 ### Deployment
+
 - **API**: systemd service on GCP Compute Engine
 - **SSL**: Let's Encrypt (Certbot)
 - **Desktop**: Self-distributed (code-signed Electron builds)
@@ -189,15 +203,15 @@ apps/desktop            apps/web
 
 ## Cost Estimate (Monthly)
 
-| Service | Tier | Cost |
-|---------|------|------|
-| GCP Compute Engine | e2-medium (free tier) | $0 |
-| Kafka (Confluent Cloud) | Basic cluster | ~$110 |
-| Modal | Pay-per-use (A10G @ $0.60/hr) | ~$50-200 (varies) |
-| Supabase | Pro | $25 |
-| MongoDB Atlas | M10 | ~$60 |
-| Cloudflare R2 | Storage only | ~$10 |
-| **Total** | | **$255-405/month** |
+| Service                 | Tier                          | Cost               |
+| ----------------------- | ----------------------------- | ------------------ |
+| GCP Compute Engine      | e2-medium (free tier)         | $0                 |
+| Kafka (Confluent Cloud) | Basic cluster                 | ~$110              |
+| Modal                   | Pay-per-use (A10G @ $0.60/hr) | ~$50-200 (varies)  |
+| Supabase                | Pro                           | $25                |
+| MongoDB Atlas           | M10                           | ~$60               |
+| Cloudflare R2           | Storage only                  | ~$10               |
+| **Total**               |                               | **$255-405/month** |
 
 > **Note**: GCP free tier gives $300 credit for 90 days, Kafka has free tier option ($0 with limits), Modal has $30/month free credits
 
@@ -206,6 +220,7 @@ apps/desktop            apps/web
 ## Why This Stack?
 
 ### Learning Goals Met ✅
+
 - ✅ **Enterprise Java**: Spring Boot is #1 skill for backend jobs
 - ✅ **Event Streaming**: Kafka is industry standard at scale
 - ✅ **Cloud Native**: GCP, serverless GPUs, managed databases
@@ -213,12 +228,14 @@ apps/desktop            apps/web
 - ✅ **Full-Stack**: TypeScript ↔ Java ↔ Python (3 ecosystems)
 
 ### Production-Ready ✅
+
 - ✅ All technologies have active communities and commercial support
 - ✅ Apache 2.0 or permissive licenses for all AI models
 - ✅ Scalable architecture (can handle 1000s of users)
 - ✅ Secure by default (Spring Security, Supabase RLS, Kafka TLS)
 
 ### Cost-Effective ✅
+
 - ✅ Cloudflare R2 saves $100s/month vs S3
 - ✅ GCP free tier for API hosting
 - ✅ Modal pay-per-use (no idle GPU costs)

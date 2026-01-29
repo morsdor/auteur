@@ -1,0 +1,27 @@
+# Dependencies
+node_modules
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist
+build
+.next
+out
+coverage
+
+# Environment files
+.env*
+
+# Java
+*.class
+target/
+*.jar
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

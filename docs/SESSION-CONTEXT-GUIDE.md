@@ -22,10 +22,27 @@ Tech stack: Turborepo + pnpm, shadcn/ui, dnd-kit, react-virtual, Zustand, React 
 
 Repo location: /Users/mritunjaymohitesh/dev/auteur
 
-Read: 
-- STATUS.md
-- docs/requirements/00-tech-stack-summary.md  
-- docs/requirements/03-technical-specifications.md
+Read:
+- STATUS.md @STATUS.md
+- docs/requirements/00-tech-stack-summary.md   @00-tech-stack-summary.md
+- docs/requirements/03-technical-specifications.md @03-technical-specifications.md
 
-Task: Implement US-6.5 (Edit words in transcript)
+If you see in the @06-development-roadmap.md  we are at week 1.
+
+And our task is INFRA 0 which is as below -
+
+- [ ] Initialize monorepo with Turborepo
+- [ ] Configure pnpm workspaces
+- [ ] Create workspace structure (`packages/`, `apps/`, `backend/`)
+- [ ] Setup Changesets for version management
+- [ ] Configure shared `tsconfig.base.json`
+- [ ] Configure shared ESLint and Prettier configs
+- [ ] Create shared Tailwind CSS config
+- [ ] Setup husky for pre-commit hooks
+
+
+Let us start working on them.
+
+Ask me if you need any clarifiactions and as you progress, keep updating @STATUS.md
+
 ```
