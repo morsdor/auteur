@@ -21,8 +21,8 @@ auteur/
 │   ├── auth/           # Auth abstraction (@auteur/auth)
 │   └── storage/        # Storage adapter (@auteur/storage)
 ├── backend/
-│   ├── api/            # Cloud Run FastAPI
-│   └── gpu/            # Modal GPU functions
+│   ├── api/            # Spring Boot (Java 21)
+│   └── gpu/            # Modal GPU workers (Python)
 └── docs/
     └── requirements/   # Product requirements and specs
 ```
@@ -62,15 +62,23 @@ pnpm typecheck
 |-------|------------|
 | **Monorepo** | Turborepo + pnpm workspaces |
 | **Desktop** | Electron + React + TypeScript |
-| **Web** | Next.js 14 + React + TypeScript |
+| **Web** | Next.js 14 (App Router) + React + TypeScript |
+| **UI Components** | shadcn/ui (Radix UI + Tailwind) |
+| **State** | Zustand + React Query (TanStack Query) |
 | **Styling** | Tailwind CSS (shared config) |
-| **State** | Zustand |
-| **API** | FastAPI (Python) on Cloud Run |
-| **GPU** | Modal (serverless GPU) |
+| **Timeline** | dnd-kit + @tanstack/react-virtual + react-resizable-panels |
+| **Text Editor** | Tiptap (for transcript editing) |
+| **Icons** | lucide-react |
+| **API** | Spring Boot 3.2 (Java 21) on GCP Compute Engine |
+| **Queue** | Apache Kafka (Confluent Cloud) |
+| **GPU** | Modal (serverless Python GPUs) |
+| **Migrations** | Flyway |
 | **Auth** | Supabase Auth |
 | **Database** | PostgreSQL (Supabase) |
 | **NoSQL** | MongoDB Atlas (for EDL) |
-| **Storage** | Cloudflare R2 |
+| **Storage** | Cloudflare R2 (zero egress costs) |
+| **CI/CD** | GitHub Actions |
+| **Testing** | JUnit 5, Mockito, TestContainers, Playwright |
 
 ## 🎨 AI Features
 
@@ -87,14 +95,21 @@ pnpm typecheck
 
 ## 📚 Documentation
 
+**Quick Start:**
+- [Tech Stack Summary](./docs/requirements/00-tech-stack-summary.md) ⭐ **Start Here**
+- [Development Roadmap](./docs/requirements/06-development-roadmap.md)
+
+**Requirements:**
 - [Product Requirements](./docs/requirements/01-product-requirements.md)
 - [User Stories Part 1](./docs/requirements/02-user-stories-part1.md)
 - [User Stories Part 2](./docs/requirements/02-user-stories-part2.md)
 - [Technical Specifications](./docs/requirements/03-technical-specifications.md)
+- [Kafka Architecture](./docs/requirements/07-kafka-architecture.md)
 - [Non-Functional Requirements](./docs/requirements/04-non-functional-requirements.md)
+
+**Implementation:**
 - [GitHub Issues](./docs/requirements/05-github-issues.md)
-- [Monorepo Infrastructure](./docs/requirements/05a-github-issues-monorepo.md)
-- [Development Roadmap](./docs/requirements/06-development-roadmap.md)
+- [Monorepo Infrastructure Tasks](./docs/requirements/05a-github-issues-monorepo.md)
 
 ## 🛠️ Development Workflow
 
@@ -168,4 +183,7 @@ This is a learning project. See [Development Roadmap](./docs/requirements/06-dev
 
 ---
 
-**Status**: Phase 1 - Monorepo Infrastructure Setup ✨
+**Status**: ✅ Requirements Complete - Ready for Implementation  
+**Current Phase**: Phase 1 - Monorepo Setup (Week 1-5)  
+**See**: [Development Roadmap](./docs/requirements/06-development-roadmap.md) for detailed plan
+
