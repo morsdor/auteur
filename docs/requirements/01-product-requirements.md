@@ -2,12 +2,22 @@
 
 ## 1. Product Vision
 
-**Auteur** is an enterprise-grade AI video editing platform that democratizes cinematic-quality video production. By combining a responsive Electron desktop application with serverless GPU infrastructure, Auteur enables creators on consumer hardware to access state-of-the-art generative AI capabilities.
+**Auteur** is an enterprise-grade AI video editing platform that democratizes cinematic-quality video production. Available as both a **desktop application** (Electron) and **web application** (browser-based), Auteur leverages serverless GPU infrastructure to enable creators on any device to access state-of-the-art generative AI capabilities.
 
 ### 1.1 Mission Statement
-Empower video creators with AI-powered tools that were previously only available to high-budget productions, while maintaining commercial compliance and cost efficiency.
+Empower video creators with AI-powered tools that were previously only available to high-budget productions, accessible from desktop or web browser, while maintaining commercial compliance and cost efficiency.
 
-### 1.2 Success Metrics
+### 1.2 Platform Strategy
+
+**Multi-Platform from Day One**: Auteur is built as a monorepo with shared business logic, enabling simultaneous desktop and web releases.
+
+| Platform | Target Users | Advantages |
+|----------|--------------|------------|
+| **Desktop** (Electron) | Power users, professionals | Native OS integration, better performance, offline editing |
+| **Web** (Next.js) | Casual creators, teams | No installation, cross-device access, easy sharing |
+
+### 1.3 Success Metrics
+- User can access from desktop or web browser
 - User can generate AI video content without local GPU
 - Sub-5-minute turnaround for standard AI operations
 - 99.9% uptime for core services
@@ -55,43 +65,109 @@ Empower video creators with AI-powered tools that were previously only available
 
 ## 3. System Architecture Overview
 
+### 3.1 Monorepo Structure
+
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    ELECTRON APP                         │
-│                 React + TypeScript                      │
-│  ┌─────────────────────────────────────────────────┐   │
-│  │  Timeline Editor │ Preview │ Project Manager    │   │
-│  └─────────────────────────────────────────────────┘   │
-└─────────────────────────┬───────────────────────────────┘
-                          │ HTTPS + Supabase JWT
+auteur/
+├── packages/              # Shared code (80%+ reuse)
+│   ├── ui/                # shadcn/ui components + custom
+│   ├── api-client/        # REST API client (TypeScript)
+│   ├── types/             # TypeScript types
+│   ├── utils/             # Business logic
+│   ├── auth/              # Auth abstraction
+│   └── storage/           # Storage adapter
+├── apps/
+│   ├── desktop/           # Electron + React + TypeScript
+│   └── web/               # Next.js 14 + React + TypeScript
+└── backend/
+    ├── api/               # Spring Boot (Java 21) on GCP VM
+    └── gpu/               # Modal (Python workers)
+```
+
+### 3.2 System Diagram
+
+```
+┌─────────────────────────┐  ┌─────────────────────────┐
+│    DESKTOP APP          │  │      WEB APP            │
+│   (Electron + React)    │  │   (Next.js + React)     │
+│  ┌──────────────────┐   │  │  ┌──────────────────┐   │
+│  │ shadcn/ui (80%)  │   │  │  │ shadcn/ui (80%)  │   │
+│  │  - Timeline      │   │  │  │  - Timeline      │   │
+│  │  - Preview       │   │  │  │  - Preview       │   │
+│  │  - Project Mgmt  │   │  │  │  - Project Mgmt  │   │
+│  │  - Tiptap Editor │   │  │  │  - Tiptap Editor │   │
+│  └──────────────────┘   │  │  └──────────────────┘   │
+│  State: Zustand + RQ    │  │  State: Zustand + RQ    │
+└──────────┬──────────────┘  └──────────┬──────────────┘
+           │                            │
+           │    HTTPS + Supabase JWT    │
+           └──────────────┬─────────────┘
                           ▼
 ┌─────────────────────────────────────────────────────────┐
-│              GOOGLE CLOUD RUN (API Layer)               │
+│         SPRING BOOT API (Java 21) on GCP VM             │
 │  ┌──────────────────────────────────────────────────┐  │
-│  │  - Auth validation          - Credit management  │  │
-│  │  - Job orchestration        - Webhook handlers   │  │
-│  │  - Rate limiting            - Usage analytics    │  │
+│  │  - REST API (Spring Web)                         │  │
+│  │  - JWT validation       - Credit management      │  │
+│  │  - Flyway migrations    - Kafka producers        │  │
+│  │  - Job status queries   - Rate limiting          │  │
 │  └──────────────────────────────────────────────────┘  │
 └────────┬──────────────┬──────────────┬──────────────────┘
          │              │              │
          ▼              ▼              ▼
 ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐
-│  SUPABASE   │  │   MODAL     │  │  CLOUDFLARE R2      │
+│  SUPABASE   │  │   KAFKA     │  │  CLOUDFLARE R2      │
 │  ─────────  │  │  ─────────  │  │  ───────────────    │
-│  - Auth     │  │  - A100 GPU │  │  - Video uploads    │
-│  - Postgres │  │  - A10G GPU │  │  - Generated assets │
-│  - Users    │  │  - L4/T4    │  │  - Project files    │
-│  - Credits  │  │             │  │                     │
-│  - Jobs     │  │             │  │                     │
-└─────────────┘  └─────────────┘  └─────────────────────┘
-         │
-         ▼
-┌─────────────────────────────────────────────────────────┐
-│                    MONGODB ATLAS                        │
-│  - Edit Decision Lists (EDL)                            │
-│  - Transcript data with flags                           │
-│  - Dynamic editing metadata                             │
-└─────────────────────────────────────────────────────────┘
+│  - Auth     │  │  Confluent  │  │  - Video uploads    │
+│  - Postgres │  │  Cloud      │  │  - Generated assets │
+│  - Users    │  │  - Topics   │  │  - Project files    │
+│  - Credits  │  │  - Consumer │  │                     │
+│  - Jobs     │  │    Groups   │  │                     │
+└─────────────┘  └─────┬───────┘  └─────────────────────┘
+                       │
+                       ▼
+              ┌────────────────────┐
+              │   MODAL (Python)   │
+              │  ─────────────     │
+              │  - Kafka consumers │
+              │  - A100, A10G, L4  │
+              │  - AI model workers│
+              └────────────────────┘
+         
+         ┌──────────────────────────┐
+         │    MONGODB ATLAS         │
+         │  ─────────────────────   │
+         │  - Edit Decision Lists   │
+         │  - Transcript data       │
+         └──────────────────────────┘
+```
+
+### 3.3 Job Flow via Kafka
+
+```
+User Action (Web/Desktop)
+    ↓
+Spring Boot API
+    ├─ Deduct credits (Postgres)
+    └─ Publish to kafka: jobs.requested
+                ↓
+        Kafka (Confluent Cloud)
+                ↓
+        ┌───────┴────────┐
+        ▼                ▼
+Job Orchestrator    Modal Workers
+(Spring Consumer)   (Python Consumers)
+    ├─ Route job        ├─ jobs.transcription
+    └─ Publish to:      ├─ jobs.tts
+       jobs.{type}      ├─ jobs.lip-sync
+                        └─ jobs.video-generation
+                                ↓
+                        Process & Store in R2
+                                ↓
+                        Publish: jobs.completed
+                                ↓
+                        Spring Boot Consumer
+                                ↓
+                        Update job status (Postgres)
 ```
 
 ---

@@ -2,33 +2,106 @@
 
 ## 1. Technology Stack
 
-### 1.1 Desktop Application (Electron)
+### 1.1 Monorepo Management
+
+| Tool | Purpose |
+|------|--------|
+| Turborepo | Monorepo build system with caching |
+| pnpm workspaces | Package management and linking |
+| Changesets | Version management and changelogs |
+
+### 1.2 Shared Packages (80% code reuse)
+
+| Package | Technology | Purpose |
+|---------|------------|---------||
+| `@auteur/ui` | React 18 + shadcn/ui + TypeScript | Shared UI components |
+| `@auteur/api-client` | TypeScript + Fetch | REST API client with types |
+| `@auteur/types` | TypeScript | Shared type definitions |
+| `@auteur/utils` | TypeScript | Business logic (EDL parsing, credit calc) |
+| `@auteur/auth` | TypeScript | Auth abstractions (supports Electron & Web) |
+| `@auteur/storage` | TypeScript | Storage adapter interface |
+
+### 1.3 Desktop App (apps/desktop) - Platform-Specific
 
 | Layer | Technology | Purpose |
-|-------|------------|---------|
-| Framework | Electron 28+ | Cross-platform desktop app |
-| UI | React 18 + TypeScript | Component-based UI |
+|-------|------------|---------||
+| Framework | Electron 28+ | Cross-platform desktop wrapper |
+| UI | React 18 from `@auteur/ui` | Shared components |
+| Component Library | shadcn/ui | Radix UI + Tailwind primitives |
 | State | Zustand | Lightweight state management |
-| Styling | CSS Modules or Tailwind | Scoped styling |
+| Server State | React Query (TanStack Query) | API cache and sync |
+| Styling | Tailwind CSS | Utility-first styling |
 | Build | Vite | Fast bundling |
-| Auth | Supabase JS Client | OAuth + JWT handling |
 | IPC | Electron ContextBridge | Secure main/renderer comm |
 | Storage | electron-store | Encrypted local storage |
-| Video | HTML5 Video + custom | Playback engine |
+| Auth | Supabase JS + electron-store | OAuth + JWT with local persistence |
 
-### 1.2 API Layer (Google Cloud Run)
+**Specialized Libraries:**
+| Library | Purpose |
+|---------|---------||
+| `dnd-kit` | Drag-and-drop for timeline clips (performance-first) |
+| `@tanstack/react-virtual` | Virtualized timeline rendering (handle 1000s of clips) |
+| `react-resizable-panels` | VS Code-style panel resizing |
+| `tiptap` | Rich text editor linked to video timestamps |
+| `lucide-react` | Sharp, clean icons |
+
+### 1.4 Web App (apps/web) - Platform-Specific
+
+| Layer | Technology | Purpose |
+|-------|------------|---------||
+| Framework | Next.js 14 (App Router) | React framework with SSR |
+| UI | React 18 from `@auteur/ui` | Shared components |
+| Component Library | shadcn/ui | Radix UI + Tailwind (same as desktop) |
+| State | Zustand | State management (same as desktop) |
+| Server State | React Query (TanStack Query) | API cache and sync (same patterns) |
+| Styling | Tailwind CSS | Utility-first styling (shared config) |
+| Build | Next.js built-in | Optimized production builds |
+| Storage | IndexedDB (via Dexie) | Client-side database |
+| Auth | Supabase JS | OAuth + JWT with browser storage |
+| PWA | next-pwa | Progressive Web App support |
+
+**Specialized Libraries** (same as desktop for consistency):
+| Library | Purpose |
+|---------|---------||
+| `dnd-kit` | Drag-and-drop for timeline clips |
+| `@tanstack/react-virtual` | Virtualized timeline rendering |
+| `react-resizable-panels` | VS Code-style panel resizing |
+| `tiptap` | Rich text editor linked to video timestamps |
+| `lucide-react` | Sharp, clean icons |
+
+### 1.5 API Layer (Spring Boot on GCP Compute Engine)
+
+| Layer | Technology | Purpose |
+|-------|------------|---------||
+| Runtime | Java 21 LTS | Modern Java with virtual threads |
+| Framework | Spring Boot 3.2 | Enterprise Java framework |
+| API | Spring Web | REST API with @RestController |
+| Validation | Jakarta Validation | Request/response validation |
+| Auth | Spring Security + Supabase JWT | Token verification |
+| Queue Producer | Spring Kafka | Kafka message publishing |
+| Queue Consumer | @KafkaListener | Kafka message consumption |
+| Migrations | Flyway | Database schema versioning |
+| Logging | Logback + Cloud Logging | Structured logging |
+| Metrics | Micrometer + Actuator | Prometheus metrics |
+| Testing | JUnit 5 + Mockito + TestContainers | Unit and integration tests |
+| Build | Maven | Dependency management |
+| Hosting | GCP Compute Engine (e2-medium) | Free tier VM |
+
+### 1.6 Message Queue (Apache Kafka - Confluent Cloud)
 
 | Layer | Technology | Purpose |
 |-------|------------|---------|
-| Runtime | Python 3.11 | API implementation |
-| Framework | FastAPI | Async REST API |
-| Validation | Pydantic v2 | Request/response validation |
-| Auth | Supabase JWT | Token verification |
-| Queue | Cloud Tasks or Pub/Sub | Job queuing |
-| Logging | Cloud Logging | Centralized logs |
-| Secrets | Secret Manager | API keys storage |
+| Platform | Confluent Cloud (AWS us-west-2) | Managed Kafka cluster |
+| Cluster Type | Basic | Learning/development tier |
+| Serialization | Avro | Compact, schema-evolution friendly |
+| Schema Registry | Confluent Schema Registry | Avro schema management |
+| Producers | Spring Kafka (Java) | API publishes job events |
+| Consumers | Spring Kafka + confluent-kafka (Python) | Job orchestration + Modal workers |
+| Topics | 14 topics | jobs.*, analytics.* (see [Kafka Architecture](./07-kafka-architecture.md)) |
+| Partitions | 3 per topic | Balance parallelism and cost |
+| Retention | 7-90 days | Based on topic type |
 
-### 1.3 GPU Compute (Modal)
+### 1.7 GPU Compute (Modal)
 
 | Layer | Technology | Purpose |
 |-------|------------|---------|
@@ -451,7 +524,7 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 
 ## 6. Security Requirements
 
-### 6.1 Electron Security
+### 6.1 Electron Security (Desktop App)
 - [ ] `nodeIntegration: false` in all BrowserWindows
 - [ ] `contextIsolation: true` enforced
 - [ ] ContextBridge with typed API only
@@ -461,15 +534,24 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 - [ ] Disable `webSecurity` only in dev mode
 - [ ] Intercept `will-navigate` and `new-window`
 
-### 6.2 API Security
+### 6.2 Web Security (Web App)
+- [ ] Strict CSP headers: `script-src 'self'; object-src 'none'`
+- [ ] HTTPS only with HSTS headers
+- [ ] SameSite cookies for session management
+- [ ] No inline scripts (use nonce for Next.js scripts)
+- [ ] XSS protection via React's built-in escaping
+- [ ] CORS configured for API domain only
+- [ ] Rate limiting on clientside API calls
+
+### 6.3 API Security
 - [ ] JWT verification on all endpoints
 - [ ] Rate limiting: 100 req/min per user
 - [ ] Input validation with Pydantic
-- [ ] CORS restricted to Electron app origin
+- [ ] CORS restricted to both Electron and web origins
 - [ ] HTTPS only (Cloud Run default)
 - [ ] Secrets in Secret Manager, not env vars
 
-### 6.3 Data Security
+### 6.4 Data Security
 - [ ] R2 presigned URLs expire in 15 minutes
 - [ ] User can only access own projects/media
 - [ ] RLS policies in Supabase Postgres
@@ -480,31 +562,57 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 
 ## 7. Infrastructure Requirements
 
-### 7.1 Cloud Run
-- Min instances: 0 (scale to zero)
-- Max instances: 100
-- Memory: 2GB
-- CPU: 2 vCPU
-- Timeout: 300s
-- Concurrency: 80
+### 7.1 GCP Compute Engine (Spring Boot API)
+- **Instance Type**: e2-medium (2 vCPU, 4GB RAM)
+- **OS**: Ubuntu 22.04 LTS
+- **Disk**: 20GB SSD persistent disk
+- **Network**: External IP with firewall rules (allow 443, 80)
+- **Java**: OpenJDK 21
+- **Deployment**: systemd service with auto-restart
+- **SSL**: Let's Encrypt via Certbot
+- **Monitoring**: Cloud Logging + custom metrics
+- **Autoscaling**: Manual (upgrade to e2-standard-2 if needed)
 
-### 7.2 Modal
-- A100-80GB: max 10 concurrent
-- A10G: max 50 concurrent
-- L4/T4: max 100 concurrent
-- Volume size: 100GB for models
+### 7.2 Kafka (Confluent Cloud)
+- **Cluster**: Basic (us-west-2)
+- **Partitions**: 3 per topic (42 total for 14 topics)
+- **Replication**: 3 (Confluent Cloud default)
+- **Retention**: 7 days (jobs.*), 30 days (jobs.completed/failed), 90 days (analytics.*)
+- **Throughput**: ~100 messages/sec (baseline for learning)
+- **Schema Registry**: Enabled with Avro schemas
 
-### 7.3 Supabase
+### 7.3 Modal
+- A100-80GB: max 10 concurrent (video generation)
+- A10G: max 50 concurrent (transcription, lip sync, etc.)
+- L4/T4: max 100 concurrent (TTS, audio generation)
+- Volume size: 100GB for model weights cache
+
+### 7.4 Supabase
 - Plan: Pro (for production)
 - Database size: 8GB initial
 - Auth: Email + Google + GitHub
 
-### 7.4 MongoDB Atlas
+### 7.5 MongoDB Atlas
 - Cluster: M10 (for production)
 - Storage: 10GB initial
-- Region: Same as Cloud Run
+- Region: us-west-2 (same as Kafka)
 
-### 7.5 Cloudflare R2
+### 7.6 Cloudflare R2
 - Storage class: Standard
-- Lifecycle: Delete after 90 days (optional)
-- CDN: Enabled
+- Lifecycle: Delete after 90 days (optional for temp files)
+- CDN: Enabled for fast delivery
+
+### 7.7 CI/CD (GitHub Actions)
+- **Workflows**:
+  - `ci-frontend.yml`: Lint, typecheck, test for monorepo
+  - `ci-backend.yml`: Maven test, build JAR for Spring Boot
+  - `deploy-api.yml`: Deploy JAR to GCP VM via SSH
+  - `deploy-modal.yml`: Deploy Modal functions
+- **Secrets**: Stored in GitHub Secrets (KAFKA_API_KEY, GCP_SSH_KEY, etc.)
+- **Artifacts**: JAR files, Docker images (if containerizing later)
+
+### 7.8 Development Tools
+- **IDE**: IntelliJ IDEA (Java), VS Code (TypeScript/React)
+- **API Testing**: Postman or Bruno
+- **Kafka UI**: Confluent Cloud Dashboard + kcat (CLI)
+- **Database Tools**: DBeaver (Postgres), MongoDB Compass
