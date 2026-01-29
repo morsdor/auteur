@@ -3,11 +3,13 @@
 ## Epic 6: AI Feature - Diarization & Transcription
 
 ### US-6.1: Generate Transcript
+
 **As a** user  
 **I want to** automatically transcribe my video/audio  
 **So that** I can edit based on text
 
 **Acceptance Criteria:**
+
 - [ ] Right-click on clip > "Generate Transcript"
 - [ ] Progress indicator during processing
 - [ ] Transcript appears in side panel
@@ -17,6 +19,7 @@
 - [ ] Cost: 5 credits per 10 minutes
 
 **Technical Tasks:**
+
 - [ ] Create transcription job API on Cloud Run
 - [ ] Integrate Pyannote 3.1 + Whisper on Modal
 - [ ] Store transcript in MongoDB EDL
@@ -26,11 +29,13 @@
 ---
 
 ### US-6.2: View Transcript
+
 **As a** user  
 **I want to** view the transcript alongside my timeline  
 **So that** I can navigate by text
 
 **Acceptance Criteria:**
+
 - [ ] Transcript panel shows full text
 - [ ] Speaker labels color-coded
 - [ ] Current word highlighted during playback
@@ -38,6 +43,7 @@
 - [ ] Search within transcript
 
 **Technical Tasks:**
+
 - [ ] Create transcript viewer component
 - [ ] Implement word-level sync with timeline
 - [ ] Add click-to-seek functionality
@@ -46,11 +52,13 @@
 ---
 
 ### US-6.3: Edit via Transcript
+
 **As a** user  
 **I want to** delete/edit text in transcript to edit video  
 **So that** I can edit faster
 
 **Acceptance Criteria:**
+
 - [ ] Select text range in transcript
 - [ ] Delete selected text removes corresponding video
 - [ ] Strikethrough shows deleted sections
@@ -58,6 +66,7 @@
 - [ ] Changes reflected in timeline
 
 **Technical Tasks:**
+
 - [ ] Implement text selection in transcript
 - [ ] Map transcript ranges to timeline positions
 - [ ] Create delete-by-text function
@@ -67,11 +76,13 @@
 ---
 
 ### US-6.4: Export Transcript
+
 **As a** user  
 **I want to** export transcript as subtitles or text  
 **So that** I can use it elsewhere
 
 **Acceptance Criteria:**
+
 - [ ] Export as SRT (subtitles)
 - [ ] Export as VTT (web subtitles)
 - [ ] Export as plain text
@@ -79,6 +90,7 @@
 - [ ] Include speaker labels option
 
 **Technical Tasks:**
+
 - [ ] Create export format converters
 - [ ] Create export dialog component
 - [ ] Implement file download
@@ -92,6 +104,7 @@
 **So that** the video automatically updates with AI-generated speech
 
 **Acceptance Criteria:**
+
 - [ ] Double-click word in transcript to edit
 - [ ] Type replacement text inline
 - [ ] AI automatically generates speech using original speaker's voice (cloned from context)
@@ -102,6 +115,7 @@
 - [ ] Cost: 2 credits per edited word/phrase
 
 **Technical Tasks:**
+
 - [ ] Implement inline editing in transcript (contentEditable or Tiptap)
 - [ ] Detect changed text ranges (word-level diffing algorithm)
 - [ ] Extract speaker voice characteristics from surrounding audio (10-sec context window)
@@ -113,6 +127,7 @@
 - [ ] Store edit metadata in MongoDB EDL
 
 **Example Workflow:**
+
 ```
 Original: "This product is really bad"
 User edits: "bad" → "good"
@@ -132,6 +147,7 @@ User edits: "bad" → "good"
 **So that** I can add new dialogue/narration to my video
 
 **Acceptance Criteria:**
+
 - [ ] Click between words to place cursor
 - [ ] Type new text (phrase or sentence)
 - [ ] Select voice to use (from voice library or detected speaker)
@@ -143,6 +159,7 @@ User edits: "bad" → "good"
 - [ ] Cost: 3 credits per inserted sentence
 
 **Technical Tasks:**
+
 - [ ] Implement cursor positioning in transcript
 - [ ] Detect inserted text (not just edits)
 - [ ] Show voice selection dialog on insert
@@ -154,6 +171,7 @@ User edits: "bad" → "good"
 - [ ] Store insertion metadata in MongoDB
 
 **Example Workflow:**
+
 ```
 Original: "Hello. How are you?"
 User inserts after "Hello": "My name is John."
@@ -174,6 +192,7 @@ User inserts after "Hello": "My name is John."
 **So that** my content sounds more professional
 
 **Acceptance Criteria:**
+
 - [ ] "Remove Filler Words" button in transcript toolbar
 - [ ] Detects common filler words/phrases automatically
 - [ ] Shows preview with fillers highlighted in yellow
@@ -184,6 +203,7 @@ User inserts after "Hello": "My name is John."
 - [ ] Free feature (no credit cost)
 
 **Technical Tasks:**
+
 - [ ] Create filler word detection algorithm
   - Common patterns: "um", "uh", "ah", "er", "like", "you know", "kind of", "sort of", etc.
 - [ ] Use transcript word-level timestamps
@@ -194,6 +214,7 @@ User inserts after "Hello": "My name is John."
 - [ ] Update MongoDB EDL with deletions
 
 **Filler Words Detected:**
+
 - Hesitations: um, uh, ah, er, hmm
 - Verbal crutches: like (non-meaningful), you know, I mean
 - Hedge words: kind of, sort of, basically, actually, literally (overuse)
@@ -208,6 +229,7 @@ User inserts after "Hello": "My name is John."
 **So that** I can restructure my narrative without manual timeline editing
 
 **Acceptance Criteria:**
+
 - [ ] Sentence-level drag handles on hover
 - [ ] Drag sentence to new position in transcript
 - [ ] Visual drop zone indicator
@@ -219,6 +241,7 @@ User inserts after "Hello": "My name is John."
 - [ ] Free feature (no credit cost)
 
 **Technical Tasks:**
+
 - [ ] Implement sentence-level drag-and-drop (dnd-kit)
 - [ ] Parse transcript into sentence blocks with boundaries
 - [ ] Map sentences to timeline clip ranges (start/end times)
@@ -236,6 +259,7 @@ User inserts after "Hello": "My name is John."
 **So that** I can fix repeated mistakes or update terminology
 
 **Acceptance Criteria:**
+
 - [ ] Find/Replace toolbar (Cmd/Ctrl+F opens)
 - [ ] Find all instances of word/phrase
 - [ ] Navigate between matches (next/previous)
@@ -246,6 +270,7 @@ User inserts after "Hello": "My name is John."
 - [ ] Cost: 2 credits per replaced instance
 
 **Technical Tasks:**
+
 - [ ] Create find/replace UI component with search input
 - [ ] Implement text search in transcript (case-sensitive/insensitive toggle)
 - [ ] Highlight all matches in transcript
@@ -256,6 +281,7 @@ User inserts after "Hello": "My name is John."
 - [ ] Store find/replace history
 
 **Example:**
+
 ```
 Find: "version 1.0"
 Replace: "version 2.0"
@@ -275,6 +301,7 @@ Replace: "version 2.0"
 **So that** I maintain transparency and can review/revert changes
 
 **Acceptance Criteria:**
+
 - [ ] Transcript shows visual markers for:
   - ✏️ Edited words (overdubbed)
   - ➕ Inserted text (green highlight)
@@ -287,6 +314,7 @@ Replace: "version 2.0"
 - [ ] Free feature
 
 **Technical Tasks:**
+
 - [ ] Store edit type, timestamp, original value in MongoDB
 - [ ] Render visual indicators in transcript component
 - [ ] Create tooltip component for edit history
@@ -312,11 +340,13 @@ Replace: "version 2.0"
 ## Epic 7: AI Feature - Synthetic Voice (TTS)
 
 ### US-7.1: Clone Voice from Sample
+
 **As a** user  
 **I want to** create a voice clone from a 10-sec sample  
 **So that** I can generate speech in that voice
 
 **Acceptance Criteria:**
+
 - [ ] "Create Voice Clone" in voices panel
 - [ ] Upload 10-second audio sample
 - [ ] Enter voice name
@@ -324,6 +354,7 @@ Replace: "version 2.0"
 - [ ] Sample stored in R2
 
 **Technical Tasks:**
+
 - [ ] Create voice clones table in Postgres
 - [ ] Create voice upload API
 - [ ] Store sample in R2
@@ -332,11 +363,13 @@ Replace: "version 2.0"
 ---
 
 ### US-7.2: Generate Speech from Text
+
 **As a** user  
 **I want to** type text and generate audio  
 **So that** I can add voiceover to my video
 
 **Acceptance Criteria:**
+
 - [ ] Select voice from library
 - [ ] Enter text to speak
 - [ ] Preview generated audio
@@ -345,6 +378,7 @@ Replace: "version 2.0"
 - [ ] Add to timeline on confirm
 
 **Technical Tasks:**
+
 - [ ] Create TTS job API on Cloud Run
 - [ ] Integrate F5-TTS on Modal (L4 GPU)
 - [ ] Create TTS dialog component
@@ -354,11 +388,13 @@ Replace: "version 2.0"
 ---
 
 ### US-7.3: Replace Dialogue with TTS
+
 **As a** user  
 **I want to** replace spoken dialogue with TTS  
 **So that** I can fix mistakes or change lines
 
 **Acceptance Criteria:**
+
 - [ ] Select text in transcript
 - [ ] "Replace with TTS" option
 - [ ] Select voice for replacement
@@ -367,6 +403,7 @@ Replace: "version 2.0"
 - [ ] Original audio replaced in timeline
 
 **Technical Tasks:**
+
 - [ ] Create replacement flow in transcript panel
 - [ ] Generate TTS for selected segment
 - [ ] Trigger lip sync if video (chain to Feature 2)
@@ -377,11 +414,13 @@ Replace: "version 2.0"
 ## Epic 8: AI Feature - Neural Dubbing (Lip Sync)
 
 ### US-8.1: Sync Lips to Audio
+
 **As a** user  
 **I want to** sync a speaker's lips to new audio  
 **So that** dubbed content looks natural
 
 **Acceptance Criteria:**
+
 - [ ] Select video clip with face
 - [ ] Select replacement audio
 - [ ] "Sync Lips" action
@@ -391,6 +430,7 @@ Replace: "version 2.0"
 - [ ] Applied to timeline on confirm
 
 **Technical Tasks:**
+
 - [ ] Create lip sync job API on Cloud Run
 - [ ] Integrate MuseTalk on Modal (A10G)
 - [ ] Face detection with MediaPipe
@@ -401,17 +441,20 @@ Replace: "version 2.0"
 ---
 
 ### US-8.2: Auto Lip-Sync on TTS Replace
+
 **As a** user  
 **I want to** automatically lip-sync when I replace audio  
 **So that** the workflow is seamless
 
 **Acceptance Criteria:**
+
 - [ ] When TTS replaces speech in video
 - [ ] Lip sync automatically triggered
 - [ ] Combined job with single credit cost
 - [ ] User can opt-out if audio-only needed
 
 **Technical Tasks:**
+
 - [ ] Create chained job for TTS + Lip Sync
 - [ ] Calculate combined credit cost
 - [ ] Add toggle for auto lip-sync
@@ -422,11 +465,13 @@ Replace: "version 2.0"
 ## Epic 9: AI Feature - Performance Cloning
 
 ### US-9.1: Animate Portrait from Video
+
 **As a** user  
 **I want to** drive a still portrait with my performance  
 **So that** I can create animated characters
 
 **Acceptance Criteria:**
+
 - [ ] Upload source portrait image
 - [ ] Record or upload driving video
 - [ ] Preview animation
@@ -435,6 +480,7 @@ Replace: "version 2.0"
 - [ ] Export as video clip
 
 **Technical Tasks:**
+
 - [ ] Create performance cloning API
 - [ ] Integrate LivePortrait + MediaPipe on Modal
 - [ ] Create source/driver upload flow
@@ -444,17 +490,20 @@ Replace: "version 2.0"
 ---
 
 ### US-9.2: Record Webcam as Driver
+
 **As a** user  
 **I want to** use my webcam as the driving source  
 **So that** I can perform in real-time
 
 **Acceptance Criteria:**
+
 - [ ] Access webcam in app
 - [ ] Record performance
 - [ ] Preview with source portrait live
 - [ ] Save recording for use
 
 **Technical Tasks:**
+
 - [ ] Implement webcam access in Electron
 - [ ] Create webcam recording component
 - [ ] Stream for live preview (optional)
@@ -465,11 +514,13 @@ Replace: "version 2.0"
 ## Epic 10: AI Feature - Gaze Redirection
 
 ### US-10.1: Redirect Gaze to Camera
+
 **As a** Pro user  
 **I want to** fix gaze direction in video  
 **So that** talent appears to look at camera
 
 **Acceptance Criteria:**
+
 - [ ] Select video clip
 - [ ] "Fix Gaze" action
 - [ ] Choose target direction (default: camera center)
@@ -478,6 +529,7 @@ Replace: "version 2.0"
 - [ ] Apply to timeline
 
 **Technical Tasks:**
+
 - [ ] Create gaze redirect API
 - [ ] Use LivePortrait retargeting on Modal
 - [ ] Create before/after preview
@@ -488,11 +540,13 @@ Replace: "version 2.0"
 ## Epic 11: AI Feature - Script Supervision
 
 ### US-11.1: Query Video Content
+
 **As a** user  
 **I want to** ask questions about my video  
 **So that** I can find specific moments
 
 **Acceptance Criteria:**
+
 - [ ] "Ask AI" button or panel
 - [ ] Type natural language question
 - [ ] AI responds with text answer
@@ -501,6 +555,7 @@ Replace: "version 2.0"
 - [ ] Cost: 3 credits per query
 
 **Technical Tasks:**
+
 - [ ] Create video query API
 - [ ] Integrate Qwen2.5-VL-7B on Modal (A10G)
 - [ ] Extract key frames for context
@@ -510,11 +565,13 @@ Replace: "version 2.0"
 ---
 
 ### US-11.2: Find Moments by Description
+
 **As a** user  
 **I want to** search for "when the actor smiles"  
 **So that** I can locate specific reactions
 
 **Acceptance Criteria:**
+
 - [ ] Enter search query
 - [ ] AI returns list of matching moments
 - [ ] Each result shows thumbnail and timestamp
@@ -522,6 +579,7 @@ Replace: "version 2.0"
 - [ ] Add to selection for batch actions
 
 **Technical Tasks:**
+
 - [ ] Create moment search function
 - [ ] Generate thumbnails at result timestamps
 - [ ] Create search results panel
@@ -531,11 +589,13 @@ Replace: "version 2.0"
 ## Epic 12: AI Feature - Sound Stage
 
 ### US-12.1: Generate Ambient Audio
+
 **As a** user  
 **I want to** generate background audio from text  
 **So that** I can fill gaps in my edit
 
 **Acceptance Criteria:**
+
 - [ ] "Generate Audio" in audio panel
 - [ ] Enter text description (e.g., "coffee shop ambience")
 - [ ] Specify duration
@@ -544,6 +604,7 @@ Replace: "version 2.0"
 - [ ] Add to timeline
 
 **Technical Tasks:**
+
 - [ ] Create audio generation API
 - [ ] Integrate AudioLDM-2 on Modal (A10G)
 - [ ] Create generation dialog
@@ -552,11 +613,13 @@ Replace: "version 2.0"
 ---
 
 ### US-12.2: Extend Existing Audio
+
 **As a** user  
 **I want to** extend room tone to fill silence  
 **So that** audio is continuous
 
 **Acceptance Criteria:**
+
 - [ ] Select audio clip
 - [ ] "Extend" action
 - [ ] Specify additional duration
@@ -564,6 +627,7 @@ Replace: "version 2.0"
 - [ ] Seamlessly appended to original
 
 **Technical Tasks:**
+
 - [ ] Create audio extension API
 - [ ] Use AudioLDM-2 inpainting mode
 - [ ] Handle audio concatenation
@@ -573,11 +637,13 @@ Replace: "version 2.0"
 ## Epic 13: AI Feature - Script Assistant (LLM)
 
 ### US-13.1: Script Writing Help
+
 **As a** user  
 **I want to** get AI help writing scripts  
 **So that** I can create content faster
 
 **Acceptance Criteria:**
+
 - [ ] Script editor panel
 - [ ] "AI Suggest" button
 - [ ] Enter prompt or select text
@@ -586,6 +652,7 @@ Replace: "version 2.0"
 - [ ] Cost: 1 credit per query
 
 **Technical Tasks:**
+
 - [ ] Create LLM chat API
 - [ ] Integrate Llama-3-70B via vLLM on Modal
 - [ ] Create script editor component
@@ -594,17 +661,20 @@ Replace: "version 2.0"
 ---
 
 ### US-13.2: Generate Video Prompts
+
 **As a** Pro user  
 **I want to** get help writing prompts for video generation  
 **So that** I get better results
 
 **Acceptance Criteria:**
+
 - [ ] "Improve prompt" option in video gen dialog
 - [ ] AI expands/improves text prompt
 - [ ] Suggests cinematic details
 - [ ] One-click use improved prompt
 
 **Technical Tasks:**
+
 - [ ] Create prompt enhancement function
 - [ ] Pre-defined system prompt for video style
 - [ ] Integrate into video gen flow
@@ -614,11 +684,13 @@ Replace: "version 2.0"
 ## Epic 14: AI Feature - AI Cinematography (Text-to-Video)
 
 ### US-14.1: Generate Video from Text
+
 **As a** Pro user  
 **I want to** generate video from a text prompt  
 **So that** I can create original content
 
 **Acceptance Criteria:**
+
 - [ ] "Generate Video" action
 - [ ] Enter text prompt (max 500 chars)
 - [ ] Select duration (5 seconds)
@@ -628,6 +700,7 @@ Replace: "version 2.0"
 - [ ] Preview and add to library
 
 **Technical Tasks:**
+
 - [ ] Create video generation API
 - [ ] Integrate Wan2.1-T2V-14B on Modal (A100-80GB)
 - [ ] Implement job queue for long tasks
@@ -637,11 +710,13 @@ Replace: "version 2.0"
 ---
 
 ### US-14.2: Image-to-Video Animation
+
 **As a** Pro user  
 **I want to** animate a still image into video  
 **So that** I can bring images to life
 
 **Acceptance Criteria:**
+
 - [ ] Upload source image
 - [ ] Enter motion prompt
 - [ ] Select duration (5 seconds)
@@ -649,6 +724,7 @@ Replace: "version 2.0"
 - [ ] Cost: 50 credits per 5-second clip
 
 **Technical Tasks:**
+
 - [ ] Use Wan2.1 image-to-video mode
 - [ ] Create image upload flow
 - [ ] Handle image preprocessing
@@ -658,11 +734,13 @@ Replace: "version 2.0"
 ## Epic 15: Cloud Rendering
 
 ### US-15.1: Export Final Video
+
 **As a** Pro user  
 **I want to** render my final video in the cloud  
 **So that** I don't burden my local machine
 
 **Acceptance Criteria:**
+
 - [ ] "Export to Cloud" action
 - [ ] Select resolution (720p, 1080p, 4K)
 - [ ] Select format (MP4, MOV, WebM)
@@ -671,6 +749,7 @@ Replace: "version 2.0"
 - [ ] Download when complete
 
 **Technical Tasks:**
+
 - [ ] Create render job API on Cloud Run
 - [ ] Generate EDL in FFmpeg-compatible format
 - [ ] Execute FFmpeg render on Cloud Run
@@ -680,17 +759,20 @@ Replace: "version 2.0"
 ---
 
 ### US-15.2: Render Preview
+
 **As a** user  
 **I want to** see a low-res preview render  
 **So that** I can check before final export
 
 **Acceptance Criteria:**
+
 - [ ] "Preview Render" option
 - [ ] Quick render at 480p
 - [ ] Lower credit cost
 - [ ] Playable in app
 
 **Technical Tasks:**
+
 - [ ] Create preview render function
 - [ ] Use lower resolution settings
 - [ ] Optimize for speed

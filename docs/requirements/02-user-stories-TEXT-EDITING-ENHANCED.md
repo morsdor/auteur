@@ -18,7 +18,7 @@
       },
       {
         "id": "w2",
-        "text": "world",  // edited from "friends"
+        "text": "world", // edited from "friends"
         "start_time": 0.6,
         "end_time": 1.2,
         "speaker": "Speaker 1",
@@ -30,7 +30,7 @@
       },
       {
         "id": "w3",
-        "text": "My name is John",  // inserted text
+        "text": "My name is John", // inserted text
         "start_time": 1.3,
         "end_time": 2.5,
         "speaker": "Speaker 1",
@@ -96,6 +96,7 @@ Spring Boot API
 **Phase 4** (Weeks 10-12) should become:
 
 **Milestone 4.2: Text-Based Editing (Enhanced)**
+
 - [ ] US-6.1: Generate Transcript ✅ (already exists)
 - [ ] US-6.2: View Transcript ✅ (already exists)
 - [ ] US-6.3: Delete text → delete video ✅ (already exists)
@@ -111,17 +112,17 @@ Spring Boot API
 
 ## Comparison to Descript
 
-| Feature | Descript | Auteur (After This) | Status |
-|---------|----------|---------------------|--------|
-| Transcription | ✅ Whisper-based | ✅ Whisper + Pyannote | ✅ Match |
-| Delete text → delete video | ✅ | ✅ (US-6.3) | ✅ Match |
-| Edit text → regenerate speech | ✅ Overdub | ✅ (US-6.5) | ✅ Match |
-| Insert text → add speech | ✅ | ✅ (US-6.6) | ✅ Match |
-| Remove filler words | ✅ | ✅ (US-6.7) | ✅ Match |
-| Rearrange sentences | ✅ | ✅ (US-6.8) | ✅ Match |
-| Find & Replace | ✅ | ✅ (US-6.9) | ✅ Match |
-| Lip sync on edit | ✅ | ✅ (via MuseTalk) | ✅ Better (separate models) |
-| Voice cloning | ✅ | ✅ (F5-TTS) | ✅ Match |
+| Feature                       | Descript         | Auteur (After This)   | Status                      |
+| ----------------------------- | ---------------- | --------------------- | --------------------------- |
+| Transcription                 | ✅ Whisper-based | ✅ Whisper + Pyannote | ✅ Match                    |
+| Delete text → delete video    | ✅               | ✅ (US-6.3)           | ✅ Match                    |
+| Edit text → regenerate speech | ✅ Overdub       | ✅ (US-6.5)           | ✅ Match                    |
+| Insert text → add speech      | ✅               | ✅ (US-6.6)           | ✅ Match                    |
+| Remove filler words           | ✅               | ✅ (US-6.7)           | ✅ Match                    |
+| Rearrange sentences           | ✅               | ✅ (US-6.8)           | ✅ Match                    |
+| Find & Replace                | ✅               | ✅ (US-6.9)           | ✅ Match                    |
+| Lip sync on edit              | ✅               | ✅ (via MuseTalk)     | ✅ Better (separate models) |
+| Voice cloning                 | ✅               | ✅ (F5-TTS)           | ✅ Match                    |
 
 **Result**: With these additions, **Auteur matches or exceeds Descript's core text-based editing**.
 
@@ -129,13 +130,13 @@ Spring Boot API
 
 ## Cost Estimates for Text Editing
 
-| Action | Credits | Real Cost (@ $30/1500) |
-|--------|---------|------------------------|
-| Edit 1 word | 2 | $0.04 |
-| Insert 1 sentence (10 words) | 3 | $0.06 |
-| Replace all (10 instances) | 20 | $0.40 |
-| Remove fillers | Free | $0.00 |
-| Rearrange sentences | Free | $0.00 |
+| Action                       | Credits | Real Cost (@ $30/1500) |
+| ---------------------------- | ------- | ---------------------- |
+| Edit 1 word                  | 2       | $0.04                  |
+| Insert 1 sentence (10 words) | 3       | $0.06                  |
+| Replace all (10 instances)   | 20      | $0.40                  |
+| Remove fillers               | Free    | $0.00                  |
+| Rearrange sentences          | Free    | $0.00                  |
 
 **Competitive**: Descript charges $24/month for Overdub. Auteur's pay-per-use is cheaper for casual users.
 

@@ -9,22 +9,24 @@
 **Goal**: Set up monorepo, backend API, authentication, and cloud infrastructure
 
 ### Week 1: Monorepo Setup
+
 **Milestone**: INFRA-0
 
-- [ ] Initialize Turborepo with pnpm workspaces
-- [ ] Configure shared ESLint, Prettier, TypeScript configs
-- [ ] Setup Turbo pipeline for build, lint, typecheck
-- [ ] Create workspace structure:
-  - `apps/web` (Next.js)
-  - `apps/desktop` (Electron)
-  - `apps/api` (Spring Boot - placeholder)
-  - `packages/ui`, `packages/types`, `packages/utils`, `packages/api-client`
+- [x] Initialize Turborepo with pnpm workspaces
+- [x] Configure shared ESLint, Prettier, TypeScript configs
+- [x] Setup Turbo pipeline for build, lint, typecheck
+- [x] Create workspace structure:
+  - `apps/web` (Next.js - placeholder)
+  - `apps/desktop` (Electron - placeholder)
+  - `backend/` (Spring Boot - separate from apps/)
+  - `packages/eslint-config`, `packages/tailwind-config`, `packages/types`
 
 **No user stories - pure infrastructure**
 
 ---
 
 ### Week 2: Shared Packages
+
 **Milestone**: INFRA-0.1, INFRA-0.2
 
 - [ ] **@auteur/types** - TypeScript definitions
@@ -45,6 +47,7 @@
 ---
 
 ### Week 3: App Skeletons
+
 **Milestone**: INFRA-0.3, INFRA-0.4
 
 - [ ] **Next.js Web App** (apps/web)
@@ -63,6 +66,7 @@
 ---
 
 ### Week 4: Backend API Setup
+
 **Milestone**: INFRA-1, INFRA-2
 
 - [ ] **Spring Boot API** (Java 21)
@@ -83,6 +87,7 @@
 ---
 
 ### Week 5: Infrastructure - Database, Storage, Kafka
+
 **Milestone**: INFRA-3, INFRA-4, INFRA-5, INFRA-6
 
 - [ ] **Supabase** (Postgres + Auth)
@@ -105,6 +110,7 @@
   - Test connection from Spring Boot
 
 **Database Schema** (for US-1.x, US-2.x, US-3.x):
+
 ```sql
 -- users (Supabase Auth manages this)
 -- subscriptions
@@ -147,6 +153,7 @@ CREATE TABLE media_files (
 **Goal**: Users can sign up, log in, and manage projects
 
 ### Week 6: Authentication
+
 **Milestone**: Epic 1 (US-1.1 to US-1.5)
 
 - [ ] **US-1.1: User Registration**
@@ -172,6 +179,7 @@ CREATE TABLE media_files (
 ---
 
 ### Week 7: Project Management
+
 **Milestone**: Epic 3 (US-3.1 to US-3.6)
 
 - [ ] **US-3.1: Create New Project**
@@ -207,6 +215,7 @@ CREATE TABLE media_files (
 **Goal**: Build a functional video timeline with drag-and-drop
 
 ### Week 8: Timeline Basics
+
 **Milestone**: Epic 4 Part 1 (US-4.1 to US-4.4)
 
 - [ ] **US-4.1: View Timeline**
@@ -232,6 +241,7 @@ CREATE TABLE media_files (
 ---
 
 ### Week 9: Timeline Advanced + Preview
+
 **Milestone**: Epic 4 Part 2 (US-4.5 to US-4.7) + Epic 5 (US-5.1 to US-5.3)
 
 - [ ] **US-4.5: Delete Clips from Timeline**
@@ -265,6 +275,7 @@ CREATE TABLE media_files (
 **Goal**: Users can purchase subscriptions and manage credits
 
 ### Week 10: Stripe Integration
+
 **Milestone**: Epic 2 (US-2.1 to US-2.5)
 
 - [ ] **US-2.1: View Subscription Plans**
@@ -297,6 +308,7 @@ CREATE TABLE media_files (
 **Goal**: Set up Modal, Kafka integration, and first AI features
 
 ### Week 11: Modal + Kafka Setup
+
 **Milestone**: INFRA-7 (Modal) + Kafka job flow
 
 - [ ] **Setup Modal**
@@ -319,6 +331,7 @@ CREATE TABLE media_files (
 ---
 
 ### Week 12: Transcription (Text-Based Editing Foundation)
+
 **Milestone**: Epic 6 Part 1 (US-6.1, US-6.2)
 
 - [ ] **US-6.1: Generate Transcript**
@@ -339,6 +352,7 @@ CREATE TABLE media_files (
 ---
 
 ### Week 13: Text-Based Editing - Core Features ⭐ **CRITICAL**
+
 **Milestone**: Epic 6 Part 2 (US-6.3, US-6.5, US-6.6)
 
 - [ ] **US-6.3: Delete Text → Delete Video**
@@ -374,6 +388,7 @@ CREATE TABLE media_files (
 **Milestone**: Epic 6 Part 3 (US-6.7 to US-6.10) + Epic 7 Part 1
 
 ### Week 14: Productivity Features
+
 - [ ] **US-6.7: Remove Filler Words (One-Click)**
   - Detect: um, uh, like, you know, etc.
   - Highlight in yellow (preview)
@@ -406,6 +421,7 @@ CREATE TABLE media_files (
 ## Phase 7: Advanced AI Features (Weeks 15-17)
 
 ### Week 15: Text-to-Speech
+
 **Milestone**: Epic 7 (US-7.2, US-7.3)
 
 - [ ] **US-7.2: Generate Speech from Text**
@@ -425,6 +441,7 @@ CREATE TABLE media_files (
 ---
 
 ### Week 16: Lip Sync
+
 **Milestone**: Epic 8 (US-8.1, US-8.2)
 
 - [ ] **US-8.1: Sync Lips to Audio**
@@ -443,6 +460,7 @@ CREATE TABLE media_files (
 ---
 
 ### Week 17: Performance Cloning
+
 **Milestone**: Epic 9 (US-9.1, US-9.2)
 
 - [ ] **US-9.1: Animate Portrait from Video**
@@ -462,6 +480,7 @@ CREATE TABLE media_files (
 ## Phase 8: Pro Features (Week 18)
 
 ### Week 18: Gaze, Video Q&A, Audio Generation
+
 **Milestone**: Epics 10, 11, 12
 
 - [ ] **US-10.1: Redirect Gaze to Camera** (Pro only)
@@ -492,6 +511,7 @@ CREATE TABLE media_files (
 ## Phase 9: AI Video Generation (Week 19) - Pro Only
 
 ### Week 19: Text-to-Video
+
 **Milestone**: Epic 14 (US-14.1, US-14.2)
 
 - [ ] **US-14.1: Generate Video from Text**
@@ -511,6 +531,7 @@ CREATE TABLE media_files (
 ## Phase 10: LLM Script Assistant (Week 19)
 
 ### Week 19: Script Writing Help
+
 **Milestone**: Epic 13 (US-13.1, US-13.2)
 
 - [ ] **US-13.1: Script Writing Help**
@@ -528,6 +549,7 @@ CREATE TABLE media_files (
 ## Phase 11: Cloud Rendering & Polish (Week 20)
 
 ### Week 20: Production Features
+
 **Milestone**: Epic 15 (US-15.1, US-15.2) + INFRA-8
 
 - [ ] **US-15.1: Export Final Video** (Pro feature)
@@ -565,6 +587,7 @@ CREATE TABLE media_files (
 ## 📚 Learning Path Summary
 
 **Complexity Progression:**
+
 1. **Weeks 1-5**: Infrastructure (no features, pure setup)
 2. **Weeks 6-7**: CRUD operations (auth, projects)
 3. **Weeks 8-9**: Complex UI (timeline with drag-and-drop)
@@ -573,11 +596,13 @@ CREATE TABLE media_files (
 6. **Weeks 15-20**: Advanced AI features
 
 **Critical Path:**
+
 - Must complete Phases 1-3 before any AI features
 - Must complete Phase 5 (transcription) before text-based editing
 - Text-based editing (US-6.5, US-6.6) is the **killer feature** - prioritize quality over speed
 
 **Why This Order:**
+
 1. **Infrastructure first** - Can't build features without backend/frontend
 2. **Auth + Projects** - Core functionality needed for all features
 3. **Timeline** - Foundation for video editing
@@ -588,20 +613,20 @@ CREATE TABLE media_files (
 
 ## 🎯 Quick Reference: Where to Find User Stories
 
-| Epic | User Stories | File |
-|------|--------------|------|
-| Epic 1: Authentication | US-1.1 to US-1.5 | part1.md |
-| Epic 2: Billing | US-2.1 to US-2.5 | part1.md |
-| Epic 3: Projects | US-3.1 to US-3.6 | part1.md |
-| Epic 4: Timeline | US-4.1 to US-4.7 | part1.md |
-| Epic 5: Preview | US-5.1 to US-5.3 | part1.md |
-| Epic 6: Transcription + Text Editing | US-6.1 to US-6.10 | part2.md |
-| Epic 7: TTS | US-7.1 to US-7.3 | part2.md |
-| Epic 8: Lip Sync | US-8.1 to US-8.2 | part2.md |
-| Epic 9: Performance Cloning | US-9.1 to US-9.2 | part2.md |
-| Epic 10: Gaze Redirection | US-10.1 | part2.md |
-| Epic 11: Video Q&A | US-11.1 to US-11.2 | part2.md |
-| Epic 12: Audio Generation | US-12.1 to US-12.2 | part2.md |
-| Epic 13: LLM Script Assistant | US-13.1 to US-13.2 | part2.md |
-| Epic 14: Text-to-Video | US-14.1 to US-14.2 | part2.md |
-| Epic 15: Cloud Rendering | US-15.1 to US-15.2 | part2.md |
+| Epic                                 | User Stories       | File     |
+| ------------------------------------ | ------------------ | -------- |
+| Epic 1: Authentication               | US-1.1 to US-1.5   | part1.md |
+| Epic 2: Billing                      | US-2.1 to US-2.5   | part1.md |
+| Epic 3: Projects                     | US-3.1 to US-3.6   | part1.md |
+| Epic 4: Timeline                     | US-4.1 to US-4.7   | part1.md |
+| Epic 5: Preview                      | US-5.1 to US-5.3   | part1.md |
+| Epic 6: Transcription + Text Editing | US-6.1 to US-6.10  | part2.md |
+| Epic 7: TTS                          | US-7.1 to US-7.3   | part2.md |
+| Epic 8: Lip Sync                     | US-8.1 to US-8.2   | part2.md |
+| Epic 9: Performance Cloning          | US-9.1 to US-9.2   | part2.md |
+| Epic 10: Gaze Redirection            | US-10.1            | part2.md |
+| Epic 11: Video Q&A                   | US-11.1 to US-11.2 | part2.md |
+| Epic 12: Audio Generation            | US-12.1 to US-12.2 | part2.md |
+| Epic 13: LLM Script Assistant        | US-13.1 to US-13.2 | part2.md |
+| Epic 14: Text-to-Video               | US-14.1 to US-14.2 | part2.md |
+| Epic 15: Cloud Rendering             | US-15.1 to US-15.2 | part2.md |
