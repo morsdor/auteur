@@ -9,14 +9,15 @@
 
 ### Requirements & Planning
 - [x] Product requirements documentation
-- [x] User stories (15 features across 2 documents)
+- [x] User stories (21 features total - 6 new text-editing features added)
+  - [x] Epic 6 enhanced with US-6.5 through US-6.10 (Descript-killer features)
 - [x] Technical specifications
 - [x] Tech stack finalization
-  - [x] Frontend: Turborepo + pnpm + shadcn/ui + dnd-kit + react-virtual + Tiptap
+  - [x] Frontend: Turborepo + pnpm + shadcn/ui + dnd-kit + react-virtual + **Tiptap for text-based editing**
   - [x] Backend: Spring Boot 3.2 (Java 21) + Kafka + Modal
   - [x] Data: Supabase + MongoDB + Cloudflare R2
-- [x] Kafka architecture design (14 topics, Avro schemas)
-- [x] Development roadmap (20-week plan)
+- [x] Kafka architecture design (14 topics, Avro schemas, overdub job flow)
+- [x] Development roadmap (20-week plan with text-editing prioritized in Phase 4)
 - [x] GitHub issues breakdown
 - [x] Non-functional requirements (security, performance, scalability)
 
@@ -58,6 +59,43 @@
 - [ ] US-1.3: User logout
 - [ ] US-1.4: Password reset
 - [ ] US-1.5: View profile
+
+---
+
+## 📋 Phase 4 Checklist (Weeks 10-12) - TEXT-BASED EDITING ⭐
+
+### Milestone 4.1: Modal + Kafka Integration
+- [ ] Setup Modal GPU environment (A10G, L4)
+- [ ] Create Modal Kafka consumers
+- [ ] Download AI models to Modal volume
+- [ ] Test end-to-end Kafka flow
+
+### Milestone 4.2: Transcription (via Kafka)
+- [ ] Spring Boot: POST /jobs/transcription endpoint
+- [ ] Kafka job flow implementation
+- [ ] Modal worker: Whisper + Pyannote
+- [ ] US-6.1: Generate transcript
+- [ ] US-6.2: View transcript with word-level timestamps
+
+### Milestone 4.3: Core Text-Based Editing ⭐ **DESCRIPT-KILLER FEATURES**
+- [ ] **US-6.5: Edit words in transcript (Overdub)** - CRITICAL
+  - Double-click word → type replacement → AI regenerates speech
+  - Auto lip-sync if video has face
+  - **This is THE killer feature**
+- [ ] **US-6.6: Insert new text into transcript** - CRITICAL
+  - Click between words → type → AI generates and inserts speech
+  - Ripple editing in timeline
+- [ ] US-6.3: Delete text → delete video
+- [ ] US-6.7: Remove filler words (one-click)
+- [ ] US-6.8: Rearrange sentences (drag-and-drop)
+- [ ] US-6.9: Find and replace
+- [ ] US-6.10: Transcript edit markers
+- [ ] US-6.4: Export transcript
+
+### Milestone 4.4: TTS Voice Library
+- [ ] Voice library UI
+- [ ] US-7.1: Clone voice from sample
+- [ ] Store voice profiles in Postgres
 
 ---
 
@@ -128,9 +166,15 @@
 - Using **shadcn/ui** for components (not Material-UI or Chakra)
 - Using **dnd-kit** for timeline drag-and-drop (not react-beautiful-dnd)
 - Using **@tanstack/react-virtual** for timeline virtualization
-- Using **Tiptap** for transcript text editor
+- Using **Tiptap** for transcript text editor → **Core text-based editing feature**
 - Using **Flyway** for database migrations (not Liquibase)
 - Using **TestContainers** for integration tests
+
+### Product Decisions
+- **Text-based video editing** is the primary differentiator (Descript competitor)
+- US-6.5 (Edit words/Overdub) and US-6.6 (Insert text) are the killer features
+- Phase 4 (Weeks 10-12) dedicated to perfecting text-editing experience
+- All other AI features support this core workflow
 
 ### Code Standards
 - **TypeScript**: Strict mode enabled

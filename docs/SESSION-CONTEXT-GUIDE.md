@@ -37,8 +37,8 @@ Always reference these files so the AI can read the full context:
 - `docs/requirements/07-kafka-architecture.md` - Kafka topics and message flows
 
 **For User Stories:**
-- `docs/requirements/02-user-stories-part1.md` - Features 1-8
-- `docs/requirements/02-user-stories-part2.md` - Features 9-15
+- `docs/requirements/02-user-stories-part1.md` - Features 1-8 (Auth, Billing, Projects, Timeline, Preview)
+- `docs/requirements/02-user-stories-part2.md` - Features 9-15 + Enhanced Text-Editing (US-6.5 to US-6.10)
 
 ### 3. **Specify the Task**
 
