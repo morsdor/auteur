@@ -13,7 +13,7 @@
 - [x] Tech stack finalized (Spring Boot + Kafka + Modal + Turborepo + shadcn/ui)
 - [x] Kafka architecture designed (14 topics, job flows)
 - [x] Development roadmap (20-week plan)
-- [x] Text-based editing features added (US-6.5 to US-6.10 - Descript-killer features)
+- [x] Text-based editing features added (US-6.5 to US-6.10 - killer features)
 
 ### INFRA-0: Monorepo Setup (Week 1)
 
