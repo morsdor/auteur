@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@auteur/types": "workspace:*",
-    "dexie": "^3.2.7"
+    "dexie": "^4.3.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",

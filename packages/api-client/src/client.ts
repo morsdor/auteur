@@ -97,14 +97,19 @@ export class ApiClient {
         let errorCode = 'UNKNOWN_ERROR';
 
         try {
-          const data = await response.text();
-          if (isApiError(data)) {
-            errorMessage = data.error.message;
-            errorCode = data.error.code;
+          const text = await response.text();
+          try {
+            const data = JSON.parse(text);
+            if (isApiError(data)) {
+              errorMessage = data.error.message || text || 'Request failed';
+              errorCode = data.error.code || 'UNKNOWN_ERROR';
+            }
+          } catch {
+            // Not valid JSON, use text as error message
+            errorMessage = text || 'Request failed';
           }
         } catch {
-          // Not JSON, try to get text
-          errorMessage = (await response.text()) || 'Request failed';
+          // Failed to read response body
         }
 
         throw new ApiClientError(errorMessage, errorCode, response.status);

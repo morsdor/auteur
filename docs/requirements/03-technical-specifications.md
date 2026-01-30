@@ -594,7 +594,7 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 
 - [ ] JWT verification on all endpoints
 - [ ] Rate limiting: 100 req/min per user
-- [ ] Input validation with Pydantic
+- [ ] Input validation with Jakarta Validation
 - [ ] CORS restricted to both Electron and web origins
 - [ ] HTTPS only (Cloud Run default)
 - [ ] Secrets in Secret Manager, not env vars

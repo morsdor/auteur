@@ -56,6 +56,6 @@ This is task related to Infra 0.1
 
 Let us start working on them.
 
-Ask me if you need any clarifiactions and as you progress, keep updating @STATUS.md
+Ask me if you need any clarifications and as you progress, keep updating @STATUS.md
 
 ```

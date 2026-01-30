@@ -2,7 +2,7 @@
  * User endpoints
  */
 
-import type { User, Subscription, CreditBalance } from '@auteur/types';
+import type { Subscription, CreditBalance } from '@auteur/types';
 import type { ApiClient } from '../client';
 
 export interface UserProfile {

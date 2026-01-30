@@ -82,7 +82,7 @@ This document summarizes the complete, approved technology stack for the Auteur 
 - **Producer**: Spring Kafka (Java)
 - **Consumers**: Spring Kafka (Java) + confluent-kafka (Python for Modal)
 - **Serialization**: **Avro** with Schema Registry
-- **Topics**: 14 topics (jobs._, analytics._)
+- **Topics**: 14 topics (`jobs.*`, `analytics.*`)
 - **Why**: Industry-standard event streaming, perfect for async job processing
 
 ### GPU Compute

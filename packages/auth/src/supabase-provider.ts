@@ -80,7 +80,7 @@ export class SupabaseAuthProvider extends AuthProvider {
 
   async logout(): Promise<void> {
     await this.client.auth.signOut();
-    await this.storage.removeItem(STORAGE_KEY);
+    await this.storage.delete(STORAGE_KEY);
   }
 
   async getToken(): Promise<string | null> {
@@ -135,7 +135,7 @@ export class SupabaseAuthProvider extends AuthProvider {
    * Save session to storage
    */
   private async saveSession(session: unknown): Promise<void> {
-    await this.storage.setItem(STORAGE_KEY, session);
+    await this.storage.set(STORAGE_KEY, session);
   }
 
   /**
@@ -143,11 +143,10 @@ export class SupabaseAuthProvider extends AuthProvider {
    */
   private async restoreSession(): Promise<void> {
     try {
-      const session = await this.storage.getItem<{
+      const session = await this.storage.get<{
         access_token: string;
         refresh_token: string;
       }>(STORAGE_KEY);
-
       if (session) {
         await this.client.auth.setSession({
           access_token: session.access_token,

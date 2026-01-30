@@ -75,8 +75,7 @@
 - Create @auteur/ui package ⭐
 - Install shadcn/ui
 - Add core components (Button, Input, Card, Dialog, etc.)
-- Configure Tailwind with design tokens from
-  ui-design-system.md
+- Configure Tailwind with design tokens from `ui-design-system.md`
 
 ---
 
