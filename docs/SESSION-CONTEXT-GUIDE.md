@@ -28,18 +28,30 @@ Read:
 - docs/requirements/03-technical-specifications.md @03-technical-specifications.md
 - docs/design/ui-design-system.md @ui-design-system.md
 
-If you see in the @06-development-roadmap.md  we are at week 1.
+If you see in the @06-development-roadmap.md  we are at week 2.
 
-And our task is INFRA 0 which is as below -
+This is task related to Infra 0.1
 
-- [ ] Initialize monorepo with Turborepo
-- [ ] Configure pnpm workspaces
-- [ ] Create workspace structure (`packages/`, `apps/`, `backend/`)
-- [ ] Setup Changesets for version management
-- [ ] Configure shared `tsconfig.base.json`
-- [ ] Configure shared ESLint and Prettier configs
-- [ ] Create shared Tailwind CSS config
-- [ ] Setup husky for pre-commit hooks
+- [ ] Create `@auteur/types` package
+  - [ ] Define API types
+  - [ ] Define EDL types
+  - [ ] Define user/project types
+- [ ] Create `@auteur/api-client` package
+  - [ ] Setup typed fetch wrapper
+  - [ ] Implement all API endpoints
+  - [ ] Add retry logic and error handling
+- [ ] Create `@auteur/utils` package
+  - [ ] EDL parsing functions
+  - [ ] Credit calculation logic
+  - [ ] Time formatting utilities
+- [ ] Create `@auteur/auth` package
+  - [ ] Abstract auth provider interface
+  - [ ] Supabase integration
+  - [ ] Token management
+- [ ] Create `@auteur/storage` package
+  - [ ] Storage adapter interface
+  - [ ] Electron adapter (electron-store)
+  - [ ] Web adapter (IndexedDB via Dexie)
 
 
 Let us start working on them.
