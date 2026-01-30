@@ -4,11 +4,11 @@
 
 ### 1.1 Monorepo Management
 
-| Tool | Purpose |
-|------|--------|
-| Turborepo | Monorepo build system with caching |
-| pnpm workspaces | Package management and linking |
-| Changesets | Version management and changelogs |
+| Tool            | Purpose                            |
+| --------------- | ---------------------------------- |
+| Turborepo       | Monorepo build system with caching |
+| pnpm workspaces | Package management and linking     |
+| Changesets      | Version management and changelogs  |
 
 ### 1.2 Shared Packages (80% code reuse)
 
@@ -89,58 +89,59 @@
 
 ### 1.6 Message Queue (Apache Kafka - Confluent Cloud)
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| Platform | Confluent Cloud (AWS us-west-2) | Managed Kafka cluster |
-| Cluster Type | Basic | Learning/development tier |
-| Serialization | Avro | Compact, schema-evolution friendly |
-| Schema Registry | Confluent Schema Registry | Avro schema management |
-| Producers | Spring Kafka (Java) | API publishes job events |
-| Consumers | Spring Kafka + confluent-kafka (Python) | Job orchestration + Modal workers |
-| Topics | 14 topics | jobs.*, analytics.* (see [Kafka Architecture](./07-kafka-architecture.md)) |
-| Partitions | 3 per topic | Balance parallelism and cost |
-| Retention | 7-90 days | Based on topic type |
+| Layer           | Technology                              | Purpose                                                                    |
+| --------------- | --------------------------------------- | -------------------------------------------------------------------------- |
+| Platform        | Confluent Cloud (AWS us-west-2)         | Managed Kafka cluster                                                      |
+| Cluster Type    | Basic                                   | Learning/development tier                                                  |
+| Serialization   | Avro                                    | Compact, schema-evolution friendly                                         |
+| Schema Registry | Confluent Schema Registry               | Avro schema management                                                     |
+| Producers       | Spring Kafka (Java)                     | API publishes job events                                                   |
+| Consumers       | Spring Kafka + confluent-kafka (Python) | Job orchestration + Modal workers                                          |
+| Topics          | 14 topics                               | jobs._, analytics._ (see [Kafka Architecture](./07-kafka-architecture.md)) |
+| Partitions      | 3 per topic                             | Balance parallelism and cost                                               |
+| Retention       | 7-90 days                               | Based on topic type                                                        |
 
 ### 1.7 GPU Compute (Modal)
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| Platform | Modal | Serverless GPU |
-| Runtime | Python 3.10 | Model inference |
-| ML | PyTorch 2.x + CUDA 12 | Deep learning |
-| Models | Hugging Face Transformers | Model loading |
-| Storage | modal.Volume | Model weights cache |
+| Layer    | Technology                | Purpose             |
+| -------- | ------------------------- | ------------------- |
+| Platform | Modal                     | Serverless GPU      |
+| Runtime  | Python 3.10               | Model inference     |
+| ML       | PyTorch 2.x + CUDA 12     | Deep learning       |
+| Models   | Hugging Face Transformers | Model loading       |
+| Storage  | modal.Volume              | Model weights cache |
 
 ### 1.4 Database (Supabase)
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| Auth | Supabase Auth | User authentication |
-| SQL | PostgreSQL 15 | Relational data |
-| Realtime | Supabase Realtime | Live updates |
-| Storage | Supabase Storage | Small file storage (optional) |
+| Layer    | Technology        | Purpose                       |
+| -------- | ----------------- | ----------------------------- |
+| Auth     | Supabase Auth     | User authentication           |
+| SQL      | PostgreSQL 15     | Relational data               |
+| Realtime | Supabase Realtime | Live updates                  |
+| Storage  | Supabase Storage  | Small file storage (optional) |
 
 ### 1.5 Document Store (MongoDB Atlas)
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| Database | MongoDB 7.x | Document storage |
-| Driver | Motor (async) | Python async driver |
-| Use Case | EDL storage | Edit decision lists |
+| Layer    | Technology    | Purpose             |
+| -------- | ------------- | ------------------- |
+| Database | MongoDB 7.x   | Document storage    |
+| Driver   | Motor (async) | Python async driver |
+| Use Case | EDL storage   | Edit decision lists |
 
 ### 1.6 File Storage (Cloudflare R2)
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| Storage | Cloudflare R2 | S3-compatible object storage |
-| SDK | boto3 (S3 compat) | Upload/download |
-| CDN | Cloudflare CDN | Asset delivery |
+| Layer   | Technology        | Purpose                      |
+| ------- | ----------------- | ---------------------------- |
+| Storage | Cloudflare R2     | S3-compatible object storage |
+| SDK     | boto3 (S3 compat) | Upload/download              |
+| CDN     | Cloudflare CDN    | Asset delivery               |
 
 ---
 
 ## 2. Database Schema (PostgreSQL)
 
 ### 2.1 Users Table
+
 ```sql
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -153,6 +154,7 @@ CREATE TABLE users (
 ```
 
 ### 2.2 Subscriptions Table
+
 ```sql
 CREATE TABLE subscriptions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -168,6 +170,7 @@ CREATE TABLE subscriptions (
 ```
 
 ### 2.3 Credits Table
+
 ```sql
 CREATE TABLE credits (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -178,6 +181,7 @@ CREATE TABLE credits (
 ```
 
 ### 2.4 Credit Transactions Table
+
 ```sql
 CREATE TABLE credit_transactions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -192,6 +196,7 @@ CREATE TABLE credit_transactions (
 ```
 
 ### 2.5 Projects Table
+
 ```sql
 CREATE TABLE projects (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -208,6 +213,7 @@ CREATE TABLE projects (
 ```
 
 ### 2.6 Media Files Table
+
 ```sql
 CREATE TABLE media_files (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -227,6 +233,7 @@ CREATE TABLE media_files (
 ```
 
 ### 2.7 Voice Clones Table
+
 ```sql
 CREATE TABLE voice_clones (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -239,6 +246,7 @@ CREATE TABLE voice_clones (
 ```
 
 ### 2.8 Jobs Table
+
 ```sql
 CREATE TABLE jobs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -263,6 +271,7 @@ CREATE TABLE jobs (
 ## 3. MongoDB Schema (EDL)
 
 ### 3.1 Edit Decision List Document
+
 ```javascript
 {
   "_id": ObjectId,
@@ -270,13 +279,13 @@ CREATE TABLE jobs (
   "version": 1,
   "created_at": ISODate,
   "updated_at": ISODate,
-  
+
   "settings": {
     "resolution": { "width": 1920, "height": 1080 },
     "frame_rate": 30,
     "duration_ms": 120000
   },
-  
+
   "tracks": [
     {
       "id": "track-uuid",
@@ -297,7 +306,7 @@ CREATE TABLE jobs (
       ]
     }
   ],
-  
+
   "transcript": {
     "generated_at": ISODate,
     "segments": [
@@ -316,7 +325,7 @@ CREATE TABLE jobs (
       }
     ]
   },
-  
+
   "undo_stack": [],
   "redo_stack": []
 }
@@ -329,7 +338,9 @@ CREATE TABLE jobs (
 ### 4.1 Authentication Endpoints
 
 #### POST /auth/verify
+
 Verify Supabase JWT token
+
 ```
 Headers: Authorization: Bearer <jwt>
 Response: { "valid": true, "user_id": "uuid" }
@@ -338,7 +349,9 @@ Response: { "valid": true, "user_id": "uuid" }
 ### 4.2 User Endpoints
 
 #### GET /users/me
+
 Get current user profile
+
 ```
 Response: {
   "id": "uuid",
@@ -352,83 +365,107 @@ Response: {
 ### 4.3 Project Endpoints
 
 #### GET /projects
+
 List user's projects
+
 ```
 Response: { "projects": [...] }
 ```
 
 #### POST /projects
+
 Create new project
+
 ```
 Body: { "name": "My Project", "resolution": "1920x1080" }
 Response: { "id": "uuid", "name": "My Project", ... }
 ```
 
 #### GET /projects/:id
+
 Get project details
+
 ```
 Response: { "id": "uuid", "name": "...", "edl": {...} }
 ```
 
 #### PUT /projects/:id
+
 Update project
+
 ```
 Body: { "name": "New Name" }
 ```
 
 #### DELETE /projects/:id
+
 Delete project
 
 ### 4.4 Media Endpoints
 
 #### POST /projects/:id/media/upload-url
+
 Get presigned upload URL for R2
+
 ```
 Body: { "filename": "video.mp4", "content_type": "video/mp4" }
 Response: { "upload_url": "https://...", "media_id": "uuid" }
 ```
 
 #### POST /projects/:id/media/:media_id/confirm
+
 Confirm upload complete
+
 ```
 Response: { "media": {...} }
 ```
 
 #### DELETE /projects/:id/media/:media_id
+
 Delete media file
 
 ### 4.5 Job Endpoints
 
 #### POST /jobs/transcription
+
 Start transcription job
+
 ```
 Body: { "project_id": "uuid", "media_id": "uuid" }
 Response: { "job_id": "uuid", "status": "pending", "credits_cost": 5 }
 ```
 
 #### POST /jobs/tts
+
 Start TTS generation
+
 ```
 Body: { "text": "Hello world", "voice_id": "uuid", "speed": 1.0 }
 Response: { "job_id": "uuid", "status": "pending", "credits_cost": 2 }
 ```
 
 #### POST /jobs/lip-sync
+
 Start lip sync job
+
 ```
 Body: { "video_media_id": "uuid", "audio_media_id": "uuid" }
 Response: { "job_id": "uuid", "status": "pending", "credits_cost": 15 }
 ```
 
 #### POST /jobs/video-generation
+
 Start video generation (Pro only)
+
 ```
 Body: { "prompt": "A cat walking on the moon", "duration_sec": 5 }
 Response: { "job_id": "uuid", "status": "pending", "credits_cost": 50 }
 ```
 
 #### GET /jobs/:id
+
 Get job status
+
 ```
 Response: {
   "id": "uuid",
@@ -441,13 +478,17 @@ Response: {
 ### 4.6 Credit Endpoints
 
 #### GET /credits
+
 Get credit balance
+
 ```
 Response: { "balance": 1500 }
 ```
 
 #### GET /credits/history
+
 Get credit transaction history
+
 ```
 Response: { "transactions": [...] }
 ```
@@ -457,6 +498,7 @@ Response: { "transactions": [...] }
 ## 5. Modal Function Specifications
 
 ### 5.1 Transcription Function
+
 ```python
 @app.function(
     image=audio_image,
@@ -472,6 +514,7 @@ def transcribe(audio_url: str) -> dict:
 ```
 
 ### 5.2 TTS Function
+
 ```python
 @app.function(
     image=audio_image,
@@ -488,6 +531,7 @@ def generate_speech(text: str, voice_sample_url: str, speed: float) -> str:
 ```
 
 ### 5.3 Lip Sync Function
+
 ```python
 @app.function(
     image=vision_image,
@@ -505,6 +549,7 @@ def lip_sync(video_url: str, audio_url: str) -> str:
 ```
 
 ### 5.4 Video Generation Function
+
 ```python
 @app.function(
     image=vision_image,
@@ -525,6 +570,7 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 ## 6. Security Requirements
 
 ### 6.1 Electron Security (Desktop App)
+
 - [ ] `nodeIntegration: false` in all BrowserWindows
 - [ ] `contextIsolation: true` enforced
 - [ ] ContextBridge with typed API only
@@ -535,6 +581,7 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 - [ ] Intercept `will-navigate` and `new-window`
 
 ### 6.2 Web Security (Web App)
+
 - [ ] Strict CSP headers: `script-src 'self'; object-src 'none'`
 - [ ] HTTPS only with HSTS headers
 - [ ] SameSite cookies for session management
@@ -544,14 +591,16 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 - [ ] Rate limiting on clientside API calls
 
 ### 6.3 API Security
+
 - [ ] JWT verification on all endpoints
 - [ ] Rate limiting: 100 req/min per user
-- [ ] Input validation with Pydantic
+- [ ] Input validation with Jakarta Validation
 - [ ] CORS restricted to both Electron and web origins
 - [ ] HTTPS only (Cloud Run default)
 - [ ] Secrets in Secret Manager, not env vars
 
 ### 6.4 Data Security
+
 - [ ] R2 presigned URLs expire in 15 minutes
 - [ ] User can only access own projects/media
 - [ ] RLS policies in Supabase Postgres
@@ -563,6 +612,7 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 ## 7. Infrastructure Requirements
 
 ### 7.1 GCP Compute Engine (Spring Boot API)
+
 - **Instance Type**: e2-medium (2 vCPU, 4GB RAM)
 - **OS**: Ubuntu 22.04 LTS
 - **Disk**: 20GB SSD persistent disk
@@ -574,35 +624,41 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 - **Autoscaling**: Manual (upgrade to e2-standard-2 if needed)
 
 ### 7.2 Kafka (Confluent Cloud)
+
 - **Cluster**: Basic (us-west-2)
 - **Partitions**: 3 per topic (42 total for 14 topics)
 - **Replication**: 3 (Confluent Cloud default)
-- **Retention**: 7 days (jobs.*), 30 days (jobs.completed/failed), 90 days (analytics.*)
+- **Retention**: 7 days (jobs._), 30 days (jobs.completed/failed), 90 days (analytics._)
 - **Throughput**: ~100 messages/sec (baseline for learning)
 - **Schema Registry**: Enabled with Avro schemas
 
 ### 7.3 Modal
+
 - A100-80GB: max 10 concurrent (video generation)
 - A10G: max 50 concurrent (transcription, lip sync, etc.)
 - L4/T4: max 100 concurrent (TTS, audio generation)
 - Volume size: 100GB for model weights cache
 
 ### 7.4 Supabase
+
 - Plan: Pro (for production)
 - Database size: 8GB initial
 - Auth: Email + Google + GitHub
 
 ### 7.5 MongoDB Atlas
+
 - Cluster: M10 (for production)
 - Storage: 10GB initial
 - Region: us-west-2 (same as Kafka)
 
 ### 7.6 Cloudflare R2
+
 - Storage class: Standard
 - Lifecycle: Delete after 90 days (optional for temp files)
 - CDN: Enabled for fast delivery
 
 ### 7.7 CI/CD (GitHub Actions)
+
 - **Workflows**:
   - `ci-frontend.yml`: Lint, typecheck, test for monorepo
   - `ci-backend.yml`: Maven test, build JAR for Spring Boot
@@ -612,6 +668,7 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 - **Artifacts**: JAR files, Docker images (if containerizing later)
 
 ### 7.8 Development Tools
+
 - **IDE**: IntelliJ IDEA (Java), VS Code (TypeScript/React)
 - **API Testing**: Postman or Bruno
 - **Kafka UI**: Confluent Cloud Dashboard + kcat (CLI)

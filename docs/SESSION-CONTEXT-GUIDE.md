@@ -22,10 +22,40 @@ Tech stack: Turborepo + pnpm, shadcn/ui, dnd-kit, react-virtual, Zustand, React 
 
 Repo location: /Users/mritunjaymohitesh/dev/auteur
 
-Read: 
-- STATUS.md
-- docs/requirements/00-tech-stack-summary.md  
-- docs/requirements/03-technical-specifications.md
+Read:
+- STATUS.md @STATUS.md
+- docs/requirements/00-tech-stack-summary.md   @00-tech-stack-summary.md
+- docs/requirements/03-technical-specifications.md @03-technical-specifications.md
+- docs/design/ui-design-system.md @ui-design-system.md
 
-Task: Implement US-6.5 (Edit words in transcript)
+If you see in the @06-development-roadmap.md  we are at week 2.
+
+This is task related to Infra 0.1
+
+- [ ] Create `@auteur/types` package
+  - [ ] Define API types
+  - [ ] Define EDL types
+  - [ ] Define user/project types
+- [ ] Create `@auteur/api-client` package
+  - [ ] Setup typed fetch wrapper
+  - [ ] Implement all API endpoints
+  - [ ] Add retry logic and error handling
+- [ ] Create `@auteur/utils` package
+  - [ ] EDL parsing functions
+  - [ ] Credit calculation logic
+  - [ ] Time formatting utilities
+- [ ] Create `@auteur/auth` package
+  - [ ] Abstract auth provider interface
+  - [ ] Supabase integration
+  - [ ] Token management
+- [ ] Create `@auteur/storage` package
+  - [ ] Storage adapter interface
+  - [ ] Electron adapter (electron-store)
+  - [ ] Web adapter (IndexedDB via Dexie)
+
+
+Let us start working on them.
+
+Ask me if you need any clarifications and as you progress, keep updating @STATUS.md
+
 ```
