@@ -24,14 +24,6 @@
 - [ ] Renovate bot for dependency updates
 - [ ] License headers automation
 
-## Future Package Setup (Week 2+)
-
-- [ ] `@auteur/ui` - shadcn/ui component library
-- [ ] `@auteur/utils` - Business logic utilities
-- [ ] `@auteur/api-client` - Type-safe REST client
-- [ ] `@auteur/auth` - Auth abstraction layer
-- [ ] `@auteur/storage` - Storage adapter interface
-
 ## Documentation Updates Needed
 
 - [ ] Add architecture diagrams
