@@ -26,6 +26,7 @@ Read:
 - STATUS.md @STATUS.md
 - docs/requirements/00-tech-stack-summary.md   @00-tech-stack-summary.md
 - docs/requirements/03-technical-specifications.md @03-technical-specifications.md
+- docs/design/ui-design-system.md @ui-design-system.md
 
 If you see in the @06-development-roadmap.md  we are at week 1.
 
