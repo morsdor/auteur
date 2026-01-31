@@ -1,7 +1,7 @@
 # Auteur AI - Implementation Status
 
-**Last Updated**: 2026-01-30  
-**Current Phase**: Week 2 Complete - Ready for Week 3
+**Last Updated**: 2026-01-31  
+**Current Phase**: Week 3 Complete - UI Package + Web App Ready
 
 ---
 
@@ -13,7 +13,7 @@
 - [x] Tech stack finalized (Spring Boot + Kafka + Modal + Turborepo + shadcn/ui)
 - [x] Kafka architecture designed (14 topics, job flows)
 - [x] Development roadmap (20-week plan)
-- [x] Text-based editing features added (US-6.5 to US-6.10 - Descript-killer features)
+- [x] Text-based editing features added (US-6.5 to US-6.10 - killer features)
 
 ### INFRA-0: Monorepo Setup (Week 1)
 
@@ -64,18 +64,44 @@
 - [x] Verify with `pnpm typecheck` (0 errors)
 - [x] Create README documentation for all packages
 
+### INFRA-0.3: Next.js Web App (Week 3) ✅
+
+- [x] Initialize Next.js 16 (latest) with App Router
+- [x] Configure TypeScript
+- [x] Configure Tailwind CSS (shared config)
+- [x] Setup Zustand state management
+- [x] Integrate Supabase Auth (web version)
+- [x] Setup IndexedDB storage with Dexie
+- [x] Configure PWA with next-pwa
+- [x] Setup environment variables (.env.local)
+- [x] Create app layout and routing structure
+- [x] Create placeholder pages (dashboard, auth, editor)
+- [x] Build and typecheck verification ✅
+
+### INFRA-0.2: Shared UI Package (Week 3) ✅
+
+- [x] Create `@auteur/ui` package
+- [x] Install shadcn/ui dependencies (Radix UI, CVA, clsx, tailwind-merge)
+- [x] Create utility function (cn) for class merging
+- [x] Add Button component (variant: default, outline, ghost, link)
+- [x] Add Input component with Auteur styling
+- [x] Add Label component (Radix UI)
+- [x] Add Card component (with Header, Title, Description, Content, Footer)
+- [x] Export all components from index
+- [x] Integrate with web app
+- [x] Refactor login page to use UIcomponents
+- [x] Refactor register page to use UI components
+- [x] Refactor dashboard page to use UI components
+- [x] Refactor editor page to use UI components
+- [x] Verify build passes ✅
+
 ---
 
 ## 🚧 In Progress
 
-**Current Work**: Week 2 Complete (Infra 0.1 and a lot of Infra 0.2) ✅ but we're missing @auteur/ui.
+**Current Work**: Week 3 Complete (Infra 0.2 + 0.3) ✅
 
-**Next Task**: Week 3 - App Skeletons (INFRA-0.3, INFRA-0.4). Then do remaining work of Infra 0.2
-
-- Create @auteur/ui package ⭐
-- Install shadcn/ui
-- Add core components (Button, Input, Card, Dialog, etc.)
-- Configure Tailwind with design tokens from `ui-design-system.md`
+**Next Task**: Week 3-4 - Electron Desktop App (INFRA-0.4), Then Week 4
 
 ---
 
