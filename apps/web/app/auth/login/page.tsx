@@ -1,6 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { Button } from '@auteur/ui';
+import { Input } from '@auteur/ui';
+import { Label } from '@auteur/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@auteur/ui';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -22,61 +26,53 @@ export default function LoginPage() {
           <p className="text-text-secondary">Sign in to your account</p>
         </div>
 
-        <div className="bg-bg-component border border-border-default rounded-lg p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-2">
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-2 text-text-primary focus:border-accent-primary focus:outline-none focus:ring-2 focus:ring-accent-primary/20 transition-colors"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Welcome Back</CardTitle>
+            <CardDescription>Enter your credentials to continue</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email Address</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-text-secondary mb-2"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-bg-primary border border-border-default rounded-md px-4 py-2 text-text-primary focus:border-accent-primary focus:outline-none focus:ring-2 focus:ring-accent-primary/20 transition-colors"
-                placeholder="••••••••"
-                required
-              />
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
 
-            <button
-              type="submit"
-              className="w-full bg-accent-primary hover:bg-accent-primary-hover text-bg-primary font-semibold py-3 rounded-md shadow-glow-green hover:shadow-glow-green-strong transition-all"
-            >
-              Sign In
-            </button>
-          </form>
+              <Button type="submit" className="w-full">
+                Sign In
+              </Button>
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-text-tertiary">
-              Don&apos;t have an account?{' '}
-              <a
-                href="/auth/register"
-                className="text-accent-primary hover:text-accent-primary-hover font-medium transition-colors"
-              >
-                Sign up
-              </a>
-            </p>
-          </div>
-        </div>
+              <div className="text-center text-sm text-text-tertiary">
+                Don&apos;t have an account?{' '}
+                <a
+                  href="/auth/register"
+                  className="text-accent-primary hover:text-accent-primary-hover font-medium transition-colors"
+                >
+                  Sign up
+                </a>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
 
         <p className="text-center text-xs text-text-muted mt-8">
           Placeholder login page - Auth will be implemented in Phase 2
