@@ -64,13 +64,27 @@
 - [x] Verify with `pnpm typecheck` (0 errors)
 - [x] Create README documentation for all packages
 
+### INFRA-0.3: Next.js Web App (Week 3) ✅
+
+- [x] Initialize Next.js 16 (latest) with App Router
+- [x] Configure TypeScript
+- [x] Configure Tailwind CSS (shared config)
+- [x] Setup Zustand state management
+- [x] Integrate Supabase Auth (web version)
+- [x] Setup IndexedDB storage with Dexie
+- [x] Configure PWA with next-pwa
+- [x] Setup environment variables (.env.local)
+- [x] Create app layout and routing structure
+- [x] Create placeholder pages (dashboard, auth, editor)
+- [x] Build and typecheck verification ✅
+
 ---
 
 ## 🚧 In Progress
 
-**Current Work**: Week 2 Complete (Infra 0.1 and a lot of Infra 0.2) ✅ but we're missing @auteur/ui.
+**Current Work**: Week 3 Complete (Infra 0.3) ✅
 
-**Next Task**: Week 3 - App Skeletons (INFRA-0.3, INFRA-0.4). Then do remaining work of Infra 0.2
+**Next Task**: Week 3 - Remaining work: `@auteur/ui` package + Electron Desktop App (INFRA-0.4), Then Week 4
 
 - Create @auteur/ui package ⭐
 - Install shadcn/ui
