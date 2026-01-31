@@ -38,6 +38,7 @@ interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
   authProvider: SupabaseAuthProvider;
+  unsubscribe: (() => void) | null;
 
   // Actions
   signIn: (email: string, password: string) => Promise<void>;
@@ -53,6 +54,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoading: true,
   isAuthenticated: false,
   authProvider: createAuthProvider(),
+  unsubscribe: null,
 
   signIn: async (email: string, password: string) => {
     set({ isLoading: true });
@@ -119,6 +121,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       const authProvider = get().authProvider;
 
+      // Cleanup previous listener if exists
+      const previousUnsubscribe = get().unsubscribe;
+      if (previousUnsubscribe) {
+        previousUnsubscribe();
+      }
+
       // Get current user
       const authUser = await authProvider.getUser();
       if (authUser) {
@@ -136,7 +144,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       }
 
       // Listen to auth state changes
-      authProvider.onAuthStateChange((authUser) => {
+      const unsubscribe = authProvider.onAuthStateChange((authUser) => {
         if (authUser) {
           set({
             user: mapAuthUserToUser(authUser),
@@ -149,6 +157,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           });
         }
       });
+      set({ unsubscribe });
     } catch (error) {
       console.error('Auth initialization error:', error);
       set({ isLoading: false });

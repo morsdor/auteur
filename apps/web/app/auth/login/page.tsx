@@ -9,7 +9,7 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Auth logic will be implemented in Phase 2
-    console.log('Login:', { email, password });
+    // TODO: Implement authentication
   };
 
   return (

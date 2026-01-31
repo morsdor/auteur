@@ -1,10 +1,12 @@
-export default function EditorPage({ params }: { params: { projectId: string } }) {
+export default async function EditorPage({ params }: { params: Promise<{ projectId: string }> }) {
+  const { projectId } = await params;
+
   return (
     <div className="min-h-screen bg-bg-primary p-10">
       <div className="max-w-7xl mx-auto">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-text-primary mb-2">Video Editor</h1>
-          <p className="text-text-secondary">Project ID: {params.projectId}</p>
+          <p className="text-text-secondary">Project ID: {projectId}</p>
         </header>
 
         <div className="bg-bg-component border border-border-default rounded-lg p-8">

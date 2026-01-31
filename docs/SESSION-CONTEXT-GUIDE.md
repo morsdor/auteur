@@ -33,7 +33,7 @@ This is task related to Infra 0.3
 
 Constraints -
 Before writing any new type, check if it already exists in @auteur/types package or if it can be added to @auteur/types package.
-Same goes with business utiltites as in @auteur/utils package.
+Same goes with business utilities as in @auteur/utils package.
 Same goes with storage as in @auteur/storage package.
 Same goes with auth as in @auteur/auth package.
 Same goes with api-client as in @auteur/api-client package.

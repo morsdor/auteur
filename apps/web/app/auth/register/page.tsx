@@ -9,8 +9,12 @@ export default function RegisterPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      // TODO: Show error to user (e.g., via state or toast)
+      return;
+    }
     // Auth logic will be implemented in Phase 2
-    console.log('Register:', { email, password, confirmPassword });
+    // TODO: Implement registration
   };
 
   return (
