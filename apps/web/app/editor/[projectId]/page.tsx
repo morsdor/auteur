@@ -1,3 +1,6 @@
+import { Button } from '@auteur/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@auteur/ui';
+
 export default async function EditorPage({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
 
@@ -9,37 +12,39 @@ export default async function EditorPage({ params }: { params: Promise<{ project
           <p className="text-text-secondary">Project ID: {projectId}</p>
         </header>
 
-        <div className="bg-bg-component border border-border-default rounded-lg p-8">
-          <div className="text-center py-20">
-            <h2 className="text-2xl font-semibold text-text-primary mb-4">Editor Placeholder</h2>
-            <p className="text-text-secondary mb-6">
+        <Card>
+          <CardContent className="py-20 text-center">
+            <CardTitle className="mb-4">Editor Placeholder</CardTitle>
+            <CardDescription className="mb-6">
               The full video editor with timeline, preview, and text-based editing will be
               implemented in Phase 3-4.
-            </p>
+            </CardDescription>
             <div className="flex gap-3 justify-center">
-              <button className="bg-accent-primary hover:bg-accent-primary-hover text-bg-primary font-semibold px-6 py-2 rounded-md shadow-glow-green transition-all">
-                Import Media
-              </button>
-              <button className="border border-border-medium hover:bg-bg-elevated text-text-primary px-6 py-2 rounded-md transition-colors">
-                Generate Transcript
-              </button>
+              <Button>Import Media</Button>
+              <Button variant="outline">Generate Transcript</Button>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-bg-component border border-border-default rounded-lg p-6">
-            <h3 className="text-sm font-semibold text-text-primary mb-2">Timeline</h3>
-            <p className="text-xs text-text-tertiary">Coming in Phase 3</p>
-          </div>
-          <div className="bg-bg-component border border-border-default rounded-lg p-6">
-            <h3 className="text-sm font-semibold text-text-primary mb-2">Transcript Editor</h3>
-            <p className="text-xs text-text-tertiary">Coming in Phase 4</p>
-          </div>
-          <div className="bg-bg-component border border-border-default rounded-lg p-6">
-            <h3 className="text-sm font-semibold text-text-primary mb-2">AI Features</h3>
-            <p className="text-xs text-text-tertiary">Coming in Phase 5-7</p>
-          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm">Timeline</CardTitle>
+              <CardDescription className="text-xs">Coming in Phase 3</CardDescription>
+            </CardHeader>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm">Transcript Editor</CardTitle>
+              <CardDescription className="text-xs">Coming in Phase 4</CardDescription>
+            </CardHeader>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm">AI Features</CardTitle>
+              <CardDescription className="text-xs">Coming in Phase 5-7</CardDescription>
+            </CardHeader>
+          </Card>
         </div>
       </div>
     </div>
