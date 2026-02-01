@@ -163,7 +163,9 @@ export class SupabaseAuthProvider extends AuthProvider {
     this.tokenCallbacks.add(callback);
 
     // Immediately call with current token
-    this.getToken().then((token) => callback(token));
+    this.getToken()
+      .then((token) => callback(token))
+      .catch((err: Error) => console.warn('Failed to get initial token:', err));
 
     // Return unsubscribe function
     return () => {

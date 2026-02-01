@@ -113,7 +113,7 @@ export function DashboardPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-400">User ID:</span>
-                <span className="font-mono text-xs">{user?.id.slice(0, 16)}...</span>
+                <span className="font-mono text-xs">{user?.id?.slice(0, 16)}...</span>
               </div>
               {user?.name && (
                 <div className="flex justify-between">

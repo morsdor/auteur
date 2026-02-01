@@ -44,9 +44,6 @@ export class IPCStorageAdapter extends StorageAdapter {
   }
 
   async keys(): Promise<string[]> {
-    // Note: IPC doesn't expose keys() method yet
-    // Could be added to IPC handlers if needed
-    console.warn('IPCStorageAdapter.keys() not implemented');
-    return [];
+    throw new Error('IPCStorageAdapter.keys() not implemented - add IPC handler if needed');
   }
 }
