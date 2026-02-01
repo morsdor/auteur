@@ -4,11 +4,11 @@
 
 ---
 
-## Phase 1: Foundation (Weeks 1-5)
+## Phase 1: Foundation
 
 **Goal**: Set up monorepo, backend API, authentication, and cloud infrastructure
 
-### Week 1: Monorepo Setup
+### Monorepo Setup
 
 **Milestone**: INFRA-0
 
@@ -25,7 +25,7 @@
 
 ---
 
-### Week 2: Shared Packages
+### Shared Packages
 
 **Milestone**: INFRA-0.1, INFRA-0.2
 
@@ -46,38 +46,54 @@
 
 ---
 
-### Week 3: App Skeletons
+### App Skeletons & Turborepo Pipeline
 
-**Milestone**: INFRA-0.3, INFRA-0.4
+**Milestone**: INFRA-0.3, INFRA-0.4, INFRA-0.5, INFRA-1
 
-- [ ] **Next.js Web App** (apps/web)
+- [ ] **Next.js Web App** (apps/web) - INFRA-0.3
   - Setup Next.js 14 with App Router
   - Configure Tailwind + shadcn/ui
   - Create layout with header/sidebar placeholders
   - Test build and dev server
-- [ ] **Electron Desktop App** (apps/desktop)
-  - Setup Electron with React + Vite
-  - Configure ContextBridge for security
-  - Setup electron-store for local storage
-  - Test app launch and IPC
+- [ ] **Restructure Electron Desktop App** (apps/desktop) - INFRA-0.4
+  - Restructure as `apps/desktop`
+  - Import `@auteur/ui` components
+  - Use `@auteur/api-client` instead of direct fetch
+  - Replace inline auth with `@auteur/auth`
+  - Replace inline storage with `@auteur/storage`
+  - Update build scripts for monorepo
+  - Configure electron-builder for packaging
+- [ ] **Turborepo Pipeline Configuration** - INFRA-0.5
+  - Create `turbo.json` pipeline config
+  - Add `dev` script (runs both desktop and web)
+  - Add `build` script (builds all packages)
+  - Add `lint` script (lints entire monorepo)
+  - Add `test` script (runs all tests)
+  - Add `changeset` script for version bumps
+  - Add `typecheck` script for TypeScript validation
+- [ ] **Initialize Electron with Vite + React + TypeScript** - INFRA-1
+  - Initialize Electron with Vite + React + TypeScript
+  - Configure context isolation and preload scripts
+  - Setup secure IPC via ContextBridge
+  - Configure ESLint, Prettier
+  - Setup electron-store for secure storage
 
 **Referenced by**: US-1.2 (Login), US-3.1 (Projects), all future features
 
 ---
 
-### Week 4: Backend API Setup
+### Backend API Setup
 
-**Milestone**: INFRA-1, INFRA-2
+**Milestone**: INFRA-2
 
-- [ ] **Spring Boot API** (Java 21)
+- [ ] **Spring Boot API** (Java 21) - INFRA-2
   - Initialize Spring Boot 3.2 project with Maven
   - Setup Controllers, Services, Repositories pattern
   - Configure application.yml (dev, prod profiles)
   - Add Lombok, validation dependencies
   - Create health check endpoint: GET /health
-- [ ] **Deploy to GCP Compute Engine**
-  - Create e2-medium VM instance
-  - Install Java 21, Maven
+  - Deploy to GCP Compute Engine (e2-medium VM)
+  - Install Java 21, Maven on VM
   - Setup systemd service for Spring Boot
   - Configure firewall rules (port 8080)
   - Test deployment with health check
@@ -86,13 +102,13 @@
 
 ---
 
-### Week 5: Infrastructure - Database, Storage, Kafka
+### Infrastructure - Database, Storage, Kafka
 
 **Milestone**: INFRA-3, INFRA-4, INFRA-5, INFRA-6
 
 - [ ] **Supabase** (Postgres + Auth)
   - Create Supabase project
-  - Setup database tables (see Week 5 schema below)
+  - Setup database tables (see schema below)
   - Configure Row Level Security (RLS)
   - Generate API keys for dev/prod
 - [ ] **MongoDB Atlas** (EDL storage)
@@ -148,11 +164,11 @@ CREATE TABLE media_files (
 
 ---
 
-## Phase 2: Authentication & Projects (Weeks 6-7)
+## Phase 2: Authentication & Projects
 
 **Goal**: Users can sign up, log in, and manage projects
 
-### Week 6: Authentication
+### Authentication
 
 **Milestone**: Epic 1 (US-1.1 to US-1.5)
 
@@ -178,7 +194,7 @@ CREATE TABLE media_files (
 
 ---
 
-### Week 7: Project Management
+### Project Management
 
 **Milestone**: Epic 3 (US-3.1 to US-3.6)
 
@@ -210,11 +226,11 @@ CREATE TABLE media_files (
 
 ---
 
-## Phase 3: Timeline Editor (Weeks 8-9)
+## Phase 3: Timeline Editor
 
 **Goal**: Build a functional video timeline with drag-and-drop
 
-### Week 8: Timeline Basics
+### Timeline Basics
 
 **Milestone**: Epic 4 Part 1 (US-4.1 to US-4.4)
 
@@ -240,7 +256,7 @@ CREATE TABLE media_files (
 
 ---
 
-### Week 9: Timeline Advanced + Preview
+### Timeline Advanced + Preview
 
 **Milestone**: Epic 4 Part 2 (US-4.5 to US-4.7) + Epic 5 (US-5.1 to US-5.3)
 
@@ -270,11 +286,11 @@ CREATE TABLE media_files (
 
 ---
 
-## Phase 4: Billing (Week 10)
+## Phase 4: Billing
 
 **Goal**: Users can purchase subscriptions and manage credits
 
-### Week 10: Stripe Integration
+### Stripe Integration
 
 **Milestone**: Epic 2 (US-2.1 to US-2.5)
 
@@ -303,11 +319,11 @@ CREATE TABLE media_files (
 
 ---
 
-## Phase 5: AI Foundation - Transcription & TTS (Weeks 11-13)
+## Phase 5: AI Foundation - Transcription & TTS
 
 **Goal**: Set up Modal, Kafka integration, and first AI features
 
-### Week 11: Modal + Kafka Setup
+### Modal + Kafka Setup
 
 **Milestone**: INFRA-7 (Modal) + Kafka job flow
 
@@ -330,7 +346,7 @@ CREATE TABLE media_files (
 
 ---
 
-### Week 12: Transcription (Text-Based Editing Foundation)
+### Transcription (Text-Based Editing Foundation)
 
 **Milestone**: Epic 6 Part 1 (US-6.1, US-6.2)
 
@@ -351,7 +367,7 @@ CREATE TABLE media_files (
 
 ---
 
-### Week 13: Text-Based Editing - Core Features ⭐ **CRITICAL**
+### Text-Based Editing - Core Features ⭐ **CRITICAL**
 
 **Milestone**: Epic 6 Part 2 (US-6.3, US-6.5, US-6.6)
 
@@ -383,11 +399,11 @@ CREATE TABLE media_files (
 
 ---
 
-## Phase 6: Text-Based Editing - Polish (Week 14)
+## Phase 6: Text-Based Editing - Polish
 
 **Milestone**: Epic 6 Part 3 (US-6.7 to US-6.10) + Epic 7 Part 1
 
-### Week 14: Productivity Features
+### Productivity Features
 
 - [ ] **US-6.7: Remove Filler Words (One-Click)**
   - Detect: um, uh, like, you know, etc.
@@ -418,9 +434,9 @@ CREATE TABLE media_files (
 
 ---
 
-## Phase 7: Advanced AI Features (Weeks 15-17)
+## Phase 7: Advanced AI Features
 
-### Week 15: Text-to-Speech
+### Text-to-Speech
 
 **Milestone**: Epic 7 (US-7.2, US-7.3)
 
@@ -440,7 +456,7 @@ CREATE TABLE media_files (
 
 ---
 
-### Week 16: Lip Sync
+### Lip Sync
 
 **Milestone**: Epic 8 (US-8.1, US-8.2)
 
@@ -459,7 +475,7 @@ CREATE TABLE media_files (
 
 ---
 
-### Week 17: Performance Cloning
+### Performance Cloning
 
 **Milestone**: Epic 9 (US-9.1, US-9.2)
 
@@ -477,9 +493,9 @@ CREATE TABLE media_files (
 
 ---
 
-## Phase 8: Pro Features (Week 18)
+## Phase 8: Pro Features
 
-### Week 18: Gaze, Video Q&A, Audio Generation
+### Gaze, Video Q&A, Audio Generation
 
 **Milestone**: Epics 10, 11, 12
 
@@ -508,9 +524,9 @@ CREATE TABLE media_files (
 
 ---
 
-## Phase 9: AI Video Generation (Week 19) - Pro Only
+## Phase 9: AI Video Generation - Pro Only
 
-### Week 19: Text-to-Video
+### Text-to-Video
 
 **Milestone**: Epic 14 (US-14.1, US-14.2)
 
@@ -528,9 +544,9 @@ CREATE TABLE media_files (
 
 ---
 
-## Phase 10: LLM Script Assistant (Week 19)
+## Phase 10: LLM Script Assistant
 
-### Week 19: Script Writing Help
+### Script Writing Help
 
 **Milestone**: Epic 13 (US-13.1, US-13.2)
 
@@ -546,9 +562,9 @@ CREATE TABLE media_files (
 
 ---
 
-## Phase 11: Cloud Rendering & Polish (Week 20)
+## Phase 11: Cloud Rendering & Polish
 
-### Week 20: Production Features
+### Production Features
 
 **Milestone**: Epic 15 (US-15.1, US-15.2) + INFRA-8
 
@@ -588,12 +604,12 @@ CREATE TABLE media_files (
 
 **Complexity Progression:**
 
-1. **Weeks 1-5**: Infrastructure (no features, pure setup)
-2. **Weeks 6-7**: CRUD operations (auth, projects)
-3. **Weeks 8-9**: Complex UI (timeline with drag-and-drop)
-4. **Week 10**: Third-party integration (Stripe)
-5. **Weeks 11-14**: ⭐ **AI + async jobs (Kafka + Modal) + TEXT-BASED EDITING**
-6. **Weeks 15-20**: Advanced AI features
+1. **Phase 1**: Infrastructure (no features, pure setup)
+2. **Phase 2**: CRUD operations (auth, projects)
+3. **Phase 3**: Complex UI (timeline with drag-and-drop)
+4. **Phase 4**: Third-party integration (Stripe)
+5. **Phases 5-6**: ⭐ **AI + async jobs (Kafka + Modal) + TEXT-BASED EDITING**
+6. **Phases 7-11**: Advanced AI features
 
 **Critical Path:**
 
