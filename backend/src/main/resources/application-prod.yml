@@ -1,0 +1,9 @@
+logging:
+  level:
+    com.auteur: INFO
+    org.springframework.web: INFO
+
+server:
+  error:
+    include-message: never
+    include-binding-errors: never

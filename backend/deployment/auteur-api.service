@@ -1,0 +1,14 @@
+[Unit]
+Description=Auteur AI Backend API
+After=syslog.target network.target
+
+[Service]
+User=auteur
+ExecStart=/usr/bin/java -jar /opt/auteur/backend.jar
+SuccessExitStatus=143
+Restart=always
+RestartSec=5
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
