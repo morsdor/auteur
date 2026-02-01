@@ -1,61 +1,11 @@
-import js from '@eslint/js';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import reactPlugin from 'eslint-plugin-react';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import sharedConfig from '@auteur/eslint-config';
 
 export default [
-  js.configs.recommended,
+  ...sharedConfig,
   {
-    files: ['**/*.{ts,tsx,js,jsx}'],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
-      globals: {
-        // Browser globals
-        window: 'readonly',
-        document: 'readonly',
-        console: 'readonly',
-        URL: 'readonly',
-        // Node globals
-        process: 'readonly',
-        __dirname: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-      },
-    },
-    plugins: {
-      '@typescript-eslint': tsPlugin,
-      react: reactPlugin,
-      'react-hooks': reactHooksPlugin,
-    },
-    rules: {
-      // Electron security rules
-      'no-eval': 'error',
-      'no-new-func': 'error',
-      'no-implied-eval': 'error',
-
-      // TypeScript
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-non-null-assertion': 'warn',
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-      ],
-      'no-unused-vars': 'off', // Use TypeScript's rule instead
-
-      // React
-      'react/react-in-jsx-scope': 'off', // Not needed in React 19
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-    },
+    ignores: ['node_modules', 'dist/**', 'dist-electron/**', 'release/**', '.vite/**'],
   },
+  // Main process: Node environment
   {
     files: ['src/main/**/*', 'src/preload/**/*'],
     languageOptions: {
@@ -65,16 +15,16 @@ export default [
       },
     },
   },
+  // Renderer process: Browser environment
   {
     files: ['src/renderer/**/*'],
     languageOptions: {
-      globals: {
-        window: 'readonly',
-        document: 'readonly',
-      },
+      // Browser globals are already included in sharedConfig (which includes globals.browser)
+      // but we can be explicit if needed, or just let sharedConfig handle it.
+      // Shared config has both browser and node, so it's a mix.
+      // For renderer we might want to ensure node globals are restricted if desired,
+      // but typically with Electron preload/contextBridge, some node usage might be present or not.
+      // For now, let's trust the shared config's broad permissions or just rely on its defaults.
     },
-  },
-  {
-    ignores: ['node_modules', 'dist/**', 'dist-electron/**', 'release/**', '.vite/**'],
   },
 ];
