@@ -16,7 +16,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "clean": "turbo clean && rm -rf node_modules",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre:commit": "turbo typecheck && turbo lint && pnpm format && turbo build"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",

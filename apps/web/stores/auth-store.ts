@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { SupabaseAuthProvider, type AuthUser, type SupabaseConfig } from '@auteur/auth';
-import { WebStorageAdapter } from '@auteur/storage';
+import { WebStorageAdapter } from '../src/lib/storage/web-storage-adapter';
 import type { User } from '@auteur/types';
 
 // Initialize the auth provider
@@ -144,7 +144,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       }
 
       // Listen to auth state changes
-      const unsubscribe = authProvider.onAuthStateChange((authUser) => {
+      const unsubAuthState = authProvider.onAuthStateChange((authUser) => {
         if (authUser) {
           set({
             user: mapAuthUserToUser(authUser),
@@ -157,6 +157,28 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           });
         }
       });
+
+      // Listen to token changes
+      // TODO: When API client is added, set token here:
+      // const unsubToken = authProvider.onTokenChange((token) => {
+      //   if (token) apiClient.setAuthToken(token);
+      //   else apiClient.clearAuthToken();
+      // });
+      const unsubToken = authProvider.onTokenChange((token) => {
+        // For now, just log token changes
+        if (token) {
+          console.log('[Auth] Token acquired');
+        } else {
+          console.log('[Auth] Token cleared');
+        }
+      });
+
+      // Combine unsubscribe functions
+      const unsubscribe = () => {
+        unsubAuthState();
+        unsubToken();
+      };
+
       set({ unsubscribe });
     } catch (error) {
       console.error('Auth initialization error:', error);

@@ -1,0 +1,83 @@
+{
+  "name": "desktop",
+  "version": "0.1.0",
+  "description": "Auteur AI Desktop App - Professional video editing powered by AI",
+  "private": true,
+  "main": "dist-electron/main/index.js",
+  "author": "Auteur AI",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "tsc && electron-vite build",
+    "preview": "electron-vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:win": "npm run build && electron-builder --win",
+    "build:linux": "npm run build && electron-builder --linux"
+  },
+  "dependencies": {
+    "@auteur/api-client": "workspace:^",
+    "@auteur/auth": "workspace:^",
+    "@auteur/types": "workspace:^",
+    "@auteur/ui": "workspace:^",
+    "@auteur/utils": "workspace:^",
+    "@supabase/supabase-js": "^2.39.0",
+    "electron-store": "^10.0.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "zustand": "^5.0.10"
+  },
+  "devDependencies": {
+    "@auteur/eslint-config": "workspace:^",
+    "@auteur/tailwind-config": "workspace:^",
+    "@eslint/js": "^9",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8",
+    "@typescript-eslint/parser": "^8",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "electron": "^32.2.10",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^2.3.0",
+    "eslint": "^9",
+    "eslint-plugin-react": "^7",
+    "eslint-plugin-react-hooks": "^5",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vite": "^6.0.7"
+  },
+  "build": {
+    "appId": "com.auteur.desktop",
+    "productName": "Auteur",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist-electron/**/*",
+      "dist/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.video",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
+  }
+}

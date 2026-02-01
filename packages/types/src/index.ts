@@ -38,3 +38,6 @@ export type { Job, JobType, JobStatus, JobParams, JobResult } from './job.types'
 // API types
 export type { ApiResponse, ApiError, PaginatedResponse } from './api.types';
 export { isApiError } from './api.types';
+
+// Storage types
+export { StorageAdapter } from './storage';

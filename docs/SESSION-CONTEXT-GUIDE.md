@@ -17,19 +17,15 @@ Read:
 - docs/requirements/03-technical-specifications.md @03-technical-specifications.md
 - docs/design/ui-design-system.md @ui-design-system.md
 
-If you see in the @06-development-roadmap.md we are at week 2.
+If you see in the @06-development-roadmap.md we are at Phase 1.
 
-This is task related to Infra 0.3
+This is task related to Infra 1
 
-- [ ] Initialize Next.js 16(latest) with App Router
-- [ ] Configure TypeScript
-- [ ] Configure Tailwind CSS (shared config)
-- [ ] Setup Zustand state management
-- [ ] Integrate Supabase Auth (web version)
-- [ ] Setup IndexedDB storage with Dexie
-- [ ] Configure PWA with next-pwa
-- [ ] Setup environment variables (.env.local)
-- [ ] Create app layout and routing structure
+- [ ] Initialize Electron with Vite + React + TypeScript
+- [ ] Configure context isolation and preload scripts
+- [ ] Setup secure IPC via ContextBridge
+- [ ] Configure ESLint, Prettier
+- [ ] Setup electron-store for secure storage
 
 Constraints -
 Before writing any new type, check if it already exists in @auteur/types package or if it can be added to @auteur/types package.
@@ -41,3 +37,17 @@ Same goes with api-client as in @auteur/api-client package.
 Let us start working on them.
 
 Ask me if you need any clarifications and as you progress, keep updating @STATUS.md
+
+## TWITTER GENERATION PROMPT
+
+### Part 1
+
+Now based on the above context and conversation history related to this chat session only, suggest me some ideas to create Twitter threads.
+The ideas should focus on what we learnt in this chat session. Architectural decisions and why they were made. Tradeoffs. Performance. Security. Scalability, etc.
+But relevant to this chat session and the user story that we were working here
+
+### Part 2
+
+Create me a twitter thread of 6-10 highly informative tweets on the best 3 tweet threads (your recommendation )
+Think like a mid to senior software engineer and use appropriate tone and language and technical details. Give code snippets wherever required.
+Save each of that thread in a new md file in @twitter folder
