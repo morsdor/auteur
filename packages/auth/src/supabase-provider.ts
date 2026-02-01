@@ -3,8 +3,13 @@
  */
 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import { AuthProvider, type AuthUser, type AuthStateChangeCallback } from './auth-provider';
-import type { StorageAdapter } from './storage-adapter';
+import {
+  AuthProvider,
+  type AuthUser,
+  type AuthStateChangeCallback,
+  type TokenChangeCallback,
+} from './auth-provider';
+import type { StorageAdapter } from '@auteur/types';
 
 export interface SupabaseConfig {
   supabaseUrl: string;
@@ -17,6 +22,7 @@ const STORAGE_KEY = 'auteur_auth_session';
 export class SupabaseAuthProvider extends AuthProvider {
   private client: SupabaseClient;
   private storage: StorageAdapter;
+  private tokenCallbacks: Set<TokenChangeCallback> = new Set();
 
   constructor(config: SupabaseConfig) {
     super();
@@ -50,6 +56,9 @@ export class SupabaseAuthProvider extends AuthProvider {
     // Persist session
     await this.saveSession(data.session);
 
+    // Notify token change
+    this.notifyTokenChange(data.session.access_token);
+
     return {
       id: data.user.id,
       email: data.user.email!,
@@ -71,6 +80,12 @@ export class SupabaseAuthProvider extends AuthProvider {
       throw new Error('Signup failed: No user returned');
     }
 
+    // If session exists (no email confirmation required), save and notify
+    if (data.session?.access_token) {
+      await this.saveSession(data.session);
+      this.notifyTokenChange(data.session.access_token);
+    }
+
     return {
       id: data.user.id,
       email: data.user.email!,
@@ -81,6 +96,9 @@ export class SupabaseAuthProvider extends AuthProvider {
   async logout(): Promise<void> {
     await this.client.auth.signOut();
     await this.storage.delete(STORAGE_KEY);
+
+    // Notify token cleared
+    this.notifyTokenChange(null);
   }
 
   async getToken(): Promise<string | null> {
@@ -96,6 +114,10 @@ export class SupabaseAuthProvider extends AuthProvider {
     }
 
     await this.saveSession(data.session);
+
+    // Notify token change
+    this.notifyTokenChange(data.session.access_token);
+
     return data.session.access_token;
   }
 
@@ -121,14 +143,41 @@ export class SupabaseAuthProvider extends AuthProvider {
           email: session.user.email!,
           name: session.user.user_metadata['name'] as string | undefined,
         });
+
+        // Also notify token change
+        this.notifyTokenChange(session.access_token);
       } else {
         callback(null);
+
+        // Notify token cleared
+        this.notifyTokenChange(null);
       }
     });
 
     return () => {
       subscription.subscription.unsubscribe();
     };
+  }
+
+  onTokenChange(callback: TokenChangeCallback): () => void {
+    this.tokenCallbacks.add(callback);
+
+    // Immediately call with current token
+    this.getToken()
+      .then((token) => callback(token))
+      .catch((err: Error) => console.warn('Failed to get initial token:', err));
+
+    // Return unsubscribe function
+    return () => {
+      this.tokenCallbacks.delete(callback);
+    };
+  }
+
+  /**
+   * Notify all token change subscribers
+   */
+  private notifyTokenChange(token: string | null): void {
+    this.tokenCallbacks.forEach((callback) => callback(token));
   }
 
   /**

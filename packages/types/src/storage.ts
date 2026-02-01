@@ -1,39 +1,31 @@
 /**
- * Abstract storage adapter interface
- * Platform-agnostic key-value storage
+ * Abstract storage adapter interface for cross-platform storage
+ * Provides a consistent API for storage operations across web and desktop
  */
 
 export abstract class StorageAdapter {
   /**
-   * Get value by key
+   * Get a value from storage
    */
   abstract get<T>(key: string): Promise<T | null>;
 
   /**
-   * Set value by key
+   * Set a value in storage
    */
   abstract set<T>(key: string, value: T): Promise<void>;
 
   /**
-   * Delete value by key
+   * Delete a value from storage
    */
   abstract delete(key: string): Promise<void>;
 
   /**
-   * Clear all storage
+   * Clear all values from storage
    */
   abstract clear(): Promise<void>;
 
   /**
-   * Get all keys
+   * Get all keys from storage
    */
   abstract keys(): Promise<string[]>;
-
-  /**
-   * Check if key exists
-   */
-  async has(key: string): Promise<boolean> {
-    const value = await this.get(key);
-    return value !== null;
-  }
 }

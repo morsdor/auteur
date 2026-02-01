@@ -3,7 +3,7 @@
  */
 
 import Dexie, { type Table } from 'dexie';
-import { StorageAdapter } from './storage-adapter';
+import { StorageAdapter } from '@auteur/types';
 
 interface StorageItem {
   key: string;

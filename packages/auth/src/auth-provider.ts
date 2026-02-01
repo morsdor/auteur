@@ -11,6 +11,7 @@ export interface AuthUser {
 }
 
 export type AuthStateChangeCallback = (user: AuthUser | null) => void;
+export type TokenChangeCallback = (token: string | null) => void;
 
 export abstract class AuthProvider {
   /**
@@ -47,4 +48,11 @@ export abstract class AuthProvider {
    * Subscribe to auth state changes
    */
   abstract onAuthStateChange(callback: AuthStateChangeCallback): () => void;
+
+  /**
+   * Subscribe to token changes
+   * Fires whenever the access token changes (login, logout, refresh)
+   * Returns an unsubscribe function
+   */
+  abstract onTokenChange(callback: TokenChangeCallback): () => void;
 }

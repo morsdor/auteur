@@ -6,8 +6,10 @@ yarn.lock
 
 # Build outputs
 dist
+dist-electron
 build
 .next
+next-env.d.ts
 out
 coverage
 
