@@ -42,9 +42,9 @@ Ask me if you need any clarifications and as you progress, keep updating @STATUS
 
 ### Part 1
 
-Now based on the above context and converstaion history related to this chat session only, suggest me some idead to create twitter threads.
-The ideads should foucs on what we learnt in this chat session. Architectural decisons and why they were made. Tradeoffs. Performance. Security. Scalability etc
-But relevant to this chat session and the user story that we were wroking here
+Now based on the above context and conversation history related to this chat session only, suggest me some ideas to create Twitter threads.
+The ideas should focus on what we learnt in this chat session. Architectural decisions and why they were made. Tradeoffs. Performance. Security. Scalability, etc.
+But relevant to this chat session and the user story that we were working here
 
 ### Part 2
 

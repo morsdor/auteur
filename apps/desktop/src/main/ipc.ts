@@ -9,7 +9,7 @@ async function initStore(): Promise<Store> {
 
   const { default: ElectronStore } = await import('electron-store');
   store = new ElectronStore({
-    encryptionKey: 'auteur-secure-storage-key', // In production, use environment variable
+    encryptionKey: process.env.ELECTRON_STORE_ENCRYPTION_KEY || 'dev-only-key',
     name: 'auteur-storage',
   });
 
