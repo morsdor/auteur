@@ -1,0 +1,139 @@
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { join } from 'path';
+import { setupIPC } from './ipc';
+
+// Prevent multiple instances
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  let mainWindow: BrowserWindow | null = null;
+
+  function createWindow(): void {
+    mainWindow = new BrowserWindow({
+      width: 1440,
+      height: 900,
+      minWidth: 1024,
+      minHeight: 768,
+      show: false,
+      autoHideMenuBar: true,
+      backgroundColor: '#0A0A0A', // Auteur bg-primary
+      titleBarStyle: 'hiddenInset',
+      webPreferences: {
+        preload: join(__dirname, '../preload/index.js'),
+        // Security settings
+        nodeIntegration: false,
+        contextIsolation: true,
+        webSecurity: !process.env.VITE_DEV_SERVER_URL,
+        sandbox: true,
+        // Disable remote module (deprecated)
+        // @ts-expect-error - enableRemoteModule is deprecated but we disable it explicitly
+        enableRemoteModule: false,
+      },
+    });
+
+    // Set CSP headers
+    mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          'Content-Security-Policy': [
+            "default-src 'self'; " +
+              "script-src 'self'; " +
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+              "font-src 'self' https://fonts.gstatic.com; " +
+              "img-src 'self' data: https:; " +
+              "connect-src 'self' https://*.supabase.co wss://*.supabase.co;",
+          ],
+        },
+      });
+    });
+
+    // Load app
+    if (process.env.VITE_DEV_SERVER_URL) {
+      mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
+      mainWindow.webContents.openDevTools();
+    } else {
+      mainWindow.loadFile(join(__dirname, '../../dist/index.html'));
+    }
+
+    // Show window when ready
+    mainWindow.on('ready-to-show', () => {
+      mainWindow?.show();
+    });
+
+    // Prevent navigation
+    mainWindow.webContents.on('will-navigate', (event, navigationUrl) => {
+      const parsedUrl = new URL(navigationUrl);
+
+      // Allow only local navigation
+      if (parsedUrl.origin !== 'file://') {
+        event.preventDefault();
+      }
+    });
+
+    // Open links in external browser
+    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+      if (url.startsWith('http:') || url.startsWith('https:')) {
+        shell.openExternal(url);
+      }
+      return { action: 'deny' };
+    });
+
+    mainWindow.on('closed', () => {
+      mainWindow = null;
+    });
+  }
+
+  // Window controls IPC
+  ipcMain.on('window:minimize', () => {
+    mainWindow?.minimize();
+  });
+
+  ipcMain.on('window:maximize', () => {
+    if (mainWindow?.isMaximized()) {
+      mainWindow.unmaximize();
+    } else {
+      mainWindow?.maximize();
+    }
+  });
+
+  ipcMain.on('window:close', () => {
+    mainWindow?.close();
+  });
+
+  // App lifecycle
+  app.whenReady().then(async () => {
+    // Setup IPC handlers (async for electron-store)
+    await setupIPC();
+
+    createWindow();
+
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+      }
+    });
+  });
+
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+      mainWindow.focus();
+    }
+  });
+
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
+
+  // Cleanup on quit
+  app.on('before-quit', () => {
+    // Clean up resources if needed
+  });
+}
