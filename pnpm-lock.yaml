@@ -35,9 +35,6 @@ importers:
       '@auteur/auth':
         specifier: workspace:^
         version: link:../../packages/auth
-      '@auteur/storage':
-        specifier: workspace:^
-        version: link:../../packages/storage
       '@auteur/types':
         specifier: workspace:^
         version: link:../../packages/types
@@ -135,9 +132,6 @@ importers:
       '@auteur/auth':
         specifier: workspace:^
         version: link:../../packages/auth
-      '@auteur/storage':
-        specifier: workspace:^
-        version: link:../../packages/storage
       '@auteur/tailwind-config':
         specifier: workspace:^
         version: link:../../packages/tailwind-config
@@ -243,22 +237,6 @@ importers:
       eslint-plugin-react-hooks:
         specifier: ^4.6.0
         version: 4.6.2(eslint@8.57.1)
-
-  packages/storage:
-    dependencies:
-      '@auteur/types':
-        specifier: workspace:*
-        version: link:../types
-      dexie:
-        specifier: ^4.3.0
-        version: 4.3.0
-    devDependencies:
-      '@types/node':
-        specifier: ^20.11.0
-        version: 20.19.30
-      typescript:
-        specifier: ^5.3.3
-        version: 5.9.3
 
   packages/tailwind-config:
     dependencies:

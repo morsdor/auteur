@@ -18,7 +18,6 @@
   "dependencies": {
     "@auteur/api-client": "workspace:^",
     "@auteur/auth": "workspace:^",
-    "@auteur/storage": "workspace:^",
     "@auteur/types": "workspace:^",
     "@auteur/ui": "workspace:^",
     "@auteur/utils": "workspace:^",
