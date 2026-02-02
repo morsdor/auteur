@@ -192,6 +192,7 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
+            export GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }}
             cd /opt/auteur
             
             # Pull latest images
