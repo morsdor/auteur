@@ -92,10 +92,9 @@
   - Configure application.yml (dev, prod profiles)
   - Add Lombok, validation dependencies
   - Create health check endpoint: GET /health
-  - Deploy to GCP Compute Engine (e2-medium VM)
-  - Install Java 21, Maven on VM
-  - Setup systemd service for Spring Boot
-  - Configure firewall rules (port 8080)
+  - Dockerize Application (Dockerfile)
+  - Configure Github Actions to build image
+  - Deploy to Hetzner VPS (Docker Compose)
   - Test deployment with health check
 
 **Referenced by**: All backend user stories (US-1.1 onwards)
@@ -119,11 +118,10 @@
   - Create R2 bucket: `auteur-media`
   - Generate access keys
   - Test upload/download with SDK
-- [ ] **Confluent Cloud** (Kafka)
-  - Create Basic cluster (us-west-2)
-  - Create topics: `jobs.requested`, `jobs.completed`, `jobs.failed`
-  - Generate API keys
+- [ ] **Redis** (Queue & Cache)
+  - Setup Redis in Docker Compose
   - Test connection from Spring Boot
+  - Verify Streams functionality
 
 **Database Schema** (for US-1.x, US-2.x, US-3.x):
 
@@ -323,9 +321,9 @@ CREATE TABLE media_files (
 
 **Goal**: Set up Modal, Kafka integration, and first AI features
 
-### Modal + Kafka Setup
+### Modal + Redis Setup
 
-**Milestone**: INFRA-7 (Modal) + Kafka job flow
+**Milestone**: INFRA-7 (Modal) + Redis job flow
 
 - [ ] **Setup Modal**
   - Create Modal account
@@ -335,13 +333,13 @@ CREATE TABLE media_files (
     - Whisper (large-v3)
     - Pyannote 3.1
     - F5-TTS
-- [ ] **Kafka Job Orchestrator**
-  - Spring Boot: Consumer for `jobs.requested`
-  - Route to specific topics: `jobs.transcription`, `jobs.tts`, etc.
-  - Producer for `jobs.completed`, `jobs.failed`
-- [ ] **Modal Kafka Consumer**
-  - Python: confluent-kafka integration
-  - Listen to `jobs.transcription`
+- [ ] **Redis Job Orchestrator**
+  - Spring Boot: Stream Producer for `jobs:requested`
+  - Route to specific consumers
+  - Stream Consumer for `jobs:completed`
+- [ ] **Modal Redis Consumer**
+  - Python: redis-py integration
+  - Listen to `jobs:transcription` stream
   - Test end-to-end flow
 
 ---
@@ -352,10 +350,10 @@ CREATE TABLE media_files (
 
 - [ ] **US-6.1: Generate Transcript**
   - Spring Boot: POST /jobs/transcription endpoint
-  - Publish to Kafka: `jobs.requested` (type=TRANSCRIPTION)
+  - Add to Redis Stream: `jobs:requested`
   - Modal worker: Run Whisper + Pyannote
   - Upload results to R2
-  - Publish to `jobs.completed`
+  - Publish to `jobs:completed`
   - Store transcript in MongoDB (word-level timestamps)
   - Frontend: "Generate Transcript" button, progress indicator
 - [ ] **US-6.2: View Transcript**
@@ -382,7 +380,7 @@ CREATE TABLE media_files (
   - Extract speaker voice from surrounding 10-sec audio
   - Auto voice cloning (no manual upload)
   - Spring Boot: POST /jobs/overdub endpoint
-  - Kafka: `jobs.overdub` topic
+  - Redis Stream: `jobs:requested`
   - Modal worker: F5-TTS with cloned voice
   - Replace audio in timeline
   - If video: auto-trigger lip-sync
@@ -580,7 +578,7 @@ CREATE TABLE media_files (
   - Playable in-app
 - [ ] **INFRA-8: CI/CD (GitHub Actions)**
   - Frontend: Lint, typecheck, build (Electron + Next.js)
-  - Backend: Maven test, build JAR, deploy to GCP VM
+  - Backend: Maven test, build Docker Image, deploy to Hetzner VPS
   - Modal: Deploy GPU functions
 - [ ] **Security Audit**
   - OWASP dependency scanning
@@ -608,7 +606,7 @@ CREATE TABLE media_files (
 2. **Phase 2**: CRUD operations (auth, projects)
 3. **Phase 3**: Complex UI (timeline with drag-and-drop)
 4. **Phase 4**: Third-party integration (Stripe)
-5. **Phases 5-6**: ⭐ **AI + async jobs (Kafka + Modal) + TEXT-BASED EDITING**
+5. **Phases 5-6**: ⭐ **AI + async jobs (Redis + Modal) + TEXT-BASED EDITING**
 6. **Phases 7-11**: Advanced AI features
 
 **Critical Path:**

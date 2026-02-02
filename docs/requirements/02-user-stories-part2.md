@@ -20,7 +20,7 @@
 
 **Technical Tasks:**
 
-- [ ] Create transcription job API on Cloud Run
+- [ ] Create transcription job API
 - [ ] Integrate Pyannote 3.1 + Whisper on Modal
 - [ ] Store transcript in MongoDB EDL
 - [ ] Create transcript panel component
@@ -275,7 +275,7 @@ User inserts after "Hello": "My name is John."
 - [ ] Implement text search in transcript (case-sensitive/insensitive toggle)
 - [ ] Highlight all matches in transcript
 - [ ] For "Replace All": batch TTS generation queue
-- [ ] Queue Kafka jobs to avoid overwhelming system
+- [ ] Queue jobs to avoid overwhelming system
 - [ ] Show progress: "Generating 3/5 replacements..."
 - [ ] Update timeline as each replacement completes
 - [ ] Store find/replace history
@@ -379,7 +379,7 @@ Replace: "version 2.0"
 
 **Technical Tasks:**
 
-- [ ] Create TTS job API on Cloud Run
+- [ ] Create TTS job API
 - [ ] Integrate F5-TTS on Modal (L4 GPU)
 - [ ] Create TTS dialog component
 - [ ] Store generated audio in R2
@@ -431,7 +431,7 @@ Replace: "version 2.0"
 
 **Technical Tasks:**
 
-- [ ] Create lip sync job API on Cloud Run
+- [ ] Create lip sync job API
 - [ ] Integrate MuseTalk on Modal (A10G)
 - [ ] Face detection with MediaPipe
 - [ ] GFPGAN upscaling for quality
@@ -750,9 +750,9 @@ Replace: "version 2.0"
 
 **Technical Tasks:**
 
-- [ ] Create render job API on Cloud Run
+- [ ] Create render job API
 - [ ] Generate EDL in FFmpeg-compatible format
-- [ ] Execute FFmpeg render on Cloud Run
+- [ ] Execute FFmpeg render on Modal (or Worker)
 - [ ] Store output in R2
 - [ ] Provide download link
 

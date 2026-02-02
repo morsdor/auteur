@@ -69,7 +69,7 @@
 | `tiptap` | Rich text editor linked to video timestamps |
 | `lucide-react` | Sharp, clean icons |
 
-### 1.5 API Layer (Spring Boot on GCP Compute Engine)
+### 1.5 API Layer (Spring Boot on Hetzner VPS)
 
 | Layer | Technology | Purpose |
 |-------|------------|---------||
@@ -78,28 +78,27 @@
 | API | Spring Web | REST API with @RestController |
 | Validation | Jakarta Validation | Request/response validation |
 | Auth | Spring Security + Supabase JWT | Token verification |
-| Queue Producer | Spring Kafka | Kafka message publishing |
-| Queue Consumer | @KafkaListener | Kafka message consumption |
+| Queue Producer | Spring Redis | Redis Stream publishing |
+| Queue Consumer | Redis Stream Listener | Job processing |
 | Migrations | Flyway | Database schema versioning |
 | Logging | Logback + Cloud Logging | Structured logging |
 | Metrics | Micrometer + Actuator | Prometheus metrics |
 | Testing | JUnit 5 + Mockito + TestContainers | Unit and integration tests |
 | Build | Maven | Dependency management |
-| Hosting | GCP Compute Engine (e2-medium) | Free tier VM |
+| Hosting | Hetzner VPS (CX22) | 4 vCPU, 8GB RAM (Docker) |
 
-### 1.6 Message Queue (Apache Kafka - Confluent Cloud)
+### 1.6 Message Queue (Redis - Self-Hosted)
 
-| Layer           | Technology                              | Purpose                                                                    |
-| --------------- | --------------------------------------- | -------------------------------------------------------------------------- |
-| Platform        | Confluent Cloud (AWS us-west-2)         | Managed Kafka cluster                                                      |
-| Cluster Type    | Basic                                   | Learning/development tier                                                  |
-| Serialization   | Avro                                    | Compact, schema-evolution friendly                                         |
-| Schema Registry | Confluent Schema Registry               | Avro schema management                                                     |
-| Producers       | Spring Kafka (Java)                     | API publishes job events                                                   |
-| Consumers       | Spring Kafka + confluent-kafka (Python) | Job orchestration + Modal workers                                          |
-| Topics          | 14 topics                               | jobs._, analytics._ (see [Kafka Architecture](./07-kafka-architecture.md)) |
-| Partitions      | 3 per topic                             | Balance parallelism and cost                                               |
-| Retention       | 7-90 days                               | Based on topic type                                                        |
+| Layer       | Technology                   | Purpose                                                                |
+| ----------- | ---------------------------- | ---------------------------------------------------------------------- |
+| Platform    | Redis (Docker)               | In-memory data store                                                   |
+| Deployment  | Docker Compose               | Running on Hetzner VPS                                                 |
+| Feature     | Redis Streams                | Persistent message queue                                               |
+| Producers   | Spring Boot (Java)           | API publishes job events                                               |
+| Consumers   | Spring Boot + Modal (Python) | Job orchestration + AI workers                                         |
+| Persistence | AOF (Append Only File)       | Durability                                                             |
+| Retention   | Stream trimming              | Manage memory usage                                                    |
+| Structure   | Streams, Hashes              | jobs:_, analytics:_ ([Redis Architecture](./07-redis-architecture.md)) |
 
 ### 1.7 GPU Compute (Modal)
 
@@ -611,26 +610,26 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 
 ## 7. Infrastructure Requirements
 
-### 7.1 GCP Compute Engine (Spring Boot API)
+### 7.1 Hetzner VPS (API + Redis)
 
-- **Instance Type**: e2-medium (2 vCPU, 4GB RAM)
-- **OS**: Ubuntu 22.04 LTS
-- **Disk**: 20GB SSD persistent disk
-- **Network**: External IP with firewall rules (allow 443, 80)
-- **Java**: OpenJDK 21
-- **Deployment**: systemd service with auto-restart
-- **SSL**: Let's Encrypt via Certbot
-- **Monitoring**: Cloud Logging + custom metrics
-- **Autoscaling**: Manual (upgrade to e2-standard-2 if needed)
+- **Instance Type**: CX22 (4 vCPU, 4GB RAM) or CX32
+- **OS**: Ubuntu 24.04 LTS
+- **Disk**: 80GB NVMe
+- **Network**: Allow ports 443, 80, 22
+- **Runtime**: Docker Engine + Docker Compose
+- **Deployment**: GitHub Actions -> GHCR -> VPS
+- **SSL**: Let's Encrypt (via Caddy)
+- **Monitoring**: `docker stats` + Log checks
+- **Autoscaling**: Manual vertical scaling (upgrade VPS)
 
-### 7.2 Kafka (Confluent Cloud)
+### 7.2 Redis (Self-Hosted)
 
-- **Cluster**: Basic (us-west-2)
-- **Partitions**: 3 per topic (42 total for 14 topics)
-- **Replication**: 3 (Confluent Cloud default)
-- **Retention**: 7 days (jobs._), 30 days (jobs.completed/failed), 90 days (analytics._)
-- **Throughput**: ~100 messages/sec (baseline for learning)
-- **Schema Registry**: Enabled with Avro schemas
+- **Service**: Redis container in Docker Compose
+- **Configuration**: AOF Persistence enabled
+- **Max Memory**: Configured to 2GB (approx)
+- **Eviction Policy**: `noeviction` (for queues)
+- **Throughput**: ~10,000 ops/sec (plenty for MVP)
+- **Data Structure**: Streams (`jobs:stream`) + Hashes (Caching)
 
 ### 7.3 Modal
 
@@ -661,15 +660,15 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 
 - **Workflows**:
   - `ci-frontend.yml`: Lint, typecheck, test for monorepo
-  - `ci-backend.yml`: Maven test, build JAR for Spring Boot
-  - `deploy-api.yml`: Deploy JAR to GCP VM via SSH
+  - `ci-backend.yml`: Maven test, build Docker image
+  - `deploy.yml`: Push to GHCR, SSH to VPS, run `docker compose up -d`
   - `deploy-modal.yml`: Deploy Modal functions
-- **Secrets**: Stored in GitHub Secrets (KAFKA_API_KEY, GCP_SSH_KEY, etc.)
-- **Artifacts**: JAR files, Docker images (if containerizing later)
+- **Secrets**: Stored in GitHub Secrets (HETZNER_SSH_KEY, GHCR_TOKEN, etc.)
+- **Artifacts**: Docker images (GHCR)
 
 ### 7.8 Development Tools
 
 - **IDE**: IntelliJ IDEA (Java), VS Code (TypeScript/React)
 - **API Testing**: Postman or Bruno
-- **Kafka UI**: Confluent Cloud Dashboard + kcat (CLI)
+- **Queue Tools**: RedisInsight or Redis CLI
 - **Database Tools**: DBeaver (Postgres), MongoDB Compass

@@ -85,7 +85,7 @@ auteur/
 │   ├── desktop/           # Electron + React + TypeScript
 │   └── web/               # Next.js 14 + React + TypeScript
 └── backend/
-    ├── api/               # Spring Boot (Java 21) on GCP VM
+    ├── api/               # Spring Boot (Java 21) on Hetzner VPS
     └── gpu/               # Modal (Python workers)
 ```
 
@@ -109,31 +109,31 @@ auteur/
            └──────────────┬─────────────┘
                           ▼
 ┌─────────────────────────────────────────────────────────┐
-│         SPRING BOOT API (Java 21) on GCP VM             │
+│         SPRING BOOT API (Java 21) on Hetzner VPS        │
 │  ┌──────────────────────────────────────────────────┐  │
 │  │  - REST API (Spring Web)                         │  │
 │  │  - JWT validation       - Credit management      │  │
-│  │  - Flyway migrations    - Kafka producers        │  │
+│  │  - Flyway migrations    - Redis Producers        │  │
 │  │  - Job status queries   - Rate limiting          │  │
 │  └──────────────────────────────────────────────────┘  │
 └────────┬──────────────┬──────────────┬──────────────────┘
          │              │              │
          ▼              ▼              ▼
 ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐
-│  SUPABASE   │  │   KAFKA     │  │  CLOUDFLARE R2      │
+│  SUPABASE   │  │    REDIS    │  │  CLOUDFLARE R2      │
 │  ─────────  │  │  ─────────  │  │  ───────────────    │
-│  - Auth     │  │  Confluent  │  │  - Video uploads    │
-│  - Postgres │  │  Cloud      │  │  - Generated assets │
-│  - Users    │  │  - Topics   │  │  - Project files    │
-│  - Credits  │  │  - Consumer │  │                     │
-│  - Jobs     │  │    Groups   │  │                     │
+│  - Auth     │  │  Stream     │  │  - Video uploads    │
+│  - Postgres │  │  Queue      │  │  - Generated assets │
+│  - Users    │  │             │  │  - Project files    │
+│  - Credits  │  │             │  │                     │
+│  - Jobs     │  │             │  │                     │
 └─────────────┘  └─────┬───────┘  └─────────────────────┘
                        │
                        ▼
               ┌────────────────────┐
               │   MODAL (Python)   │
               │  ─────────────     │
-              │  - Kafka consumers │
+              │  - Redis consumers │
               │  - A100, A10G, L4  │
               │  - AI model workers│
               └────────────────────┘
@@ -143,32 +143,33 @@ auteur/
          │  ─────────────────────   │
          │  - Edit Decision Lists   │
          │  - Transcript data       │
+         │  - Project Metadata      │
          └──────────────────────────┘
 ```
 
-### 3.3 Job Flow via Kafka
+### 3.3 Job Flow via Redis Streams
 
 ```
 User Action (Web/Desktop)
     ↓
 Spring Boot API
     ├─ Deduct credits (Postgres)
-    └─ Publish to kafka: jobs.requested
+    └─ Add to Stream: jobs:requested
                 ↓
-        Kafka (Confluent Cloud)
+        Redis (Hetzner VPS)
                 ↓
         ┌───────┴────────┐
         ▼                ▼
 Job Orchestrator    Modal Workers
-(Spring Consumer)   (Python Consumers)
-    ├─ Route job        ├─ jobs.transcription
-    └─ Publish to:      ├─ jobs.tts
-       jobs.{type}      ├─ jobs.lip-sync
-                        └─ jobs.video-generation
+(Spring Link)       (Python Consumers)
+    ├─ Route job        ├─ jobs:transcription
+    └─ Publish to:      ├─ jobs:tts
+       jobs:{type}      ├─ jobs:lip-sync
+                        └─ jobs:video-generation
                                 ↓
                         Process & Store in R2
                                 ↓
-                        Publish: jobs.completed
+                        Ack & Publish: jobs:completed
                                 ↓
                         Spring Boot Consumer
                                 ↓
@@ -303,7 +304,7 @@ Job Orchestrator    Modal Workers
 
 ### Feature 10: Cloud Render
 
-- **Technology**: FFmpeg on Cloud Run
+- **Technology**: FFmpeg on Modal
 - **Input**: Edit Decision List (EDL)
 - **Output**: Rendered video file
 - **Plan**: Pro only

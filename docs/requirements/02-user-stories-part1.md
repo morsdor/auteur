@@ -20,7 +20,7 @@
 **Technical Tasks:**
 
 - [ ] Configure Supabase Auth providers
-- [ ] Create registration API endpoint on Cloud Run
+- [ ] Create registration API endpoint
 - [ ] Implement email verification flow
 - [ ] Create user record in Postgres on successful registration
 - [ ] Initialize credit balance (0 for free tier)
@@ -48,7 +48,7 @@
 - [ ] Store JWT in secure electron-store
 - [ ] Implement token refresh logic
 - [ ] Create auth context for React components
-- [ ] Add rate limiting middleware to Cloud Run
+- [ ] Add rate limiting middleware
 
 ---
 
@@ -159,7 +159,7 @@
 **Technical Tasks:**
 
 - [ ] Integrate Stripe Checkout
-- [ ] Create Stripe webhook handler on Cloud Run
+- [ ] Create Stripe webhook handler
 - [ ] Update user subscription in Postgres
 - [ ] Add credits to user balance
 - [ ] Send confirmation email via Supabase

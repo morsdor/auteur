@@ -71,26 +71,25 @@ This document summarizes the complete, approved technology stack for the Auteur 
 - **Validation**: Jakarta Validation
 - **Auth**: Spring Security + Supabase JWT verification
 - **Migrations**: **Flyway** (SQL-based schema versioning)
-- **Testing**: JUnit 5, Mockito, TestContainers (real Postgres/Kafka/MongoDB in tests)
+- **Testing**: JUnit 5, Mockito, TestContainers (real Postgres/Redis/MongoDB in tests)
 - **Build**: Maven
-- **Hosting**: **GCP Compute Engine** (e2-medium, free tier)
+- **Hosting**: **Hetzner VPS** (Docker Compose)
 
 ### Message Queue
 
-- **Platform**: **Apache Kafka** via **Confluent Cloud**
-- **Cluster**: Basic tier (us-west-2)
-- **Producer**: Spring Kafka (Java)
-- **Consumers**: Spring Kafka (Java) + confluent-kafka (Python for Modal)
-- **Serialization**: **Avro** with Schema Registry
-- **Topics**: 14 topics (`jobs.*`, `analytics.*`)
-- **Why**: Industry-standard event streaming, perfect for async job processing
+- **Platform**: **Redis** (Self-hosted)
+- **Technology**: **Redis Streams**
+- **Persistence**: AOF (Append Only File)
+- **Role**: Replaces Kafka for the MVP
+- **Consumers**: Spring Boot (Java) + Modal (Python)
+- **Why**: Simpler, lower cost, sufficient for MVP scale
 
 ### GPU Compute
 
 - **Platform**: **Modal** (Serverless Python GPUs)
 - **GPUs**: A100-80GB, A10G, L4/T4
 - **Runtime**: Python 3.10+ with PyTorch + CUDA
-- **Workers**: Kafka consumers that process AI jobs
+- **Workers**: Redis Stream consumers that process AI jobs
 - **Why**: On-demand GPUs, automatic scaling, no infrastructure management
 
 ---
@@ -127,9 +126,10 @@ This document summarizes the complete, approved technology stack for the Auteur 
 
 - **Primary**: **GitHub Actions**
   - Frontend: Lint, typecheck, test monorepo
-  - Backend: Maven test, build JAR
-  - Deploy: SSH to GCP VM, deploy Modal functions
-- **Future**: Jenkins (for learning enterprise CI/CD in Phase 7)
+  - Backend: Maven test, build Docker image
+  - Registry: **GitHub Container Registry (GHCR)**
+  - Deploy: SSH to Hetzner VPS, `docker compose pull && up`
+- **Future**: specialized CI runners
 
 ### Testing
 
@@ -137,16 +137,15 @@ This document summarizes the complete, approved technology stack for the Auteur 
 | ------------- | ----------------------------------------- |
 | Frontend Unit | Vitest                                    |
 | Backend Unit  | JUnit 5 + Mockito                         |
-| Integration   | TestContainers (Postgres, Kafka, MongoDB) |
+| Integration   | TestContainers (Postgres, Redis, MongoDB) |
 | E2E           | Playwright (desktop + web)                |
 | API           | Postman/Bruno                             |
 
 ### Deployment
 
-- **API**: systemd service on GCP Compute Engine
-- **SSL**: Let's Encrypt (Certbot)
+- **Infrastructure**: Docker Compose on Hetzner VPS
+- **Proxy**: Caddy (Automatic HTTPS)
 - **Desktop**: Self-distributed (code-signed Electron builds)
-- **Web**: Vercel or GCP Cloud Run (TBD in Phase 7)
 
 ---
 
@@ -159,18 +158,18 @@ User (Desktop/Web)
     ↓ POST /jobs/transcription
 Spring Boot API
     ├─ Deduct credits (Postgres transaction)
-    └─ Publish JobRequestedEvent → Kafka
+    └─ Add to Stream: jobs:requested (Redis)
                 ↓
-        Kafka (Confluent Cloud)
+        Redis (Hetzner VPS)
                 ↓
         ┌───────┴────────┐
         ▼                ▼
 Job Orchestrator    Modal Workers
-(Spring Consumer)   (Python Kafka Consumers)
+(Spring Link)       (Python Redis Consumers)
     ├─ Route job        ├─ Download from R2
     └─ Publish to:      ├─ Run AI model (GPU)
-       jobs.{type}      ├─ Upload result to R2
-                        └─ Publish JobCompletedEvent → Kafka
+       jobs:{type}      ├─ Upload result to R2
+                        └─ Ack & Publish: jobs:completed
                                 ↓
                         Spring Boot Consumer
                                 ↓
@@ -193,7 +192,7 @@ apps/desktop            apps/web
                 ↓
         ┌───────┴────────┐
         ▼                ▼
-    Supabase         Kafka
+    Supabase         Redis
     (Auth+Postgres)  (Jobs)
                         ↓
                     Modal (GPUs)
@@ -203,17 +202,17 @@ apps/desktop            apps/web
 
 ## Cost Estimate (Monthly)
 
-| Service                 | Tier                          | Cost               |
-| ----------------------- | ----------------------------- | ------------------ |
-| GCP Compute Engine      | e2-medium (free tier)         | $0                 |
-| Kafka (Confluent Cloud) | Basic cluster                 | ~$110              |
-| Modal                   | Pay-per-use (A10G @ $0.60/hr) | ~$50-200 (varies)  |
-| Supabase                | Pro                           | $25                |
-| MongoDB Atlas           | M10                           | ~$60               |
-| Cloudflare R2           | Storage only                  | ~$10               |
-| **Total**               |                               | **$255-405/month** |
+| Service            | Tier                          | Cost                |
+| ------------------ | ----------------------------- | ------------------- |
+| Hetzner VPS (CX22) | 4 vCPU, 8GB RAM               | ~$9                 |
+| Redis              | Self-hosted on VPS            | $0                  |
+| Modal              | Pay-per-use (A10G @ $0.60/hr) | ~$20-60 (varies)    |
+| Supabase           | Pro                           | $25                 |
+| MongoDB Atlas      | M10                           | ~$60                |
+| Cloudflare R2      | Storage only                  | ~$10                |
+| **Total**          |                               | **~$120-165/month** |
 
-> **Note**: GCP free tier gives $300 credit for 90 days, Kafka has free tier option ($0 with limits), Modal has $30/month free credits
+> **Note**: Modal has $30/month free credits. Hetzner is very cost effective.
 
 ---
 
@@ -255,7 +254,7 @@ apps/desktop            apps/web
 
 - [Product Requirements](./01-product-requirements.md)
 - [Technical Specifications](./03-technical-specifications.md)
-- [Kafka Architecture](./07-kafka-architecture.md)
+- [Redis Architecture](./07-redis-architecture.md)
 - [Development Roadmap](./06-development-roadmap.md)
 - [GitHub Issues (Monorepo)](./05a-github-issues-monorepo.md)
 
