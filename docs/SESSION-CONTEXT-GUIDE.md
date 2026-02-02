@@ -19,13 +19,18 @@ Read:
 
 If you see in the @06-development-roadmap.md we are at Phase 1.
 
-This is task related to Infra 1
+This is task related to Infra 2
 
-- [ ] Initialize Electron with Vite + React + TypeScript
-- [ ] Configure context isolation and preload scripts
-- [ ] Setup secure IPC via ContextBridge
-- [ ] Configure ESLint, Prettier
-- [ ] Setup electron-store for secure storage
+- Initialize Spring Boot 3.2 project with Maven
+- Setup Controllers, Services, Repositories pattern
+- Configure application.yml (dev, prod profiles)
+- Add Lombok, validation dependencies
+- Create health check endpoint: GET /health
+- Install Java 21, Maven on VM
+- Setup systemd service for Spring Boot
+- Configure firewall rules (port 8080)
+- Deploy to GCP Compute Engine (e2-medium VM)
+- Test deployment with health check
 
 Constraints -
 Before writing any new type, check if it already exists in @auteur/types package or if it can be added to @auteur/types package.

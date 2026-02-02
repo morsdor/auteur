@@ -133,9 +133,9 @@
 
 ## 🚧 In Progress
 
-**Current Work**: Infra - 1, Infra 0.4, Infra 0.5 have been completed;
+**Current Work**: Infra 2 - Spring Boot App Setup (Verified)
 
-**Next Task**: Infra 2 Spring boot app setup with GCP deployment
+**Next Task**: Infra 2 - Deploy to GCP (Manual Step)
 
 ---
 
