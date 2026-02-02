@@ -26,6 +26,7 @@ RUN pnpm install --frozen-lockfile
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
+COPY tsconfig.base.json tsconfig.base.json
 
 # Uncomment and use build args if needed
 ARG NEXT_PUBLIC_SUPABASE_URL
