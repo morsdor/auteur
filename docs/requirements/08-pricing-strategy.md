@@ -239,7 +239,11 @@ Increase if data shows you can afford it
 Monitor Modal costs weekly
 Projected Revenue (Year 1):
 
-| Month 3 | 100 users | 80 Free, 15 Creator, 5 Pro | $485/month | | Month 6 | 500 users | 300 Free, 150 Creator, 50 Pro | $4,800/month | | Month 12 | 2,000 users | 1,000 Free, 800 Creator, 200 Pro | $23,000/month |
+| Month | Users | Distribution | Revenue |
+|-------|-------|--------------|---------|
+| Month 3 | 100 users | 80 Free, 15 Creator, 5 Pro | $485/month |
+| Month 6 | 500 users | 300 Free, 150 Creator, 50 Pro | $4,800/month |
+| Month 12 | 2,000 users | 1,000 Free, 800 Creator, 200 Pro | $23,000/month |
 
 Costs at Month 12:
 

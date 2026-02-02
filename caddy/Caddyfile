@@ -8,14 +8,7 @@
 
 # Main domain
 {$DOMAIN} {
-    # Frontend (Next.js)
-    handle /* {
-        reverse_proxy frontend:3000 {
-            header_up X-Real-IP {remote_host}
-            header_up X-Forwarded-For {remote_host}
-            header_up X-Forwarded-Proto {scheme}
-        }
-    }
+
 
     # Backend API
     handle /api/* {
@@ -38,6 +31,15 @@
     }
     handle @websockets {
         reverse_proxy frontend:3000
+    }
+
+    # Frontend (Next.js) - catch-all, must be last
+    handle {
+        reverse_proxy frontend:3000 {
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
     }
 
     # Security headers

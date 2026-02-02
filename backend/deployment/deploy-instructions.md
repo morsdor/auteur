@@ -32,7 +32,7 @@
    sudo mkdir -p /opt/auteur
    sudo mv /tmp/backend.jar /opt/auteur/
 
-   # Creaet user
+   # Create user
    sudo useradd -r -s /bin/false auteur
    sudo chown -R auteur:auteur /opt/auteur
 

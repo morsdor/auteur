@@ -30,7 +30,7 @@ RUN addgroup -g 1001 -S spring && \
   adduser -u 1001 -S spring -G spring
 
 # Copy JAR from builder
-COPY --from=builder --chown=spring:spring /app/target/*.jar app.jar
+COPY --from=builder --chown=spring:spring /app/target/backend-*.jar app.jar
 
 # Switch to non-root user
 USER spring:spring
