@@ -18,6 +18,7 @@ out
 .env
 .env.local
 .env.*.local
+.env.example
 
 # Electron
 apps/desktop/out
