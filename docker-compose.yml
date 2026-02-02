@@ -15,6 +15,9 @@ services:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
+    environment:
+      - DOMAIN=${DOMAIN}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
     networks:
       - auteur-network
     depends_on:
@@ -38,7 +41,7 @@ services:
     depends_on:
       - backend
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -56,31 +59,31 @@ services:
       - SPRING_DATASOURCE_URL=${SUPABASE_DB_URL}
       - SPRING_DATASOURCE_USERNAME=${SUPABASE_DB_USER}
       - SPRING_DATASOURCE_PASSWORD=${SUPABASE_DB_PASSWORD}
-      
+
       # Redis (Local on VPS)
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
       - SPRING_DATA_REDIS_PASSWORD=${REDIS_PASSWORD}
-      
+
       # Supabase Auth
       - SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
       - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
       - SUPABASE_JWT_SECRET=${SUPABASE_JWT_SECRET}
-      
+
       # MongoDB Atlas (Managed)
       - MONGODB_URI=${MONGODB_URI}
-      
+
       # Cloudflare R2
       - R2_ENDPOINT=${R2_ENDPOINT}
       - R2_ACCESS_KEY=${R2_ACCESS_KEY}
       - R2_SECRET_KEY=${R2_SECRET_KEY}
       - R2_BUCKET_NAME=${R2_BUCKET_NAME}
-      
+
       # Modal
       - MODAL_TOKEN_ID=${MODAL_TOKEN_ID}
       - MODAL_TOKEN_SECRET=${MODAL_TOKEN_SECRET}
-      
+
       # App Config
       - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=production
@@ -91,7 +94,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -110,7 +113,7 @@ services:
     networks:
       - auteur-network
     healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
