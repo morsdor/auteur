@@ -111,13 +111,31 @@
 - [x] Production build verification ✅
 - [x] Create comprehensive README
 
----
+### INFRA-0.4: Update Electron App for Monorepo
+
+- [x] Restructure as `apps/desktop`
+- [x] Import `@auteur/ui` components
+- [x] Use `@auteur/api-client` instead of direct fetch
+- [x] Replace inline auth with `@auteur/auth`
+- [x] Replace inline storage with `@auteur/storage`
+- [x] Update build scripts for monorepo
+- [x] Configure electron-builder for packaging
+
+### INFRA-0.5: Setup Shared Development Scripts
+
+- [x] Create `turbo.json` pipeline config
+- [x] Add `dev` script (runs both desktop and web)
+- [x] Add `build` script (builds all packages)
+- [x] Add `lint` script (lints entire monorepo)
+- [x] Add `test` script (runs all tests)
+- [x] Add `changeset` script for version bumps
+- [x] Add `typecheck` script for TypeScript validation
 
 ## 🚧 In Progress
 
-**Current Work**: None
+**Current Work**: Infra 2 - Spring Boot App Setup (Verified)
 
-**Next Task**: Electron desktop App (Infra 0.4 and then Infra 0.5)
+**Next Task**: Infra 2 - Deploy to GCP (Manual Step)
 
 ---
 

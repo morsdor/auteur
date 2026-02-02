@@ -17,9 +17,13 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "clean": "turbo clean && rm -rf node_modules",
     "prepare": "husky install",
-    "pre:commit": "turbo typecheck && turbo lint && pnpm format && turbo build"
+    "pre:commit": "turbo typecheck && turbo lint && pnpm format && turbo build",
+    "test": "turbo test",
+    "changeset": "changeset",
+    "ssh": "ssh root@77.42.88.101"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.8",
     "@types/node": "^20.11.0",
     "eslint": "^8.56.0",
     "husky": "^8.0.3",
