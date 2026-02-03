@@ -73,6 +73,60 @@
     encode gzip zstd
 }
 
+# Dev Environment
+dev.{$DOMAIN} {
+    # Backend API
+    handle /api/* {
+        reverse_proxy backend-dev:8080 {
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # Health check endpoints
+    handle /health {
+        reverse_proxy backend-dev:8080
+    }
+
+    # WebSocket support
+    @websockets {
+        header Connection *Upgrade*
+        header Upgrade websocket
+    }
+    handle @websockets {
+        reverse_proxy frontend-dev:3000
+    }
+
+    # Frontend (Next.js) - catch-all, must be last
+    handle {
+        reverse_proxy frontend-dev:3000 {
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # Security headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Frame-Options "SAMEORIGIN"
+        X-Content-Type-Options "nosniff"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
+
+    # Logging
+    log {
+        output file /var/log/caddy/access-dev.log
+        format json
+    }
+
+    # Enable compression
+    encode gzip zstd
+}
+
 # API subdomain (optional - if you want api.yourdomain.com)
 api.{$DOMAIN} {
     reverse_proxy backend:8080 {

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - develop
   pull_request:
     branches:
       - main
@@ -209,6 +210,55 @@ jobs:
             
             # Deploy with zero downtime
             docker compose up -d --remove-orphans
+            
+            # Clean up old images
+            docker image prune -f
+            
+            # Show running containers
+            docker compose ps
+
+  # ============================================
+  # Deploy Dev to Hetzner VPS
+  # ============================================
+  deploy-dev:
+    name: Deploy Dev to VPS
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy config files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "docker-compose.yml,caddy/Caddyfile"
+          target: "/opt/auteur"
+
+      - name: Deploy to Hetzner VPS
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            export GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }}
+            export REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+            cd /opt/auteur
+            
+            # Pull latest images
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker compose pull
+            
+            # Deploy with zero downtime
+            docker compose up -d --remove-orphans
+            
+            # Restart caddy to pick up new config/domains if needed
+            docker compose restart caddy
             
             # Clean up old images
             docker image prune -f
