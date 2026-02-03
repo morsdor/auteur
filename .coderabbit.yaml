@@ -1,0 +1,16 @@
+language: "en-US"
+early_access: true
+reviews:
+  # "chill" profile is generally less verbose
+  profile: "chill"
+  high_level_summary: true
+  auto_review:
+    enabled: true
+    # Targeting both branches to ensure summaries are generated
+    base_branches:
+      - "develop"
+      - "main"
+  auto_summary:
+    enabled: true
+chat:
+  auto_reply: true
