@@ -15,7 +15,7 @@ major_version = 17
 [studio]
 enabled = true
 port = 54323
-api_url = "http://127.0.0.1:54323/api"
+api_url = "http://127.0.0.1:54321/api"
 
 [inbucket]
 enabled = true
