@@ -199,6 +199,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             export GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }}
+            export REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
             cd /opt/auteur
             
             # Pull latest images
