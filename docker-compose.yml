@@ -112,12 +112,13 @@ services:
       - redis_data:/data
     networks:
       - auteur-network
-    # healthcheck:
-    #   test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
-
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli -a \"$REDIS_PASSWORD\" ping | grep PONG" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     # ============================================
     # Networks
     # ============================================
