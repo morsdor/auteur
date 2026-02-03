@@ -57,3 +57,7 @@ docs/requirements/08-pricing-strategy.md
 
 # Twitter drafts (personal)
 twitter/
+supabase/.temp
+supabase/.branches
+supabase/.migrations
+

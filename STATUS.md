@@ -131,11 +131,30 @@
 - [x] Add `changeset` script for version bumps
 - [x] Add `typecheck` script for TypeScript validation
 
+### INFRA-2: Spring Boot App Setup ✅
+
+- [x] Initialize Spring Boot 3.2 project with Maven
+- [x] Setup Controllers, Services, Repositories pattern
+- [x] Configure application.yml (dev, prod profiles)
+- [x] Add Lombok, validation dependencies
+- [x] Create health check endpoint: GET /health
+- [x] Deploy to GCP Compute Engine (e2-medium VM)
+- [x] Install Java 21, Maven on VM
+- [x] Setup systemd service for Spring Boot
+- [x] Configure firewall rules (port 8080)
+- [x] Test deployment with health check
+
+### INFRA-4: Setup Supabase Database & RLS ✅
+
+- [x] Create `supabase/config.toml`
+- [x] Create initial migration `20240203000000_initial_schema.sql`
+- [x] Implement User, Project, Media, Job, Subscription, Credit tables
+- [x] Implement `handle_new_user` trigger for Auth sync
+- [x] Implement RLS policies for all tables (User isolation)
+
 ## 🚧 In Progress
 
-**Current Work**: Infra 2 - Spring Boot App Setup (Verified)
-
-**Next Task**: Infra 2 - Deploy to GCP (Manual Step)
+**Current Work**: Ready for next US - Infra 5
 
 ---
 
