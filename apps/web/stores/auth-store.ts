@@ -167,9 +167,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const unsubToken = authProvider.onTokenChange((token) => {
         // For now, just log token changes
         if (token) {
-          console.log('[Auth] Token acquired');
+          console.info('[Auth] Token acquired');
         } else {
-          console.log('[Auth] Token cleared');
+          console.info('[Auth] Token cleared');
         }
       });
 
