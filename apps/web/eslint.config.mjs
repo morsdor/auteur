@@ -10,6 +10,7 @@ const eslintConfig = defineConfig([
     if (config.plugins && config.plugins['react-hooks']) {
       // eslint-config-next already defines react-hooks, so we remove it from shared config
       // to avoid "Cannot redefine plugin" error.
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { 'react-hooks': _, ...plugins } = config.plugins;
       return {
         ...config,
