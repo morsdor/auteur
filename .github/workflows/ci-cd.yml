@@ -17,10 +17,39 @@ env:
 
 jobs:
   # ============================================
+  # Change Detection
+  # ============================================
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'apps/web/**'
+              - 'packages/**'
+              - '.github/workflows/ci-cd.yml'
+            backend:
+              - 'backend/**'
+              - '.github/workflows/ci-cd.yml'
+
+  # ============================================
   # Frontend Build & Test
   # ============================================
   frontend-ci:
     name: Frontend CI
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     
     steps:
@@ -74,6 +103,8 @@ jobs:
   # ============================================
   backend-ci:
     name: Backend CI
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
     
     steps:
@@ -94,14 +125,13 @@ jobs:
         run: mvn -B package -DskipTests --file backend/pom.xml
 
   # ============================================
-  # Build and Push Docker Images
+  # Build and Push Frontend Image
   # ============================================
-  build-and-push:
-    name: Build & Push Images
-    needs: [frontend-ci, backend-ci]
+  build-frontend:
+    name: Build Frontend Image
+    needs: [changes, frontend-ci]
+    if: needs.changes.outputs.frontend == 'true' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
-    
     permissions:
       contents: read
       packages: write
@@ -123,8 +153,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Extract metadata for Frontend
-        id: meta-frontend
+      - name: Extract metadata
+        id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}
@@ -132,26 +162,16 @@ jobs:
             type=ref,event=branch
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
-            
-      - name: Extract metadata for Backend
-        id: meta-backend
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
-            
-      - name: Build and push Frontend
+
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./apps/web/Dockerfile
           push: true
           platforms: linux/arm64
-          tags: ${{ steps.meta-frontend.outputs.tags }}
-          labels: ${{ steps.meta-frontend.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
@@ -159,26 +179,72 @@ jobs:
             NEXT_PUBLIC_SUPABASE_URL=${{ secrets.SUPABASE_URL }}
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
 
-      - name: Build and push Backend
+  # ============================================
+  # Build and Push Backend Image
+  # ============================================
+  build-backend:
+    name: Build Backend Image
+    needs: [changes, backend-ci]
+    if: needs.changes.outputs.backend == 'true' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
           platforms: linux/arm64
-          tags: ${{ steps.meta-backend.outputs.tags }}
-          labels: ${{ steps.meta-backend.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   # ============================================
-  # Deploy to Hetzner VPS
+  # Deploy to Hetzner VPS (Production)
   # ============================================
   deploy:
     name: Deploy to Production
-    needs: build-and-push
+    # Run if we are on main AND either frontend or backend was built (or explicitly changed)
+    # Using always() ensures it runs even if a skipped change job happened, but we need correct needs
+    needs: [changes, build-frontend, build-backend]
+    if: |
+      always() && 
+      (needs.build-frontend.result == 'success' || needs.build-frontend.result == 'skipped') &&
+      (needs.build-backend.result == 'success' || needs.build-backend.result == 'skipped') &&
+      github.ref == 'refs/heads/main' &&
+      (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.backend == 'true')
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     
     steps:
       - name: Checkout code
@@ -204,11 +270,12 @@ jobs:
             export REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
             cd /opt/auteur
             
-            # Pull latest images
+            # Pull latest images (only updated ones will actually pull)
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker compose pull
             
             # Deploy with zero downtime
+            # Only containers with new images or config changes will recreate
             docker compose up -d --remove-orphans
             
             # Clean up old images
@@ -222,9 +289,14 @@ jobs:
   # ============================================
   deploy-dev:
     name: Deploy Dev to VPS
-    needs: build-and-push
+    needs: [changes, build-frontend, build-backend]
+    if: |
+      always() && 
+      (needs.build-frontend.result == 'success' || needs.build-frontend.result == 'skipped') &&
+      (needs.build-backend.result == 'success' || needs.build-backend.result == 'skipped') &&
+      github.ref == 'refs/heads/develop' &&
+      (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.backend == 'true')
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
     
     steps:
       - name: Checkout code
@@ -250,11 +322,12 @@ jobs:
             export REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
             cd /opt/auteur
             
-            # Pull latest images
+            # Pull latest images (only updated ones will actually pull)
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker compose pull
             
             # Deploy with zero downtime
+            # Only containers with new images or config changes will recreate
             docker compose up -d --remove-orphans
             
             # Restart caddy to pick up new config/domains if needed

@@ -27,9 +27,16 @@ Auteur AI is a video creation platform built on a modern microservices architect
 │                         │                                  │
 │         ┌───────────────┴───────────────┐                  │
 │         ▼                               ▼                  │
+│         ┌───────────────┴───────────────┐                  │
+│         ▼                               ▼                  │
 │  ┌─────────────────┐          ┌──────────────────┐         │
-│  │   Next.js       │          │  Spring Boot     │         │
-│  │   Frontend      │◄────────►│  REST API        │         │
+│  │   Prod Frontend │          │  Prod Backend    │         │
+│  │   (Next.js)     │◄────────►│   (Spring Boot)  │         │
+│  └─────────────────┘          └────────┬─────────┘         │
+│                                        │                   │
+│  ┌─────────────────┐          ┌────────┴─────────┐         │
+│  │   Dev Frontend  │          │  Dev Backend     │         │
+│  │   (Next.js)     │◄────────►│   (Spring Boot)  │         │
 │  └─────────────────┘          └────────┬─────────┘         │
 │                                        │                   │
 │                              ┌──────────────────┐          │
@@ -115,14 +122,12 @@ We use **GitHub Actions** for a fully automated pipeline.
 
 ### The Pipeline (`ci-cd.yml`)
 
-1.  **Push:** Code is pushed to `main` branch.
-2.  **Build:** Docker images for Frontend and Backend are built. (Frontend uses `turbo prune` for speed).
-3.  **Publish:** Images are pushed to **GitHub Container Registry (GHCR)**.
-4.  **Deploy:** The pipeline SSHs into the Hetzner VPS and runs:
-    ```bash
-    docker compose pull
-    docker compose up -d
-    ```
+1.  **Push:**
+    - `main` branch → **Production** (`auteur.cloud`).
+    - `develop` branch → **Development** (`dev.auteur.cloud`).
+2.  **Build:** Docker images created with corresponding tags (`latest` or `develop`).
+3.  **Publish:** Images pushed to **GHCR**.
+4.  **Deploy:** Pipeline SSHs to VPS and runs `docker compose pull && docker compose up -d`. The `docker-compose.yml` handles both environments simultaneously.
 
 ### Infrastructure Setup (Hetzner VPS)
 
@@ -156,8 +161,9 @@ All commands are run from `/opt/auteur`.
 **View Logs:**
 
 ```bash
-docker compose logs -f          # All logs
-docker compose logs -f backend  # Just backend
+docker compose logs -f              # All logs
+docker compose logs -f backend      # Prod backend
+docker compose logs -f backend-dev  # Dev backend
 ```
 
 **Check Status:**
