@@ -37,7 +37,7 @@ public class R2Config {
                 .build();
     }
 
-    @Bean
+    @Bean(destroyMethod = "close")
     public S3Presigner s3Presigner() {
         return S3Presigner.builder()
                 .endpointOverride(URI.create(String.format("https://%s.r2.cloudflarestorage.com", accountId)))

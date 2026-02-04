@@ -6,7 +6,7 @@ import type { ApiClient } from '../client';
 
 export interface VerifyTokenResponse {
   valid: boolean;
-  user_id: string;
+  userId: string;
 }
 
 export class AuthEndpoints {
