@@ -20,12 +20,14 @@ Read:
 
 If you see in the @06-development-roadmap.md we are at Phase 1.
 
-This is task related to Infra 5
+This is task related to Infra 6
 
-I have already configured a mongodb cluster and connection uri is available as part of .env and for local testing, I have downloaded mongodb compass
+I have already created a R2 bucket. S3 api - https://55f7c26cd54a4bbe5cebf864d5fe82e4.r2.cloudflarestorage.com/auteur
+name- auteur
 
-- [ ] Create indexes for project_id
-- [ ] Create EDL document schema
+- [ ] Configure CORS for uploads
+- [ ] Setup presigned URL generation
+- [ ] Configure lifecycle rules
 
 Constraints -
 Before writing any new type, check if it already exists in @auteur/types package or if it can be added to @auteur/types package.
