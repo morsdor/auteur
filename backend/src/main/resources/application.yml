@@ -6,8 +6,7 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}
-  jackson:
-    property-naming-strategy: SNAKE_CASE
+
   r2:
     access-key: ${R2_ACCESS_KEY}
     secret-key: ${R2_SECRET_KEY}
