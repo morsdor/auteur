@@ -39,7 +39,7 @@ public class StorageService {
 
         Map<String, String> result = new HashMap<>();
         result.put("uploadUrl", presignedRequest.url().toString());
-        result.put("r2Key", objectKey);
+        result.put("mediaId", objectKey);
 
         return result;
     }
