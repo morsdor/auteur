@@ -9,6 +9,21 @@ Requirements:
 - Java 21 LTS
 - Maven 3.9+
 
+## Configuration
+
+1. Copy the example environment file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   _(Note: I created a `.env` file for you, duplicate it as `.env.example` if you want to commit a template)_
+
+2. Open `.env` and configure your MongoDB URI:
+   ```properties
+   MONGODB_URI=mongodb+srv://user:pass@cluster...
+   ```
+
 ## Development
 
 ```bash
