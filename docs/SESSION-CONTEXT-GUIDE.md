@@ -20,10 +20,12 @@ Read:
 
 If you see in the @06-development-roadmap.md we are at Phase 1.
 
-This is task related to Infra 4
+This is task related to Infra 5
 
-- [ ] Create database schema (migrations)
-- [ ] Setup Row Level Security policies
+I have already configured a mongodb cluster and connection uri is available as part of .env and for local testing, I have downloaded mongodb compass
+
+- [ ] Create indexes for project_id
+- [ ] Create EDL document schema
 
 Constraints -
 Before writing any new type, check if it already exists in @auteur/types package or if it can be added to @auteur/types package.

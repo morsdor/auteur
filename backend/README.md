@@ -21,6 +21,12 @@ mvn spring-boot:run
 mvn clean package
 ```
 
+## Compile
+
+```bash
+mvn compile
+```
+
 The JAR file will be generated in `target/`.
 
 ---

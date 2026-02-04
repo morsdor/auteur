@@ -152,9 +152,16 @@
 - [x] Implement `handle_new_user` trigger for Auth sync
 - [x] Implement RLS policies for all tables (User isolation)
 
+### INFRA-5: MongoDB & EDL Schema ✅
+
+- [x] Configure MongoDB connection in Spring Boot
+- [x] Create EDL document schema (Java) matching TypeScript types
+- [x] Implement EDLRepository
+- [x] Create indexes for project_id
+
 ## 🚧 In Progress
 
-**Current Work**: Ready for next US - Infra 5
+**Current Work**: Ready for next US - Infra 6
 
 ---
 
