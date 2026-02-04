@@ -7,12 +7,12 @@ import type { ApiClient } from '../client';
 
 export interface UploadUrlRequest {
   filename: string;
-  content_type: string;
+  contentType: string;
 }
 
 export interface UploadUrlResponse {
-  upload_url: string;
-  media_id: string;
+  uploadUrl: string;
+  mediaId: string;
 }
 
 export class MediaEndpoints {

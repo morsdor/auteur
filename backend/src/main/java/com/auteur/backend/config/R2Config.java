@@ -29,7 +29,10 @@ public class R2Config {
         return S3Client.builder()
                 .endpointOverride(URI.create(String.format("https://%s.r2.cloudflarestorage.com", accountId)))
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
-                .region(Region.US_EAST_1) // R2 ignores region, but SDK requires one
+                // R2 is region-agnostic (global routing), but the AWS SDK requires a region to
+                // be set.
+                // We use US_EAST_1 as a dummy value to satisfy the SDK validation.
+                .region(Region.US_EAST_1)
                 .serviceConfiguration(S3Configuration.builder().pathStyleAccessEnabled(true).build())
                 .build();
     }
