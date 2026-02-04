@@ -3,6 +3,11 @@ spring:
     name: auteur-api
   profiles:
     active: dev
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 
 server:
   port: 8080
