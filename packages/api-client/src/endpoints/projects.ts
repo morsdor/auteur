@@ -8,7 +8,7 @@ import type { ApiClient } from '../client';
 export interface CreateProjectRequest {
   name: string;
   resolution?: string;
-  frame_rate?: number;
+  frameRate?: number;
 }
 
 export interface UpdateProjectRequest {
