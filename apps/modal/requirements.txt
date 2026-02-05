@@ -1,0 +1,10 @@
+modal
+torch
+torchaudio
+torchvision
+openai-whisper
+pyannote.audio
+transformers
+accelerate
+soundfile
+numpy

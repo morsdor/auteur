@@ -20,14 +20,14 @@ Read:
 
 If you see in the @06-development-roadmap.md we are at Phase 1.
 
-This is task related to Infra 6
+This is task related to Infra 7
 
-I have already created a R2 bucket. S3 api - https://55f7c26cd54a4bbe5cebf864d5fe82e4.r2.cloudflarestorage.com/auteur
-name- auteur
+I have already created a Modal account
 
-- [ ] Configure CORS for uploads
-- [ ] Setup presigned URL generation
-- [ ] Configure lifecycle rules
+- [ ] Configure container images (audio, vision)
+- [ ] Setup modal.Volume for model weights
+- [ ] Create model download functions
+- [ ] Configure secrets for HF tokens
 
 Constraints -
 Before writing any new type, check if it already exists in @auteur/types package or if it can be added to @auteur/types package.
