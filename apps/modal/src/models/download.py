@@ -54,8 +54,6 @@ def download_models():
         )
         print(f"F5-TTS models downloaded to {cache_path}")
     except Exception as e:
-        print("F5-TTS models downloaded.")
-    except Exception as e:
         print(f"Error downloading F5-TTS: {e}")
 
 if __name__ == "__main__":
