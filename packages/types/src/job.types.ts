@@ -21,131 +21,131 @@ export type JobStatus = 'pending' | 'processing' | 'completed' | 'failed';
 export type JobParams =
   | {
       type: 'transcription';
-      project_id: string;
-      media_id: string;
+      projectId: string;
+      mediaId: string;
     }
   | {
       type: 'tts';
       text: string;
-      voice_id: string;
+      voiceId: string;
       speed: number;
     }
   | {
       type: 'lip_sync';
-      video_media_id: string;
-      audio_media_id: string;
+      videoMediaId: string;
+      audioMediaId: string;
     }
   | {
       type: 'video_generation';
       prompt: string;
-      duration_sec: number;
+      durationSec: number;
     }
   | {
       type: 'overdub';
-      project_id: string;
-      segment_id: string;
-      new_text: string;
-      voice_sample_url: string;
+      projectId: string;
+      segmentId: string;
+      newText: string;
+      voiceSampleUrl: string;
     }
   | {
       type: 'insert_speech';
-      project_id: string;
-      insert_position_ms: number;
+      projectId: string;
+      insertPositionMs: number;
       text: string;
-      voice_id: string;
+      voiceId: string;
     }
   | {
       type: 'performance_cloning';
-      portrait_media_id: string;
-      driver_video_id: string;
-      expression_intensity: number;
+      portraitMediaId: string;
+      driverVideoId: string;
+      expressionIntensity: number;
     }
   | {
       type: 'gaze_correction';
-      video_media_id: string;
+      videoMediaId: string;
     }
   | {
       type: 'video_qa';
-      video_media_id: string;
+      videoMediaId: string;
       question: string;
     }
   | {
       type: 'audio_generation';
       prompt: string;
-      duration_sec: number;
+      durationSec: number;
     };
 
 // Discriminated union for job results based on type
 export type JobResult =
   | {
       type: 'transcription';
-      transcript_url: string;
+      transcriptUrl: string;
       segments: Array<{
         speaker: string;
-        start_ms: number;
-        end_ms: number;
+        startMs: number;
+        endMs: number;
         text: string;
       }>;
     }
   | {
       type: 'tts';
-      audio_url: string;
-      duration_ms: number;
+      audioUrl: string;
+      durationMs: number;
     }
   | {
       type: 'lip_sync';
-      video_url: string;
-      thumbnail_url: string;
+      videoUrl: string;
+      thumbnailUrl: string;
     }
   | {
       type: 'video_generation';
-      video_url: string;
-      thumbnail_url: string;
+      videoUrl: string;
+      thumbnailUrl: string;
     }
   | {
       type: 'overdub';
-      audio_url: string;
-      duration_ms: number;
+      audioUrl: string;
+      durationMs: number;
     }
   | {
       type: 'insert_speech';
-      audio_url: string;
-      duration_ms: number;
+      audioUrl: string;
+      durationMs: number;
     }
   | {
       type: 'performance_cloning';
-      video_url: string;
-      thumbnail_url: string;
+      videoUrl: string;
+      thumbnailUrl: string;
     }
   | {
       type: 'gaze_correction';
-      video_url: string;
-      thumbnail_url: string;
+      videoUrl: string;
+      thumbnailUrl: string;
     }
   | {
       type: 'video_qa';
       answer: string;
-      relevant_timestamps: number[];
+      relevantTimestamps: number[];
     }
   | {
       type: 'audio_generation';
-      audio_url: string;
-      duration_ms: number;
+      audioUrl: string;
+      durationMs: number;
     };
 
 export interface Job {
   id: string;
-  user_id: string;
-  project_id: string | null;
+  userId: string;
+  projectId: string | null;
   type: JobType;
   status: JobStatus;
-  credits_cost: number;
-  credits_refunded: boolean;
-  input_params: JobParams;
-  output_data: JobResult | null;
-  error_message: string | null;
-  modal_task_id: string | null;
-  started_at: Date | null;
-  completed_at: Date | null;
-  created_at: Date;
+  creditsCost: number;
+  creditsRefunded: boolean;
+  inputParams: JobParams;
+  outputData: JobResult | null;
+  errorMessage: string | null;
+  modalTaskId: string | null;
+  startedAt: Date | null;
+  completedAt: Date | null;
+  createdAt: Date;
 }

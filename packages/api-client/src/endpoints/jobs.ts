@@ -12,7 +12,7 @@ export class JobEndpoints {
    * Start transcription job
    * POST /jobs/transcription
    */
-  async createTranscription(data: { project_id: string; media_id: string }): Promise<Job> {
+  async createTranscription(data: { projectId: string; mediaId: string }): Promise<Job> {
     return this.client.post<Job>('/jobs/transcription', data);
   }
 
@@ -20,7 +20,7 @@ export class JobEndpoints {
    * Start TTS generation
    * POST /jobs/tts
    */
-  async createTTS(data: { text: string; voice_id: string; speed: number }): Promise<Job> {
+  async createTTS(data: { text: string; voiceId: string; speed: number }): Promise<Job> {
     return this.client.post<Job>('/jobs/tts', data);
   }
 
@@ -28,7 +28,7 @@ export class JobEndpoints {
    * Start lip sync job
    * POST /jobs/lip-sync
    */
-  async createLipSync(data: { video_media_id: string; audio_media_id: string }): Promise<Job> {
+  async createLipSync(data: { videoMediaId: string; audioMediaId: string }): Promise<Job> {
     return this.client.post<Job>('/jobs/lip-sync', data);
   }
 
@@ -36,7 +36,7 @@ export class JobEndpoints {
    * Start video generation job (Pro only)
    * POST /jobs/video-generation
    */
-  async createVideoGeneration(data: { prompt: string; duration_sec: number }): Promise<Job> {
+  async createVideoGeneration(data: { prompt: string; durationSec: number }): Promise<Job> {
     return this.client.post<Job>('/jobs/video-generation', data);
   }
 

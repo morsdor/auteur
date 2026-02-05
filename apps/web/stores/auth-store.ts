@@ -28,9 +28,9 @@ const mapAuthUserToUser = (authUser: AuthUser): User => ({
   id: authUser.id,
   email: authUser.email,
   name: authUser.name ?? null,
-  avatar_url: null, // Will be populated from user metadata later
-  created_at: new Date(), // Placeholder - will be from DB in Phase 2
-  updated_at: new Date(), // Placeholder - will be from DB in Phase 2
+  avatarUrl: null, // Will be populated from user metadata later
+  createdAt: new Date(), // Placeholder - will be from DB in Phase 2
+  updatedAt: new Date(), // Placeholder - will be from DB in Phase 2
 });
 
 interface AuthState {

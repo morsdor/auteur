@@ -23,11 +23,11 @@ export interface PaginatedResponse<T> {
   data: T[];
   pagination: {
     page: number;
-    page_size: number;
-    total_items: number;
-    total_pages: number;
-    has_next: boolean;
-    has_prev: boolean;
+    pageSize: number;
+    totalItems: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
   };
   success: true;
   timestamp: string;
