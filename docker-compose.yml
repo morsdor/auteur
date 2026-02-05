@@ -107,6 +107,7 @@ services:
       - R2_ACCESS_KEY=${R2_ACCESS_KEY}
       - R2_SECRET_KEY=${R2_SECRET_KEY}
       - R2_BUCKET_NAME=${R2_BUCKET_NAME}
+      - R2_ACCOUNT_ID=${R2_ACCOUNT_ID}
 
       # Modal
       - MODAL_TOKEN_ID=${MODAL_TOKEN_ID}
@@ -163,6 +164,7 @@ services:
       - R2_ACCESS_KEY=${R2_ACCESS_KEY}
       - R2_SECRET_KEY=${R2_SECRET_KEY}
       - R2_BUCKET_NAME=${R2_BUCKET_NAME}
+      - R2_ACCOUNT_ID=${R2_ACCOUNT_ID}
 
       # Modal
       - MODAL_TOKEN_ID=${MODAL_TOKEN_ID}

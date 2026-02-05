@@ -10,43 +10,43 @@ export type TrackType = 'video' | 'audio';
  */
 export interface Speaker {
   id: string; // Stable ID: "speaker_1", "speaker_2", etc.
-  ai_label: string; // Label from AI: "Speaker A", "Speaker B"
-  user_label: string | null; // User-assigned name: "John", "Sarah"
-  voice_clone_id: string | null; // Optional: reference to VoiceClone for overdubbing
-  created_at: Date;
+  aiLabel: string; // Label from AI: "Speaker A", "Speaker B"
+  userLabel: string | null; // User-assigned name: "John", "Sarah"
+  voiceCloneId: string | null; // Optional: reference to VoiceClone for overdubbing
+  createdAt: Date;
 }
 
 export interface Word {
   word: string;
-  start_ms: number;
-  end_ms: number;
+  startMs: number;
+  endMs: number;
   confidence: number;
 }
 
 export interface TranscriptSegment {
   id: string;
-  speaker_id: string; // References Speaker.id
-  start_ms: number;
-  end_ms: number;
+  speakerId: string; // References Speaker.id
+  startMs: number;
+  endMs: number;
   text: string;
   words: Word[];
   deleted: boolean;
-  edited_text: string | null;
+  editedText: string | null;
 }
 
 export interface Transcript {
-  generated_at: Date;
+  generatedAt: Date;
   segments: TranscriptSegment[];
 }
 
 export interface Clip {
   id: string;
-  media_file_id: string; // references Postgres media_files.id
-  track_id: string;
-  start_ms: number; // position on timeline
-  duration_ms: number; // length on timeline
-  in_point_ms: number; // source start trim
-  out_point_ms: number; // source end trim
+  mediaFileId: string; // references Postgres media_files.id
+  trackId: string;
+  startMs: number; // position on timeline
+  durationMs: number; // length on timeline
+  inPointMs: number; // source start trim
+  outPointMs: number; // source end trim
   effects: unknown[]; // TBD: effect types
   deleted: boolean;
 }
@@ -63,20 +63,20 @@ export interface EDLSettings {
     width: number;
     height: number;
   };
-  frame_rate: number;
-  duration_ms: number;
+  frameRate: number;
+  durationMs: number;
 }
 
 export interface EDL {
   _id?: string; // MongoDB ObjectId
-  project_id: string; // matches Postgres project.id
+  projectId: string; // matches Postgres project.id
   version: number;
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
   settings: EDLSettings;
   tracks: Track[];
   transcript: Transcript | null;
   speakers: Speaker[]; // Speaker metadata for diarization
-  undo_stack: unknown[]; // TBD: command pattern types
-  redo_stack: unknown[];
+  undoStack: unknown[]; // TBD: command pattern types
+  redoStack: unknown[];
 }

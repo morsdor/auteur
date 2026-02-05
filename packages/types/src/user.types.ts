@@ -7,25 +7,25 @@ export interface User {
   id: string;
   email: string;
   name: string | null;
-  avatar_url: string | null;
-  created_at: Date;
-  updated_at: Date;
+  avatarUrl: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Profile {
   id: string;
-  user_id: string;
+  userId: string;
   bio: string | null;
   website: string | null;
-  social_links: Record<string, string> | null;
-  updated_at: Date;
+  socialLinks: Record<string, string> | null;
+  updatedAt: Date;
 }
 
 export interface AccountSettings {
-  user_id: string;
+  userId: string;
   theme: 'dark' | 'light' | 'system';
-  notifications_enabled: boolean;
-  auto_save_interval: number; // seconds
-  default_resolution: string; // e.g., "1920x1080"
-  default_frame_rate: number;
+  notificationsEnabled: boolean;
+  autoSaveInterval: number; // seconds
+  defaultResolution: string; // e.g., "1920x1080"
+  defaultFrameRate: number;
 }

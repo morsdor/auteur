@@ -12,7 +12,7 @@ export function validateEDL(edl: unknown): edl is EDL {
 
   const e = edl as Partial<EDL>;
 
-  if (!e.project_id || typeof e.project_id !== 'string') return false;
+  if (!e.projectId || typeof e.projectId !== 'string') return false;
   if (typeof e.version !== 'number') return false;
   if (!e.settings || typeof e.settings !== 'object') return false;
   if (!Array.isArray(e.tracks)) return false;
@@ -29,7 +29,7 @@ export function calculateTotalDuration(tracks: Track[]): number {
   for (const track of tracks) {
     for (const clip of track.clips) {
       if (!clip.deleted) {
-        const clipEnd = clip.start_ms + clip.duration_ms;
+        const clipEnd = clip.startMs + clip.durationMs;
         if (clipEnd > maxEndTime) {
           maxEndTime = clipEnd;
         }
@@ -47,8 +47,8 @@ export function findClipAt(track: Track, timestamp_ms: number): Clip | null {
   for (const clip of track.clips) {
     if (clip.deleted) continue;
 
-    const clipStart = clip.start_ms;
-    const clipEnd = clip.start_ms + clip.duration_ms;
+    const clipStart = clip.startMs;
+    const clipEnd = clip.startMs + clip.durationMs;
 
     if (timestamp_ms >= clipStart && timestamp_ms < clipEnd) {
       return clip;
