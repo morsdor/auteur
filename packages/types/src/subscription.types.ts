@@ -9,30 +9,30 @@ export type CreditTransactionType = 'subscription' | 'usage' | 'refund' | 'bonus
 
 export interface Subscription {
   id: string;
-  user_id: string;
+  userId: string;
   plan: Plan;
   status: SubscriptionStatus;
-  stripe_subscription_id: string | null;
-  current_period_start: Date | null;
-  current_period_end: Date | null;
-  created_at: Date;
-  updated_at: Date;
+  stripeSubscriptionId: string | null;
+  currentPeriodStart: Date | null;
+  currentPeriodEnd: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CreditBalance {
   id: string;
-  user_id: string;
+  userId: string;
   balance: number;
-  updated_at: Date;
+  updatedAt: Date;
 }
 
 export interface CreditTransaction {
   id: string;
-  user_id: string;
+  userId: string;
   amount: number; // positive = add, negative = deduct
-  balance_after: number;
+  balanceAfter: number;
   type: CreditTransactionType;
   description: string | null;
-  job_id: string | null; // reference to job if usage
-  created_at: Date;
+  jobId: string | null; // reference to job if usage
+  createdAt: Date;
 }

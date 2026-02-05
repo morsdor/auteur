@@ -77,7 +77,7 @@ pnpm typecheck
 | **Database**      | PostgreSQL (Supabase)                                      |
 | **NoSQL**         | MongoDB Atlas (for EDL)                                    |
 | **Storage**       | Cloudflare R2 (zero egress costs)                          |
-| **CI/CD**         | GitHub Actions                                             |
+| **CI/CD**         | GitHub Actions (Main → Prod, Develop → Dev)                |
 | **Testing**       | JUnit 5, Mockito, TestContainers, Playwright               |
 
 ## 🎨 AI Features
@@ -150,6 +150,15 @@ pnpm --filter @auteur/ui add <package>
 # Add to desktop app
 pnpm --filter desktop add <package>
 ```
+
+## 🌍 Environments
+
+We maintain two synchronized environments on our VPS:
+
+1.  **Production** (`auteur.cloud`): Stable, deploys from `main` branch.
+2.  **Development** (`dev.auteur.cloud`): Bleeding edge, deploys from `develop` branch.
+
+Both environments share the same Redis instance but have isolated databases and application runtimes.
 
 ## 🧪 Testing Strategy
 

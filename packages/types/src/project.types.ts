@@ -10,35 +10,35 @@ export interface ProjectSettings {
     width: number;
     height: number;
   };
-  frame_rate: number;
-  duration_ms: number;
+  frameRate: number;
+  durationMs: number;
 }
 
 export interface Project {
   id: string;
-  user_id: string;
+  userId: string;
   name: string;
   description: string | null;
   resolution: string; // e.g., "1920x1080"
-  frame_rate: number;
-  edl_id: string | null; // MongoDB document ID
-  thumbnail_url: string | null;
-  created_at: Date;
-  updated_at: Date;
+  frameRate: number;
+  edlId: string | null; // MongoDB document ID
+  thumbnailUrl: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface MediaFile {
   id: string;
-  project_id: string;
-  user_id: string;
+  projectId: string;
+  userId: string;
   name: string;
   type: MediaType;
-  mime_type: string;
-  duration_ms: number | null;
-  file_size_bytes: number;
-  r2_key: string; // Cloudflare R2 object key
-  r2_url: string;
-  thumbnail_r2_key: string | null;
+  mimeType: string;
+  durationMs: number | null;
+  fileSizeBytes: number;
+  r2Key: string; // Cloudflare R2 object key
+  r2Url: string;
+  thumbnailR2Key: string | null;
   metadata: {
     width?: number;
     height?: number;
@@ -46,17 +46,17 @@ export interface MediaFile {
     bitrate?: number;
     [key: string]: unknown;
   } | null;
-  created_at: Date;
+  createdAt: Date;
 }
 
 export interface VoiceClone {
   id: string;
-  user_id: string;
+  userId: string;
   name: string;
-  sample_r2_key: string; // R2 storage key
-  sample_r2_url: string; // R2 public URL
-  mime_type: string; // e.g., 'audio/wav', 'audio/mp3'
-  sample_duration_ms: number;
-  file_size_bytes: number;
-  created_at: Date;
+  sampleR2Key: string; // R2 storage key
+  sampleR2Url: string; // R2 public URL
+  mimeType: string; // e.g., 'audio/wav', 'audio/mp3'
+  sampleDurationMs: number;
+  fileSizeBytes: number;
+  createdAt: Date;
 }

@@ -152,9 +152,24 @@
 - [x] Implement `handle_new_user` trigger for Auth sync
 - [x] Implement RLS policies for all tables (User isolation)
 
+### INFRA-5: MongoDB & EDL Schema ✅
+
+- [x] Configure MongoDB connection in Spring Boot
+- [x] Create EDL document schema (Java) matching TypeScript types
+- [x] Implement EDLRepository
+- [x] Create indexes for project_id
+
+### INFRA-6: Cloudflare R2 Integration ✅
+
+- [x] Configure R2 Bucket (Backend side)
+- [x] Add AWS SDK dependencies
+- [x] Implement StorageService for presigned URLs
+- [x] Create upload URL endpoint
+- [x] Verify upload flow works
+
 ## 🚧 In Progress
 
-**Current Work**: Ready for next US - Infra 5
+**Current Work**: Ready for next US - INFRA-7 (Redis Setup) or US-1.1 (User Registration) depending on priority. I will assume we continue with Infrastructure: INFRA-7.
 
 ---
 

@@ -85,7 +85,7 @@
 | Metrics | Micrometer + Actuator | Prometheus metrics |
 | Testing | JUnit 5 + Mockito + TestContainers | Unit and integration tests |
 | Build | Maven | Dependency management |
-| Hosting | Hetzner VPS (CX22) | 4 vCPU, 8GB RAM (Docker) |
+| Hosting | Hetzner VPS (CX22) | 4 vCPU, 8GB RAM (Docker) - Hosts Prod & Dev |
 
 ### 1.6 Message Queue (Redis - Self-Hosted)
 
@@ -661,7 +661,8 @@ def generate_video(prompt: str, duration_sec: int) -> str:
 - **Workflows**:
   - `ci-frontend.yml`: Lint, typecheck, test for monorepo
   - `ci-backend.yml`: Maven test, build Docker image
-  - `deploy.yml`: Push to GHCR, SSH to VPS, run `docker compose up -d`
+  - `deploy-prod.yml`: Deploy `main` branch to Production (`auteur.cloud`)
+  - `deploy-dev.yml`: Deploy `develop` branch to Development (`dev.auteur.cloud`)
   - `deploy-modal.yml`: Deploy Modal functions
 - **Secrets**: Stored in GitHub Secrets (HETZNER_SSH_KEY, GHCR_TOKEN, etc.)
 - **Artifacts**: Docker images (GHCR)

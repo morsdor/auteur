@@ -5,7 +5,7 @@ import type { Project, MediaFile } from '@auteur/types';
 interface LocalSettings {
   key: string;
   value: unknown;
-  updated_at: Date;
+  updatedAt: Date;
 }
 
 // Create Dexie database class for client-side storage
@@ -18,11 +18,11 @@ class AuteurDatabase extends Dexie {
   constructor() {
     super('AuteurDB');
 
-    // Define schema - using snake_case to match backend DB
+    // Define schema - using camelCase to match @auteur/types
     this.version(1).stores({
-      projects: 'id, user_id, name, created_at, updated_at',
-      mediaFiles: 'id, project_id, user_id, type, created_at',
-      settings: 'key, updated_at',
+      projects: 'id, userId, name, createdAt, updatedAt',
+      mediaFiles: 'id, projectId, userId, type, createdAt',
+      settings: 'key, updatedAt',
     });
   }
 }

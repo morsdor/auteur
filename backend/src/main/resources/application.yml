@@ -3,6 +3,15 @@ spring:
     name: auteur-api
   profiles:
     active: dev
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+
+  r2:
+    access-key: ${R2_ACCESS_KEY}
+    secret-key: ${R2_SECRET_KEY}
+    bucket-name: ${R2_BUCKET_NAME}
+    account-id: ${R2_ACCOUNT_ID}
 
 server:
   port: 8080

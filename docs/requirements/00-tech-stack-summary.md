@@ -73,7 +73,7 @@ This document summarizes the complete, approved technology stack for the Auteur 
 - **Migrations**: **Flyway** (SQL-based schema versioning)
 - **Testing**: JUnit 5, Mockito, TestContainers (real Postgres/Redis/MongoDB in tests)
 - **Build**: Maven
-- **Hosting**: **Hetzner VPS** (Docker Compose)
+- **Hosting**: **Hetzner VPS** (Docker Compose, hosting both Prod and Dev)
 
 ### Message Queue
 
@@ -128,7 +128,7 @@ This document summarizes the complete, approved technology stack for the Auteur 
   - Frontend: Lint, typecheck, test monorepo
   - Backend: Maven test, build Docker image
   - Registry: **GitHub Container Registry (GHCR)**
-  - Deploy: SSH to Hetzner VPS, `docker compose pull && up`
+  - Deploy: SSH to Hetzner VPS, `docker compose pull && up` (supports multiple envs)
 - **Future**: specialized CI runners
 
 ### Testing
@@ -144,7 +144,10 @@ This document summarizes the complete, approved technology stack for the Auteur 
 ### Deployment
 
 - **Infrastructure**: Docker Compose on Hetzner VPS
-- **Proxy**: Caddy (Automatic HTTPS)
+- **Environments**:
+  - **Prod**: `auteur.cloud` (from `main` branch)
+  - **Dev**: `dev.auteur.cloud` (from `develop` branch)
+- **Proxy**: Caddy (Automatic HTTPS, subdomain routing)
 - **Desktop**: Self-distributed (code-signed Electron builds)
 
 ---
