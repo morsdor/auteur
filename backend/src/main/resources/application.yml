@@ -6,6 +6,8 @@ spring:
       resourceserver:
         jwt:
           secret: ${SUPABASE_JWT_SECRET}
+    supabase:
+      url: ${SUPABASE_URL}
   profiles:
     active: dev
   data:
