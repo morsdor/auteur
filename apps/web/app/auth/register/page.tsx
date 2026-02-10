@@ -13,12 +13,9 @@ export default function RegisterPage() {
   const handleRegister = async (data: any) => {
     setError(null);
     try {
-      await signUp(data.email, data.password);
-      // After successful signup, redirect to dashboard or login
-      // For now, redirect to login as they might need to confirm email
-      // But if email confirmation is off, they might be logged in.
-      // Let's check if we have a user
-      const user = useAuthStore.getState().user;
+      const user = await signUp(data.email, data.password);
+
+      // After successful signup, redirect based on user presence
       if (user) {
         router.push('/dashboard');
       } else {

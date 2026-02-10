@@ -26,7 +26,7 @@ export interface AuthState {
 
   // Actions
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string) => Promise<User>;
   signOut: () => Promise<void>;
   setUser: (user: User | null) => void;
   initialize: () => Promise<void>;
@@ -66,12 +66,15 @@ export const createAuthStore = (config: AuthStoreConfig) => {
       try {
         const authProvider = get().authProvider;
         const authUser = await authProvider.signup(email, password);
+        const user = mapAuthUserToUser(authUser);
 
         set({
-          user: mapAuthUserToUser(authUser),
+          user,
           isAuthenticated: true,
           isLoading: false,
         });
+
+        return user;
       } catch (error) {
         console.error('Sign up error:', error);
         set({ isLoading: false });
