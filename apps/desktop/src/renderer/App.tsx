@@ -1,12 +1,23 @@
-import { useAuth } from './contexts/auth';
+import { useEffect } from 'react';
+import { MemoryRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuthStore } from './stores/auth-store';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { AuthGuard } from './components/AuthGuard';
+import { GuestGuard } from './components/GuestGuard';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
-  const { user, loading } = useAuth();
+  const { initialize, isLoading } = useAuthStore();
 
-  // Show loading state while checking auth
-  if (loading) {
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
+
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
         <div className="text-center">
@@ -17,8 +28,32 @@ function App() {
     );
   }
 
-  // Show LoginPage if not authenticated, DashboardPage if authenticated
-  return user ? <DashboardPage /> : <LoginPage />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <GuestGuard>
+                <LoginPage />
+              </GuestGuard>
+            }
+          />
+          <Route
+            path="/dashboard/*"
+            element={
+              <AuthGuard>
+                <DashboardPage />
+              </AuthGuard>
+            }
+          />
+          {/* Default redirect */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </QueryClientProvider>
+  );
 }
 
 export default App;

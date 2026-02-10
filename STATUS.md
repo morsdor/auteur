@@ -178,7 +178,11 @@
 
 ## 🚧 In Progress
 
-**Current Work**: Ready for **INFRA-8: Backend Integration** (Connecting Spring Boot to Modal)
+**Current Work**: Executing US-1.1: User Registration
+
+- [x] Planning & Architecture Review
+- [ ] Backend Implementation (User Entity, Controller)
+- [ ] Frontend Implementation (Auth Forms, Integration)
 
 ---
 

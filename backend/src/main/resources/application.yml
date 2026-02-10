@@ -6,6 +6,20 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}
+      database: auteur_edl
+  datasource:
+    url: ${SUPABASE_DB_URL}
+    username: ${SUPABASE_DB_USER}
+    password: ${SUPABASE_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
 
   r2:
     access-key: ${R2_ACCESS_KEY}

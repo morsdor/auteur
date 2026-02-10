@@ -4,7 +4,14 @@ import withPWA from '@ducanh2912/next-pwa';
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactStrictMode: true,
-  transpilePackages: ['@auteur/types', '@auteur/api-client', '@auteur/utils', '@auteur/auth'],
+  transpilePackages: [
+    '@auteur/types',
+    '@auteur/api-client',
+    '@auteur/utils',
+    '@auteur/auth',
+    '@auteur/ui',
+    '@auteur/tailwind-config',
+  ],
   // Disable image optimization for now (can enable later)
   images: {
     unoptimized: true,
