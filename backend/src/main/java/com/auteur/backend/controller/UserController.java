@@ -8,6 +8,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import java.util.UUID;
 
@@ -28,7 +30,13 @@ public class UserController {
         }
 
         // Supabase JWT "sub" claim contains the user UUID
-        UUID userId = UUID.fromString(principal.getSubject());
+        UUID userId;
+        try {
+            userId = UUID.fromString(principal.getSubject());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Invalid user id in token: " + principal.getSubject());
+        }
 
         return userRepository.findById(userId)
                 .map(ResponseEntity::ok)
