@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -31,26 +30,23 @@ export function LoginForm({
   onGithubClick,
   onRegisterClick,
 }: LoginFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
-
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
   });
 
   const handleFormSubmit = async (data: LoginSchema) => {
-    setIsLoading(true);
     try {
       await onSubmit(data);
     } catch (error) {
       console.error(error);
-    } finally {
-      setIsLoading(false);
     }
   };
+
+  const isLoading = isSubmitting;
 
   return (
     <Card className="w-full max-w-md mx-auto">
