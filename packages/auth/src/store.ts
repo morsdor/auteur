@@ -169,7 +169,11 @@ export const createAuthStore = (config: AuthStoreConfig) => {
         set({ unsubscribe });
       } catch (error) {
         console.error('Auth initialization error:', error);
-        set({ isLoading: false });
+        set({
+          isLoading: false,
+          user: null,
+          isAuthenticated: false,
+        });
       }
     },
   }));
