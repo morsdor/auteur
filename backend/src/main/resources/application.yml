@@ -1,6 +1,11 @@
 spring:
   application:
     name: auteur-api
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret: ${SUPABASE_JWT_SECRET}
   profiles:
     active: dev
   data:
