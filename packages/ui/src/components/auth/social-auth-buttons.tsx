@@ -16,11 +16,23 @@ export function SocialAuthButtons({
 }: SocialAuthButtonsProps) {
   return (
     <div className="grid grid-cols-2 gap-4">
-      <Button variant="outline" onClick={onGithubClick} disabled={isLoading} className="w-full">
+      <Button
+        variant="outline"
+        onClick={onGithubClick}
+        disabled={isLoading}
+        className="w-full"
+        type="button"
+      >
         <Github className="mr-2 h-4 w-4" />
         GitHub
       </Button>
-      <Button variant="outline" onClick={onGoogleClick} disabled={isLoading} className="w-full">
+      <Button
+        variant="outline"
+        onClick={onGoogleClick}
+        disabled={isLoading}
+        className="w-full"
+        type="button"
+      >
         <svg
           className="mr-2 h-4 w-4"
           aria-hidden="true"
