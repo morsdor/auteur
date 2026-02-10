@@ -1,14 +1,20 @@
+'use client';
+
 import { Button } from '@auteur/ui';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@auteur/ui';
+import { useUser } from '../../stores/auth-store';
 
 export default function DashboardPage() {
+  const { data: user, isLoading } = useUser();
+
   return (
     <div className="min-h-screen bg-bg-primary p-10">
       <div className="max-w-7xl mx-auto">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-text-primary mb-2">Dashboard</h1>
           <p className="text-text-secondary">
-            Welcome to Auteur AI - Your AI-powered video editing platform
+            {isLoading ? 'Loading...' : `Welcome back, ${user?.name || user?.email || 'User'}`} -
+            Your AI-powered video editing platform
           </p>
         </header>
 

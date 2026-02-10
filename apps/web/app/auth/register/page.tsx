@@ -1,24 +1,37 @@
 'use client';
 
+import { RegisterForm } from '@auteur/ui';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '../../../stores/auth-store';
 import { useState } from 'react';
-import { Button } from '@auteur/ui';
-import { Input } from '@auteur/ui';
-import { Label } from '@auteur/ui';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@auteur/ui';
 
 export default function RegisterPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const router = useRouter();
+  const { signUp, isLoading } = useAuthStore();
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      // TODO: Show error to user (e.g., via state or toast)
-      return;
+  const handleRegister = async (data: any) => {
+    setError(null);
+    try {
+      await signUp(data.email, data.password);
+      // After successful signup, redirect to dashboard or login
+      // For now, redirect to login as they might need to confirm email
+      // But if email confirmation is off, they might be logged in.
+      // Let's check if we have a user
+      const user = useAuthStore.getState().user;
+      if (user) {
+        router.push('/dashboard');
+      } else {
+        router.push('/auth/login?registered=true');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Registration failed');
     }
-    // Auth logic will be implemented in Phase 2
-    // TODO: Implement registration
+  };
+
+  const handleSocialLogin = (provider: string) => {
+    console.log(`Login with ${provider}`);
+    // TODO: Implement social login via AuthProvider
   };
 
   return (
@@ -31,69 +44,20 @@ export default function RegisterPage() {
           <p className="text-text-secondary">Create your account</p>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Get Started</CardTitle>
-            <CardDescription>Create an account to start editing videos with AI</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  required
-                />
-              </div>
+        {error && (
+          <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-md mb-4 text-sm">
+            {error}
+          </div>
+        )}
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
+        <RegisterForm
+          onSubmit={handleRegister}
+          onGoogleClick={() => handleSocialLogin('google')}
+          onGithubClick={() => handleSocialLogin('github')}
+          onLoginClick={() => router.push('/auth/login')}
+        />
 
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
-
-              <Button type="submit" className="w-full">
-                Create Account
-              </Button>
-
-              <div className="text-center text-sm text-text-tertiary">
-                Already have an account?{' '}
-                <a
-                  href="/auth/login"
-                  className="text-accent-primary hover:text-accent-primary-hover font-medium transition-colors"
-                >
-                  Sign in
-                </a>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-
-        <p className="text-center text-xs text-text-muted mt-8">
-          Placeholder registration page - Auth will be implemented in Phase 2
-        </p>
+        <p className="text-center text-xs text-text-muted mt-8">&copy; 2026 Auteur AI</p>
       </div>
     </div>
   );

@@ -18,16 +18,30 @@ Read:
 - docs/design/ui-design-system.md @ui-design-system.md
 - docs/ARCHITECTURE.md @ARCHITECTURE.md
 
-If you see in the @06-development-roadmap.md we are at Phase 1.
+If you see in the @06-development-roadmap.md we are at Phase 2.
 
-This is task related to Infra 7
+This is task related to US 1.1
 
-I have already created a Modal account
+**As a** new user  
+**I want to** create an account using email or OAuth  
+**So that** I can access Auteur's features
 
-- [ ] Configure container images (audio, vision)
-- [ ] Setup modal.Volume for model weights
-- [ ] Create model download functions
-- [ ] Configure secrets for HF tokens
+**Acceptance Criteria:**
+
+- [ ] User can register with email/password
+- [ ] User can register with Google OAuth
+- [ ] User can register with GitHub OAuth
+- [ ] Email verification is required for email signups
+- [ ] Password must be min 8 chars with 1 number and 1 special char
+- [ ] Duplicate email detection with clear error message
+
+**Technical Tasks:**
+
+- [ ] Configure Supabase Auth providers
+- [ ] Create registration API endpoint on Cloud Run
+- [ ] Implement email verification flow
+- [ ] Create user record in Postgres on successful registration
+- [ ] Initialize credit balance (0 for free tier)
 
 Constraints -
 Before writing any new type, check if it already exists in @auteur/types package or if it can be added to @auteur/types package.
@@ -36,20 +50,11 @@ Same goes with storage as in @auteur/storage package.
 Same goes with auth as in @auteur/auth package.
 Same goes with api-client as in @auteur/api-client package.
 
+Create common ui and common components acroos web and eletectron in @auteur/ui package.
+Use shadcn/ui for common components. Downgrade to taliwind v3 because v4 has issues wih monorepo
+
 Let us start working on them.
 
 Ask me if you need any clarifications and as you progress, keep updating @STATUS.md
-
-## TWITTER GENERATION PROMPT
-
-### Part 1
-
-Now based on the above context and conversation history related to this chat session only, suggest me some ideas to create Twitter threads.
-The ideas should focus on what we learnt in this chat session. Architectural decisions and why they were made. Tradeoffs. Performance. Security. Scalability, etc.
-But relevant to this chat session and the user story that we were working here
-
-### Part 2
-
-Create me a twitter thread of 6-10 highly informative tweets on the best 3 tweet threads (your recommendation )
 Think like a mid to senior software engineer and use appropriate tone and language and technical details. Give code snippets wherever required.
 Save each of that thread in a new md file in @twitter folder

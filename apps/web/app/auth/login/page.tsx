@@ -1,19 +1,28 @@
 'use client';
 
+import { LoginForm } from '@auteur/ui';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '../../../stores/auth-store';
 import { useState } from 'react';
-import { Button } from '@auteur/ui';
-import { Input } from '@auteur/ui';
-import { Label } from '@auteur/ui';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@auteur/ui';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const router = useRouter();
+  const { signIn, isLoading } = useAuthStore();
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Auth logic will be implemented in Phase 2
-    // TODO: Implement authentication
+  const handleLogin = async (data: any) => {
+    setError(null);
+    try {
+      await signIn(data.email, data.password);
+      router.push('/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'Login failed');
+    }
+  };
+
+  const handleSocialLogin = (provider: string) => {
+    console.log(`Login with ${provider}`);
+    // TODO: Implement social login
   };
 
   return (
@@ -26,57 +35,20 @@ export default function LoginPage() {
           <p className="text-text-secondary">Sign in to your account</p>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Welcome Back</CardTitle>
-            <CardDescription>Enter your credentials to continue</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  required
-                />
-              </div>
+        {error && (
+          <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-md mb-4 text-sm">
+            {error}
+          </div>
+        )}
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
+        <LoginForm
+          onSubmit={handleLogin}
+          onGoogleClick={() => handleSocialLogin('google')}
+          onGithubClick={() => handleSocialLogin('github')}
+          onRegisterClick={() => router.push('/auth/register')}
+        />
 
-              <Button type="submit" className="w-full">
-                Sign In
-              </Button>
-
-              <div className="text-center text-sm text-text-tertiary">
-                Don&apos;t have an account?{' '}
-                <a
-                  href="/auth/register"
-                  className="text-accent-primary hover:text-accent-primary-hover font-medium transition-colors"
-                >
-                  Sign up
-                </a>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-
-        <p className="text-center text-xs text-text-muted mt-8">
-          Placeholder login page - Auth will be implemented in Phase 2
-        </p>
+        <p className="text-center text-xs text-text-muted mt-8">&copy; 2026 Auteur AI</p>
       </div>
     </div>
   );
