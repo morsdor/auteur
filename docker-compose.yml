@@ -219,6 +219,14 @@ services:
 networks:
   auteur-network:
     driver: bridge
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+        - subnet: fd00:dead:beef::/48
+          gateway: fd00:dead:beef::1
 
 # ============================================
 # Volumes (Persistent Data)
