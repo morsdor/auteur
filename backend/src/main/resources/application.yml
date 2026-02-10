@@ -6,7 +6,6 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}
-      database: auteur_edl
   datasource:
     url: ${SUPABASE_DB_URL}
     username: ${SUPABASE_DB_USER}
