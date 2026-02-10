@@ -22,6 +22,8 @@ export const metadata: Metadata = {
 import { AuthInitializer } from '../src/components/auth-initializer';
 import { ReactQueryProvider } from '../src/components/react-query-provider';
 
+import { AuthEffects } from '../src/components/auth-effects';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,6 +34,7 @@ export default function RootLayout({
       <body className="antialiased">
         <ReactQueryProvider>
           <AuthInitializer />
+          <AuthEffects />
           {children}
         </ReactQueryProvider>
       </body>

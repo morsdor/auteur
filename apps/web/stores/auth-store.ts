@@ -1,6 +1,7 @@
 import { createAuthStore } from '@auteur/auth';
 import { WebStorageAdapter } from '../src/lib/storage/web-storage-adapter';
 import { apiClient } from '../src/lib/api-client';
+import { useQuery } from '@tanstack/react-query';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -26,18 +27,16 @@ export const useAuthStore = createAuthStore({
   },
 });
 
-import { useQuery } from '@tanstack/react-query';
-
 export const useUser = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
 
   return useQuery({
-    queryKey: ['user', 'profile'],
+    queryKey: ['user', 'profile', user?.id],
     queryFn: async () => {
       if (!isAuthenticated) return null;
       return apiClient.users.getMe();
     },
-    enabled: isAuthenticated,
+    enabled: isAuthenticated && !!user?.id,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 };
