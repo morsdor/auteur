@@ -1,14 +1,14 @@
-import type { AuthProvider } from './auth-provider';
+import type { AuthProvider, AuthUser } from './auth-provider';
 import type { User } from '@auteur/types';
 
 // Helper to map Supabase user to our User type
-const mapAuthUserToUser = (authUser: any): User => ({
+const mapAuthUserToUser = (authUser: AuthUser): User => ({
   id: authUser.id,
   email: authUser.email!,
-  name: authUser.user_metadata?.name || null,
-  avatarUrl: authUser.user_metadata?.avatar_url || null,
-  createdAt: new Date(authUser.created_at),
-  updatedAt: new Date(authUser.updated_at || authUser.created_at),
+  name: authUser.name || null,
+  avatarUrl: null,
+  createdAt: new Date(), // Placeholder until backend is ready
+  updatedAt: new Date(), // Placeholder until backend is ready
 });
 
 /**
