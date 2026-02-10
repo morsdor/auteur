@@ -11,3 +11,5 @@ export {
 } from './auth-provider';
 export { SupabaseAuthProvider, type SupabaseConfig } from './supabase-provider';
 export type { StorageAdapter } from '@auteur/types';
+export { createAuthStore, type AuthStoreConfig, type AuthState } from './store';
+export { fetchUserProfile } from './helpers';

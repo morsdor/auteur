@@ -167,9 +167,22 @@
 - [x] Create upload URL endpoint
 - [x] Verify upload flow works
 
+### INFRA-7: Modal Infrastructure Setup ✅
+
+- [x] Configure Modal environment & secrets
+- [x] Create container image definitions (Audio/Vision)
+- [x] Setup persistent volume storage (/models)
+- [x] Implement download functions (Whisper, F5-TTS)
+- [x] Resolve dependency conflicts ("Golden Set")
+- [x] Verify GPU execution with test script
+
 ## 🚧 In Progress
 
-**Current Work**: Ready for next US - INFRA-7 (Redis Setup) or US-1.1 (User Registration) depending on priority. I will assume we continue with Infrastructure: INFRA-7.
+**Current Work**: Executing US-1.1: User Registration
+
+- [x] Planning & Architecture Review
+- [ ] Backend Implementation (User Entity, Controller)
+- [ ] Frontend Implementation (Auth Forms, Integration)
 
 ---
 

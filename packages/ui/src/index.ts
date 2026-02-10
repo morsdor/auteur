@@ -14,4 +14,9 @@ export {
   CardDescription,
   CardContent,
 } from './components/card';
+// Auth components
+export * from './components/auth/login-form';
+export * from './components/auth/register-form';
+export * from './components/auth/social-auth-buttons';
+
 export { cn } from './lib/utils';

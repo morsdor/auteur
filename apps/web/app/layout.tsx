@@ -19,6 +19,11 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
 };
 
+import { AuthInitializer } from '../src/components/auth-initializer';
+import { ReactQueryProvider } from '../src/components/react-query-provider';
+
+import { AuthEffects } from '../src/components/auth-effects';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,7 +31,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <ReactQueryProvider>
+          <AuthInitializer />
+          <AuthEffects />
+          {children}
+        </ReactQueryProvider>
+      </body>
     </html>
   );
 }
