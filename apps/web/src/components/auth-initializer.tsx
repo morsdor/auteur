@@ -24,9 +24,15 @@ export function AuthInitializer() {
     if (!initialized.current) {
       console.log('[AuthInitializer] Initializing auth store...');
       initialized.current = true;
-      initialize().then(() => {
-        console.log('[AuthInitializer] Initialization complete');
-      });
+      initialize()
+        .then(() => {
+          console.log('[AuthInitializer] Initialization complete');
+        })
+        .catch((error) => {
+          console.error('[AuthInitializer] Initialization failed:', error);
+          // Optional: You could set an error state here or reset initialized.current
+          // to allow retries, but for now just logging ensures we see the error.
+        });
     }
   }, [initialize]);
 
