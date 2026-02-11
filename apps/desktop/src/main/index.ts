@@ -86,6 +86,37 @@ if (!gotTheLock) {
     });
   }
 
+  // Register as default protocol client
+  if (process.defaultApp) {
+    if (process.argv.length >= 2) {
+      const arg = process.argv[1] || '';
+      app.setAsDefaultProtocolClient('auteur', process.execPath, [join(process.cwd(), arg)]);
+    }
+  } else {
+    app.setAsDefaultProtocolClient('auteur');
+  }
+
+  // Handle deep links on macOS
+  app.on('open-url', (event, url) => {
+    event.preventDefault();
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+      // Send URL to renderer to handle auth callback
+      // We need to implement a listener in renderer or just let Supabase handle it if it listens to window location?
+      // Supabase JS in renderer usually needs the URL to be passed to it via handleOpenURL or similar if not using standard browser flow.
+      // But actually, we will likely just load the URL if it's a callback, OR pass the code to the renderer.
+      // For now, let's just log it. Supabase might need `supaase.auth.getSession()` to pick it up?
+      // Actually Supabase's `signInWithOAuth` redirects.
+      // If we use `redirect`, we need to handle the callback route in the app.
+      // Since we are SPA, we should probably navigate to the URL.
+      // But typical Electron deep linking passes `auteur://auth/callback#access_token=...`
+
+      // Send to renderer
+      mainWindow.webContents.send('app:deep-link', url);
+    }
+  });
+
   // Window controls IPC
   ipcMain.on('window:minimize', () => {
     mainWindow?.minimize();

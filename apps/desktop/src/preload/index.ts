@@ -64,6 +64,6 @@ contextBridge.exposeInMainWorld('electronAPI', electronAPI);
 // Type declaration for renderer process
 declare global {
   interface Window {
-    electronAPI: ElectronAPI;
+    electronAPI?: ElectronAPI;
   }
 }

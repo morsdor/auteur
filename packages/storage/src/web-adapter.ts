@@ -1,11 +1,9 @@
-/**
- * Electron storage adapter using localStorage
- * In Electron, localStorage is persistent and file-backed.
- */
-import { StorageAdapter } from '@auteur/types';
+import { StorageAdapter } from './base';
 
-export class ElectronStorageAdapter extends StorageAdapter {
+export class WebStorageAdapter extends StorageAdapter {
   async get<T>(key: string): Promise<T | null> {
+    if (typeof window === 'undefined') return null;
+
     const item = localStorage.getItem(key);
     if (!item) return null;
     try {
@@ -16,18 +14,22 @@ export class ElectronStorageAdapter extends StorageAdapter {
   }
 
   async set<T>(key: string, value: T): Promise<void> {
+    if (typeof window === 'undefined') return;
     localStorage.setItem(key, JSON.stringify(value));
   }
 
   async delete(key: string): Promise<void> {
+    if (typeof window === 'undefined') return;
     localStorage.removeItem(key);
   }
 
   async clear(): Promise<void> {
+    if (typeof window === 'undefined') return;
     localStorage.clear();
   }
 
-  async keys(): Promise<string[]> {
+  override async keys(): Promise<string[]> {
+    if (typeof window === 'undefined') return [];
     return Object.keys(localStorage);
   }
 }

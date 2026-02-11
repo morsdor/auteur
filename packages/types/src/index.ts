@@ -6,6 +6,9 @@
 // User types
 export type { User, Profile, AccountSettings } from './user.types';
 
+// Auth types
+export type { AuthSession, AuthError, AuthResponse } from './auth.types';
+
 // Project types
 export type { Project, ProjectSettings, MediaFile, MediaType, VoiceClone } from './project.types';
 

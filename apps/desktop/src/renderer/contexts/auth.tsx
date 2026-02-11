@@ -5,7 +5,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { SupabaseAuthProvider, type AuthUser } from '@auteur/auth';
-import { IPCStorageAdapter } from '../lib/ipc-storage-adapter';
+import { ElectronStorageAdapter } from '@auteur/storage/electron';
 import { apiClient } from '../services/api';
 
 interface AuthContextType {
@@ -29,7 +29,7 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 
 // Use IPC storage adapter for renderer process
 // This properly communicates with the main process electron-store via IPC
-const storage = new IPCStorageAdapter();
+const storage = new ElectronStorageAdapter();
 const authProvider = new SupabaseAuthProvider({
   supabaseUrl: SUPABASE_URL,
   supabaseAnonKey: SUPABASE_ANON_KEY,
