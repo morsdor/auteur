@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { signIn, isLoading } = useAuthStore();
+  const { signIn, signInWithOAuth, isLoading } = useAuthStore();
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async (data: any) => {
@@ -20,9 +20,16 @@ export default function LoginPage() {
     }
   };
 
-  const handleSocialLogin = (provider: string) => {
+  const handleSocialLogin = async (provider: string) => {
     console.log(`Login with ${provider}`);
-    // TODO: Implement social login
+    if (provider !== 'google' && provider !== 'github') return;
+
+    try {
+      await signInWithOAuth(provider);
+    } catch (err: any) {
+      console.error('Social login error:', err);
+      setError(err.message || 'Social login failed');
+    }
   };
 
   return (

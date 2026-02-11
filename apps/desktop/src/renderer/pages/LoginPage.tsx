@@ -7,7 +7,7 @@ import { LoginForm, RegisterForm } from '@auteur/ui';
 import { useAuthStore } from '../stores/auth-store';
 
 export function LoginPage() {
-  const { signIn, signUp, isLoading, user } = useAuthStore();
+  const { signIn, signUp, signInWithOAuth, isLoading, user } = useAuthStore();
   const [isSignup, setIsSignup] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
 
@@ -31,9 +31,16 @@ export function LoginPage() {
     }
   };
 
-  const handleSocialLogin = (provider: string) => {
+  const handleSocialLogin = async (provider: string) => {
     console.log(`Login with ${provider}`);
-    // TODO: Implement social login via Electron (needs custom flow or Supabase helper)
+    if (provider !== 'google' && provider !== 'github') return;
+
+    try {
+      await signInWithOAuth(provider);
+    } catch (err: any) {
+      console.error('Social login error:', err);
+      setLocalError(err.message || 'Social login failed');
+    }
   };
 
   return (

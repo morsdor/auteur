@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     '@auteur/auth',
     '@auteur/ui',
     '@auteur/tailwind-config',
+    '@auteur/storage',
   ],
   // Disable image optimization for now (can enable later)
   images: {

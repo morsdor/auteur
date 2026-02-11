@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { signUp, isLoading } = useAuthStore();
+  const { signUp, signInWithOAuth, isLoading } = useAuthStore();
   const [error, setError] = useState<string | null>(null);
 
   const handleRegister = async (data: any) => {
@@ -26,9 +26,16 @@ export default function RegisterPage() {
     }
   };
 
-  const handleSocialLogin = (provider: string) => {
+  const handleSocialLogin = async (provider: string) => {
     console.log(`Login with ${provider}`);
-    // TODO: Implement social login via AuthProvider
+    if (provider !== 'google' && provider !== 'github') return;
+
+    try {
+      await signInWithOAuth(provider);
+    } catch (err: any) {
+      console.error('Social login error:', err);
+      setError(err.message || 'Social login failed');
+    }
   };
 
   return (

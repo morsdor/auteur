@@ -21,6 +21,13 @@ export default defineConfig({
       alias: {
         '@renderer': resolve('src/renderer'),
         '@': resolve('src/renderer'),
+        '@auteur/storage/electron': resolve('../../packages/storage/src/electron.ts'),
+        '@auteur/storage': resolve('../../packages/storage/src/index.ts'),
+        '@auteur/auth': resolve('../../packages/auth/src/index.ts'),
+        '@auteur/ui': resolve('../../packages/ui/src/index.ts'),
+        '@auteur/types': resolve('../../packages/types/src/index.ts'),
+        '@auteur/utils': resolve('../../packages/utils/src/index.ts'),
+        '@auteur/api-client': resolve('../../packages/api-client/src/index.ts'),
       },
     },
     plugins: [react()],

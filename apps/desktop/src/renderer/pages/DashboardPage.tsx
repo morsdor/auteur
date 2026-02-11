@@ -4,15 +4,15 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Button } from '@auteur/ui/components/button';
-import { Input } from '@auteur/ui/components/input';
 import {
+  Button,
+  Input,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@auteur/ui/components/card';
+} from '@auteur/ui';
 import { useAuth } from '../contexts/auth';
 
 interface SystemInfo {

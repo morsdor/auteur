@@ -1,5 +1,5 @@
 import { createAuthStore } from '@auteur/auth';
-import { ElectronStorageAdapter } from '../lib/storage/electron-storage-adapter';
+import { ElectronStorageAdapter } from '@auteur/storage/electron';
 import { apiClient } from '../services/api';
 import type { UserProfile } from '@auteur/api-client';
 

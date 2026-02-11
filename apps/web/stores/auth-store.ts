@@ -1,5 +1,5 @@
 import { createAuthStore } from '@auteur/auth';
-import { WebStorageAdapter } from '../src/lib/storage/web-storage-adapter';
+import { WebStorageAdapter } from '@auteur/storage/web';
 import { apiClient } from '../src/lib/api-client';
 import { useQuery } from '@tanstack/react-query';
 

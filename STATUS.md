@@ -174,7 +174,7 @@
 - [x] Setup persistent volume storage (/models)
 - [x] Implement download functions (Whisper, F5-TTS)
 - [x] Resolve dependency conflicts ("Golden Set")
-- [x] Verify GPU execution with test 
+- [x] Verify GPU execution with test
 
 ### US 1.1: User Registration
 

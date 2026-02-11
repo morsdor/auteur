@@ -26,6 +26,7 @@ export interface AuthState {
 
   // Actions
   signIn: (email: string, password: string) => Promise<void>;
+  signInWithOAuth: (provider: 'google' | 'github') => Promise<void>;
   signUp: (email: string, password: string) => Promise<User>;
   signOut: () => Promise<void>;
   setUser: (user: User | null) => void;
@@ -56,6 +57,20 @@ export const createAuthStore = (config: AuthStoreConfig) => {
         });
       } catch (error) {
         console.error('Sign in error:', error);
+        set({ isLoading: false });
+        throw error;
+      }
+    },
+
+    signInWithOAuth: async (provider: 'google' | 'github') => {
+      set({ isLoading: true });
+      try {
+        const authProvider = get().authProvider;
+        await authProvider.signInWithOAuth(provider);
+        // Note: OAuth flow usually redirects, so we might not reach here immediately
+        // But if it's a popup or if we need to set loading to false on error:
+      } catch (error) {
+        console.error('OAuth sign in error:', error);
         set({ isLoading: false });
         throw error;
       }
