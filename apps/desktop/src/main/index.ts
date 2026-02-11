@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, shell, globalShortcut } from 'electron';
 import { join } from 'path';
 import { setupIPC } from './ipc';
 
@@ -21,7 +21,7 @@ if (!gotTheLock) {
       backgroundColor: '#0A0A0A', // Auteur bg-primary
       titleBarStyle: 'hiddenInset',
       webPreferences: {
-        preload: join(__dirname, '../preload/index.js'),
+        preload: join(__dirname, '../preload/index.cjs'),
         // Security settings
         nodeIntegration: false,
         contextIsolation: true,
@@ -35,16 +35,25 @@ if (!gotTheLock) {
 
     // Set CSP headers
     mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+      const responseHeaders = { ...details.responseHeaders };
+
+      // Remove any existing CSP headers to avoid conflicts
+      Object.keys(responseHeaders).forEach((key) => {
+        if (key.toLowerCase() === 'content-security-policy') {
+          delete responseHeaders[key];
+        }
+      });
+
       callback({
         responseHeaders: {
-          ...details.responseHeaders,
+          ...responseHeaders,
           'Content-Security-Policy': [
             "default-src 'self'; " +
               "script-src 'self'; " +
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
               "font-src 'self' https://fonts.gstatic.com; " +
               "img-src 'self' data: https:; " +
-              "connect-src 'self' https://*.supabase.co wss://*.supabase.co;",
+              "connect-src 'self' https://*.supabase.co wss://*.supabase.co http://127.0.0.1:* http://localhost:* ws://127.0.0.1:* ws://localhost:*;",
           ],
         },
       });
@@ -138,6 +147,19 @@ if (!gotTheLock) {
   app.whenReady().then(async () => {
     // Setup IPC handlers (async for electron-store)
     await setupIPC();
+
+    // Register global shortcut to toggle DevTools
+    // CommandOrControl+Shift+I is the standard Chrome shortcut
+    // CommandOrControl+Shift+I is the standard Chrome shortcut
+    globalShortcut.register('CommandOrControl+Shift+I', () => {
+      if (mainWindow) {
+        if (mainWindow.webContents.isDevToolsOpened()) {
+          mainWindow.webContents.closeDevTools();
+        } else {
+          mainWindow.webContents.openDevTools();
+        }
+      }
+    });
 
     createWindow();
 

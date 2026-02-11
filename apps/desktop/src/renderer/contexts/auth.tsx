@@ -4,6 +4,7 @@
  */
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import type { SupabaseClientOptions } from '@supabase/supabase-js';
 import { SupabaseAuthProvider, type AuthUser } from '@auteur/auth';
 import { ElectronStorageAdapter } from '@auteur/storage/electron';
 import { apiClient } from '../services/api';
@@ -34,6 +35,9 @@ const authProvider = new SupabaseAuthProvider({
   supabaseUrl: SUPABASE_URL,
   supabaseAnonKey: SUPABASE_ANON_KEY,
   storage,
+  options: {
+    detectSessionInUrl: false,
+  } as unknown as SupabaseClientOptions<string>,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {

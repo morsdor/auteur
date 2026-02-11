@@ -12,7 +12,15 @@ export default defineConfig({
   preload: {
     plugins: [externalizeDepsPlugin()],
     build: {
+      lib: {
+        entry: 'src/preload/index.ts',
+        formats: ['cjs'],
+        fileName: () => 'index.cjs',
+      },
       outDir: 'dist-electron/preload',
+      rollupOptions: {
+        external: ['electron'],
+      },
     },
   },
   renderer: {

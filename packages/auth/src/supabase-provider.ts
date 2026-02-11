@@ -2,7 +2,11 @@
  * Supabase authentication provider implementation
  */
 
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import {
+  createClient,
+  type SupabaseClient,
+  type SupabaseClientOptions,
+} from '@supabase/supabase-js';
 import {
   AuthProvider,
   type AuthUser,
@@ -15,12 +19,13 @@ export interface SupabaseConfig {
   supabaseUrl: string;
   supabaseAnonKey: string;
   storage: StorageAdapter;
+  options?: SupabaseClientOptions<string>;
 }
 
 const STORAGE_KEY = 'auteur_auth_session';
 
 export class SupabaseAuthProvider extends AuthProvider {
-  private client: SupabaseClient;
+  private client: SupabaseClient<any, 'public', any>;
   private storage: StorageAdapter;
   private tokenCallbacks: Set<TokenChangeCallback> = new Set();
 
@@ -29,9 +34,11 @@ export class SupabaseAuthProvider extends AuthProvider {
     this.storage = config.storage;
 
     this.client = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+      ...config.options,
       auth: {
         autoRefreshToken: true,
         persistSession: false, // We handle persistence manually
+        ...config.options?.auth,
       },
     });
 

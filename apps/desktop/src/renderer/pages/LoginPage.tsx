@@ -7,39 +7,36 @@ import { LoginForm, RegisterForm } from '@auteur/ui';
 import { useAuthStore } from '../stores/auth-store';
 
 export function LoginPage() {
-  const { signIn, signUp, signInWithOAuth, isLoading, user } = useAuthStore();
+  const { signIn, signUp, signInWithOAuth } = useAuthStore();
   const [isSignup, setIsSignup] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
 
-  const handleLogin = async (data: any) => {
+  const handleLogin = async (data: { email: string; password: string }) => {
     setLocalError(null);
     try {
       await signIn(data.email, data.password);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Login error:', err);
-      setLocalError(err.message || 'Login failed');
+      setLocalError(err instanceof Error ? err.message : 'Login failed');
     }
   };
 
-  const handleSignup = async (data: any) => {
+  const handleSignup = async (data: { email: string; password: string }) => {
     setLocalError(null);
     try {
       await signUp(data.email, data.password);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Signup error:', err);
-      setLocalError(err.message || 'Signup failed');
+      setLocalError(err instanceof Error ? err.message : 'Signup failed');
     }
   };
 
-  const handleSocialLogin = async (provider: string) => {
-    console.log(`Login with ${provider}`);
-    if (provider !== 'google' && provider !== 'github') return;
-
+  const handleSocialLogin = async (provider: 'google' | 'github') => {
     try {
       await signInWithOAuth(provider);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Social login error:', err);
-      setLocalError(err.message || 'Social login failed');
+      setLocalError(err instanceof Error ? err.message : 'Social login failed');
     }
   };
 

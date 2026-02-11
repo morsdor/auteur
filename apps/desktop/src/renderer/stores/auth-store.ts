@@ -1,7 +1,6 @@
 import { createAuthStore } from '@auteur/auth';
 import { ElectronStorageAdapter } from '@auteur/storage/electron';
 import { apiClient } from '../services/api';
-import type { UserProfile } from '@auteur/api-client';
 
 // For Electron, we might need to inject these from main process or use a config file
 // For now, hardcoding/using sync env vars if available (Vite exposes import.meta.env)
