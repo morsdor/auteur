@@ -174,15 +174,21 @@
 - [x] Setup persistent volume storage (/models)
 - [x] Implement download functions (Whisper, F5-TTS)
 - [x] Resolve dependency conflicts ("Golden Set")
-- [x] Verify GPU execution with test script
+- [x] Verify GPU execution with test 
 
-## 🚧 In Progress
+### US 1.1: User Registration
 
-**Current Work**: Executing US-1.1: User Registration
+- [x] User can register with email/password
+- [x] User can register with Google OAuth
+- [x] User can register with GitHub OAuth
+- [x] Email verification is required for email signups
+- [x] Password must be min 8 chars with 1 number and 1 special char
+- [x] Duplicate email detection with clear error message
+- [x] Configure Supabase Auth providers
+- [x] Create user record in Postgres on successful registration
+- [x] Initialize credit balance (0 for free tier)
 
-- [x] Planning & Architecture Review
-- [ ] Backend Implementation (User Entity, Controller)
-- [ ] Frontend Implementation (Auth Forms, Integration)
+## 🚧 In Progress : US 1.2 User Login
 
 ---
 

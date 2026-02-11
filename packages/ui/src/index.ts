@@ -18,5 +18,6 @@ export {
 export * from './components/auth/login-form';
 export * from './components/auth/register-form';
 export * from './components/auth/social-auth-buttons';
+export * from './components/auth/auth-layout';
 
 export { cn } from './lib/utils';
