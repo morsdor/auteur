@@ -15,7 +15,9 @@
     "baseUrl": ".",
     "paths": {
       "@renderer/*": ["src/renderer/*"],
-      "@/*": ["src/renderer/*"]
+      "@/*": ["src/renderer/*"],
+      "@auteur/storage/*": ["../../packages/storage/src/*"],
+      "@auteur/*": ["../../packages/*/src"]
     }
   },
   "include": ["src/**/*", "electron.vite.config.ts"],

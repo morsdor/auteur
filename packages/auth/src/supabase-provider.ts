@@ -93,6 +93,21 @@ export class SupabaseAuthProvider extends AuthProvider {
     };
   }
 
+  async signInWithOAuth(provider: 'google' | 'github', scopes?: string): Promise<void> {
+    const { error } = await this.client.auth.signInWithOAuth({
+      provider,
+      options: {
+        scopes,
+        redirectTo:
+          typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : undefined,
+      },
+    });
+
+    if (error) {
+      throw new Error(`OAuth login failed: ${error.message}`);
+    }
+  }
+
   async logout(): Promise<void> {
     await this.client.auth.signOut();
     await this.storage.delete(STORAGE_KEY);

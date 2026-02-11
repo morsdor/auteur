@@ -20,28 +20,25 @@ Read:
 
 If you see in the @06-development-roadmap.md we are at Phase 2.
 
-This is task related to US 1.1
-
-**As a** new user  
-**I want to** create an account using email or OAuth  
-**So that** I can access Auteur's features
+This is task related to US 1.2 : User Login
 
 **Acceptance Criteria:**
 
-- [ ] User can register with email/password
-- [ ] User can register with Google OAuth
-- [ ] User can register with GitHub OAuth
-- [ ] Email verification is required for email signups
-- [ ] Password must be min 8 chars with 1 number and 1 special char
-- [ ] Duplicate email detection with clear error message
+- [ ] User can login with email/password
+- [ ] User can login with Google/GitHub OAuth
+- [ ] JWT token stored securely in Electron
+- [ ] Session persists across app restarts
+- [ ] Clear error messages for invalid credentials
+- [ ] Rate limiting on failed login attempts (5 per minute)
 
 **Technical Tasks:**
 
-- [ ] Configure Supabase Auth providers
-- [ ] Create registration API endpoint on Cloud Run
-- [ ] Implement email verification flow
-- [ ] Create user record in Postgres on successful registration
-- [ ] Initialize credit balance (0 for free tier)
+- [ ] Implement Supabase Auth in Electron main process
+- [ ] Store JWT in secure electron-store
+- [ ] Implement token refresh logic
+- [ ] Create auth context for React components
+
+Some of the point here might alreday be created. check before adding any new code
 
 Constraints -
 Before writing any new type, check if it already exists in @auteur/types package or if it can be added to @auteur/types package.
@@ -56,5 +53,3 @@ Use shadcn/ui for common components. Downgrade to taliwind v3 because v4 has iss
 Let us start working on them.
 
 Ask me if you need any clarifications and as you progress, keep updating @STATUS.md
-Think like a mid to senior software engineer and use appropriate tone and language and technical details. Give code snippets wherever required.
-Save each of that thread in a new md file in @twitter folder

@@ -25,6 +25,11 @@ export abstract class AuthProvider {
   abstract signup(email: string, password: string): Promise<AuthUser>;
 
   /**
+   * Sign in with OAuth provider
+   */
+  abstract signInWithOAuth(provider: 'google' | 'github', scopes?: string): Promise<void>;
+
+  /**
    * Sign out
    */
   abstract logout(): Promise<void>;

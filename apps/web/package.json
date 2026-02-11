@@ -12,6 +12,7 @@
   "dependencies": {
     "@auteur/api-client": "workspace:^",
     "@auteur/auth": "workspace:^",
+    "@auteur/storage": "workspace:^",
     "@auteur/tailwind-config": "workspace:^",
     "@auteur/types": "workspace:^",
     "@auteur/ui": "workspace:^",
